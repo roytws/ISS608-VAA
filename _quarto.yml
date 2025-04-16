@@ -4,14 +4,20 @@ project:
 website:
   title: "ISS608-VAA"
   navbar:
-    left:
+    left: 
+    - text: "Hands-on Excercise"
+      menu: 
+        - text: "Hands-on Exercise 1"
+          href: "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html"
+    right:
       - href: index.qmd
         text: Home
       - about.qmd
+    
 
 format:
   html:
-    theme: cosmo
+    theme: pulse
     css: styles.css
     toc: true
 
