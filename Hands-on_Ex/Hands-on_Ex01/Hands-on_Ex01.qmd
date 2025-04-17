@@ -26,3 +26,31 @@ ggplot(data = exam_data,
        aes(x = RACE)) + 
   geom_bar()
 ```
+
+# Plotting chart
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x= MATHS, 
+           fill = GENDER)) +
+  geom_histogram(bins=20, 
+                 color="grey30")
+```
+
+# Plotting graph
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x=RACE)) +
+  geom_bar() +
+  coord_flip() +
+  theme_minimal()        
+```
+
+
+
+
+
+
+
+
