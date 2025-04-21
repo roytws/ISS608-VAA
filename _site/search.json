@@ -7,13 +7,6 @@
     "text": "About this site\n\n1 + 1\n\n[1] 2"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "ISS608-VAA",
-    "section": "",
-    "text": "Welcome to ISSS608 Visual Analytics and Applications.\nIn this website, you will find my coursework prepared for this course"
-  },
-  {
     "objectID": "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html",
     "href": "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html",
     "title": "Hands-on Exercise 1",
@@ -63,17 +56,17 @@
     "text": "Trying out ggrepel\n\nggplot(data=exam_data, \n       aes(x= MATHS, \n           y=ENGLISH)) +\n  geom_point() +\n  geom_smooth(method=lm, \n              linewidth=0.5) +  \n  geom_label_repel(aes(label = ID), \n                   fontface = \"bold\") +  \n  coord_cartesian(xlim=c(0,100),\n                  ylim=c(0,100)) +\n  ggtitle(\"English scores versus Maths scores for Primary 3\")\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\nWarning: ggrepel: 317 unlabeled data points (too many overlaps). Consider\nincreasing max.overlaps"
   },
   {
-    "objectID": "Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html#trying-out-ggrepel-1",
-    "href": "Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html#trying-out-ggrepel-1",
-    "title": "Hands-on Exercise 2",
-    "section": "Trying out ggrepel",
-    "text": "Trying out ggrepel\n\nggplot(data=exam_data, \n       aes(x= MATHS, \n           y=ENGLISH)) +\n  geom_point() +\n  geom_smooth(method=lm, \n              size=0.5) +  \n  geom_label_repel(aes(label = ID), \n                   fontface = \"bold\") +\n  coord_cartesian(xlim=c(0,100),\n                  ylim=c(0,100)) +\n  ggtitle(\"English scores versus Maths scores for Primary 3\")\n\nWarning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.\nℹ Please use `linewidth` instead.\n\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\nWarning: ggrepel: 317 unlabeled data points (too many overlaps). Consider\nincreasing max.overlaps"
-  },
-  {
     "objectID": "Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html#beyond-ggplot-theme",
     "href": "Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html#beyond-ggplot-theme",
     "title": "Hands-on Exercise 2",
     "section": "Beyond ggplot theme",
     "text": "Beyond ggplot theme\n\nggplot(data=exam_data, \n             aes(x = MATHS)) +\n  geom_histogram(bins=20, \n                 boundary = 100,\n                 color=\"grey25\", \n                 fill=\"grey90\") +\n  theme_gray() +\n  ggtitle(\"Distribution of Maths scores\")"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ISS608-VAA",
+    "section": "",
+    "text": "Welcome to ISSS608 Visual Analytics and Applications.\nIn this website, you will find my coursework prepared for this course"
   }
 ]
