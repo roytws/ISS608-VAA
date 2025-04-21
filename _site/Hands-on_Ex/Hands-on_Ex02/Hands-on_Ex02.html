@@ -161,7 +161,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#install-and-launching-r-packages" id="toc-install-and-launching-r-packages" class="nav-link" data-scroll-target="#install-and-launching-r-packages">Install and launching R packages</a></li>
   <li><a href="#importing-the-data" id="toc-importing-the-data" class="nav-link" data-scroll-target="#importing-the-data">Importing the data</a></li>
   </ul></li>
+  <li><a href="#following-as-per-given-session-2-chapter" id="toc-following-as-per-given-session-2-chapter" class="nav-link" data-scroll-target="#following-as-per-given-session-2-chapter">Following as per given session 2 chapter</a>
+  <ul class="collapse">
   <li><a href="#trying-out-ggrepel" id="toc-trying-out-ggrepel" class="nav-link" data-scroll-target="#trying-out-ggrepel">Trying out ggrepel</a></li>
+  <li><a href="#beyond-ggplot-theme" id="toc-beyond-ggplot-theme" class="nav-link" data-scroll-target="#beyond-ggplot-theme">Beyond ggplot theme</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -193,6 +197,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="getting-started" class="level1">
 <h1>Getting Started</h1>
+<p>I will first work through the exercise to gain a clear understanding of the data and objectives. Based on this foundation, I will then explore opportunities to apply visual analytics techniques to uncover insights and enhance data storytelling.</p>
 <section id="install-and-launching-r-packages" class="level2">
 <h2 class="anchored" data-anchor-id="install-and-launching-r-packages">Install and launching R packages</h2>
 <p>The code chunk below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched into R.</p>
@@ -217,8 +222,10 @@ dbl (3): ENGLISH, MATHS, SCIENCE
 </div>
 </section>
 </section>
-<section id="trying-out-ggrepel" class="level1">
-<h1>Trying out ggrepel</h1>
+<section id="following-as-per-given-session-2-chapter" class="level1">
+<h1>Following as per given session 2 chapter</h1>
+<section id="trying-out-ggrepel" class="level2">
+<h2 class="anchored" data-anchor-id="trying-out-ggrepel">Trying out ggrepel</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span> MATHS, </span>
@@ -242,8 +249,25 @@ increasing max.overlaps</code></pre>
 <p><img src="Hands-on_Ex02_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+</section>
+<section id="beyond-ggplot-theme" class="level2">
+<h2 class="anchored" data-anchor-id="beyond-ggplot-theme">Beyond ggplot theme</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> MATHS)) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">boundary =</span> <span class="dv">100</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color=</span><span class="st">"grey25"</span>, </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill=</span><span class="st">"grey90"</span>) <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_gray</span>() <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of Maths scores"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Hands-on_Ex02_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

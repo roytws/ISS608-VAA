@@ -5,9 +5,13 @@ author: "Teo Wee Siang Roy"
 
 # Getting Started
 
+I will first work through the exercise to gain a clear understanding of the data and objectives. Based on this foundation, 
+I will then explore opportunities to apply visual analytics techniques to uncover insights and enhance data storytelling.
+
 ## Install and launching R packages
 
 The code chunk below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched into R.
+
 
 ```{r}
 pacman::p_load(tidyverse, ggrepel, ggthemes, hrbrthemes, patchwork)
@@ -19,7 +23,8 @@ pacman::p_load(tidyverse, ggrepel, ggthemes, hrbrthemes, patchwork)
 exam_data <- read_csv("data/Exam_data.csv")
 ```
 
-# Trying out ggrepel
+# Following as per given session 2 chapter
+## Trying out ggrepel
 
 ```{r}
 ggplot(data=exam_data, 
@@ -33,4 +38,17 @@ ggplot(data=exam_data,
   coord_cartesian(xlim=c(0,100),
                   ylim=c(0,100)) +
   ggtitle("English scores versus Maths scores for Primary 3")
+```
+
+## Beyond ggplot theme
+
+```{r}
+ggplot(data=exam_data, 
+             aes(x = MATHS)) +
+  geom_histogram(bins=20, 
+                 boundary = 100,
+                 color="grey25", 
+                 fill="grey90") +
+  theme_gray() +
+  ggtitle("Distribution of Maths scores") 
 ```
