@@ -49,6 +49,102 @@ ggplot(data=exam_data,
                  boundary = 100,
                  color="grey25", 
                  fill="grey90") +
-  theme_gray() +
+  theme_economist() +
   ggtitle("Distribution of Maths scores") 
 ```
+
+## Beyond ggplot theme
+
+```{r}
+ggplot(data=exam_data, 
+             aes(x = MATHS)) +
+  geom_histogram(bins=20, 
+                 boundary = 100,
+                 color="grey25", 
+                 fill="grey90") +
+  ggtitle("Distribution of Maths scores") +
+  theme_ipsum(axis_title_size = 18,
+              base_size = 15,
+              grid = "Y")
+```
+
+##  Beyond Single Graph
+
+```{r}
+p3 <- ggplot(data=exam_data, 
+             aes(x= MATHS, 
+                 y=ENGLISH)) +
+  geom_point() +
+  geom_smooth(method=lm, 
+              linewidth=0.5) +  # Replace 'size' with 'linewidth'
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100)) +
+  ggtitle("English scores versus Maths scores for Primary 3")
+
+p3
+
+````
+
+
+##  Combining two ggplot2 graphs
+
+```{r}
+p1 <- ggplot(data=exam_data, 
+             aes(x = MATHS)) +
+  geom_histogram(bins=20, 
+                 boundary = 100,
+                 color="grey25", 
+                 fill="grey90") + 
+  coord_cartesian(xlim=c(0,100)) +
+  ggtitle("Distribution of Maths scores")
+
+p2 <- ggplot(data=exam_data, 
+             aes(x = ENGLISH)) +
+  geom_histogram(bins=20, 
+                 boundary = 100,
+                 color="grey25", 
+                 fill="grey90") +
+  coord_cartesian(xlim=c(0,100)) +
+  ggtitle("Distribution of English scores")
+
+p1 + p2
+
+````
+
+
+##  Combining two ggplot2 graphs
+
+```{r}
+
+p1 + p2 | p3
+
+````
+##  Combining two ggplot2 graphs
+
+```{r}
+
+((p1 / p2) | p3) + 
+  plot_annotation(tag_levels = 'I')
+
+````
+
+##  Combining two ggplot2 graphs
+
+```{r}
+
+p3 + inset_element(p2, 
+                   left = 0.02, 
+                   bottom = 0.7, 
+                   right = 0.5, 
+                   top = 1)
+
+````
+
+##  Combining two ggplot2 graphs
+
+```{r}
+
+patchwork <- (p1 / p2) | p3
+patchwork & theme_economist()
+
+````
