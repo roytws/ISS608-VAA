@@ -14,31 +14,83 @@ The code chunk below uses p_load() of pacman package to check if tidyverse packa
 
 
 ```{r}
-pacman::p_load(tidyverse, ggrepel, ggthemes, hrbrthemes, patchwork)
+pacman::p_load(tidyverse, ggrepel, ggthemes, hrbrthemes, patchwork, ggtern)
 ```
 
 ## Importing the data
-
 ```{r}
 exam_data <- read_csv("data/Exam_data.csv")
 ```
 
-# Following as per given session 2 chapter
-## Trying out ggrepel
 
 ```{r}
-ggplot(data=exam_data, 
-       aes(x= MATHS, 
-           y=ENGLISH)) +
-  geom_point() +
-  geom_smooth(method=lm, 
-              linewidth=0.5) +  
-  geom_label_repel(aes(label = ID), 
-                   fontface = "bold") +  
-  coord_cartesian(xlim=c(0,100),
-                  ylim=c(0,100)) +
-  ggtitle("English scores versus Maths scores for Primary 3")
+english_histogram <- ggplot(exam_data, aes(x = ENGLISH)) + 
+  geom_histogram(bins = 20, fill = "skyblue", color = "black", alpha = 0.7) + 
+  labs(title = "Distribution of English Scores", 
+       x = "English Score", 
+       y = "Frequency") + 
+  theme_minimal()
+
+math_histogram <- ggplot(exam_data, aes(x = MATHS)) + 
+  geom_histogram(bins = 20, fill = "lightgreen", color = "black", alpha = 0.7) + 
+  labs(title = "Distribution of Math Scores", 
+       x = "Math Score", 
+       y = "Frequency") + 
+  theme_minimal()
+
+science_histogram <- ggplot(exam_data, aes(x = SCIENCE)) + 
+  geom_histogram(bins = 20, fill = "salmon", color = "black", alpha = 0.7) + 
+  labs(title = "Distribution of Science Scores", 
+       x = "Science Score", 
+       y = "Frequency") + 
+  theme_minimal()
+
+combined_plot <- (english_histogram / math_histogram / science_histogram) + 
+  plot_layout(heights = c(2, 2, 2))
+
+combined_plot
 ```
+
+## Data Comparison: Class and Subject
+
+```{r}
+exam_data_long <- exam_data %>%
+  pivot_longer(cols = c(ENGLISH, MATHS, SCIENCE), names_to = "Subject", values_to = "Score")
+
+score_comparison_plot <- ggplot(exam_data_long, aes(x = CLASS, y = Score, fill = Subject)) +
+  geom_boxplot() + 
+  facet_wrap(~ Subject, scales = "free_y") + 
+  labs(title = "Comparison of Scores by Class and Subject",
+       x = "Class", y = "Scores") +
+  theme_linedraw() + 
+  coord_cartesian(ylim = c(0, 100)) +
+  theme(legend.position = "top")
+
+score_comparison_plot
+```
+## Density Plot of Average Scores
+
+```{r}
+exam_data$average_score <- (exam_data$ENGLISH + exam_data$MATHS + exam_data$SCIENCE) / 3
+
+ggplot(exam_data, aes(x = average_score)) +
+  geom_density(fill = "blue", alpha = 0.5) +
+  labs(title = "Density Plot of Average Scores", x = "Average Score", y = "Density") +
+  theme_minimal()
+
+```
+## density plot by gender
+
+```{r}
+
+ggplot(exam_data, aes(x = average_score, fill = GENDER)) +
+  geom_density(alpha = 0.5) +  # alpha makes it semi-transparent
+  labs(title = "Density Plot of Average Scores by Gender", x = "Average Score", y = "Density") +
+  theme_minimal()
+
+
+```
+
 
 ## Beyond ggplot theme
 
