@@ -5,23 +5,23 @@ author: "Teo Wee Siang Roy"
 
 # Getting Started
 
-I will first work through the exercise to gain a clear understanding of the data and objectives. Based on this foundation, 
-I will then explore opportunities to apply visual analytics techniques to uncover insights and enhance data storytelling.
+I will first work through the exercise to gain a clear understanding of the data and objectives. Based on this foundation, I will then explore opportunities to apply visual analytics techniques to uncover insights and enhance data storytelling.
 
 ## Install and launching R packages
 
 The code chunk below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched into R.
-
 
 ```{r}
 pacman::p_load(tidyverse, ggrepel, ggthemes, hrbrthemes, patchwork, ggtern)
 ```
 
 ## Importing the data
+
 ```{r}
 exam_data <- read_csv("data/Exam_data.csv")
 ```
 
+# Trying out ex 2 
 
 ```{r}
 english_histogram <- ggplot(exam_data, aes(x = ENGLISH)) + 
@@ -68,6 +68,7 @@ score_comparison_plot <- ggplot(exam_data_long, aes(x = CLASS, y = Score, fill =
 
 score_comparison_plot
 ```
+
 ## Density Plot of Average Scores
 
 ```{r}
@@ -79,6 +80,7 @@ ggplot(exam_data, aes(x = average_score)) +
   theme_minimal()
 
 ```
+
 ## density plot by gender
 
 ```{r}
@@ -91,7 +93,39 @@ ggplot(exam_data, aes(x = average_score, fill = GENDER)) +
 
 ```
 
+## Try out Patchwork 
 
+```{r}
+
+histogram_plot <- ggplot(exam_data, aes(x = ENGLISH)) + 
+  geom_histogram(bins = 20, fill = "lightblue", color = "black", alpha = 0.7) + 
+  labs(title = "Distribution of English Scores", x = "English Score", y = "Frequency") + 
+  theme_minimal()
+
+# 2. Scatter plot of MATHS vs SCIENCE scores
+scatter_plot <- ggplot(exam_data, aes(x = MATHS, y = SCIENCE)) + 
+  geom_point(color = "purple") + 
+  geom_smooth(method = "lm", color = "red", se = FALSE) +
+  labs(title = "Maths vs Science Scores", x = "Math Score", y = "Science Score") +
+  theme_minimal()
+
+# 3. Violin plot of average scores by class
+exam_data$average_score <- (exam_data$ENGLISH + exam_data$MATHS + exam_data$SCIENCE) / 3
+violin_plot <- ggplot(exam_data, aes(x = CLASS, y = average_score, fill = CLASS)) + 
+  geom_violin() +
+  labs(title = "Average Scores by Class", x = "Class", y = "Average Score") + 
+  theme_minimal()
+
+# Combine the plots using patchwork
+combined_plot <- (histogram_plot | scatter_plot) / violin_plot
+
+# Display the combined plot
+combined_plot
+
+
+```
+
+# As per given code in Ex2
 ## Beyond ggplot theme
 
 ```{r}
@@ -120,7 +154,7 @@ ggplot(data=exam_data,
               grid = "Y")
 ```
 
-##  Beyond Single Graph
+## Beyond Single Graph
 
 ```{r}
 p3 <- ggplot(data=exam_data, 
@@ -135,10 +169,9 @@ p3 <- ggplot(data=exam_data,
 
 p3
 
-````
+```
 
-
-##  Combining two ggplot2 graphs
+## Combining two ggplot2 graphs
 
 ```{r}
 p1 <- ggplot(data=exam_data, 
@@ -161,26 +194,26 @@ p2 <- ggplot(data=exam_data,
 
 p1 + p2
 
-````
+```
 
-
-##  Combining two ggplot2 graphs
+## Combining two ggplot2 graphs
 
 ```{r}
 
 p1 + p2 | p3
 
-````
-##  Combining two ggplot2 graphs
+```
+
+## Combining two ggplot2 graphs
 
 ```{r}
 
 ((p1 / p2) | p3) + 
   plot_annotation(tag_levels = 'I')
 
-````
+```
 
-##  Combining two ggplot2 graphs
+## Combining two ggplot2 graphs
 
 ```{r}
 
@@ -190,13 +223,13 @@ p3 + inset_element(p2,
                    right = 0.5, 
                    top = 1)
 
-````
+```
 
-##  Combining two ggplot2 graphs
+## Combining two ggplot2 graphs
 
 ```{r}
 
 patchwork <- (p1 / p2) | p3
 patchwork & theme_economist()
 
-````
+```
