@@ -12,7 +12,7 @@ I will first work through the exercise to gain a clear understanding of the data
 The code chunk below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched into R.
 
 ```{r}
-pacman::p_load(tidyverse, ggrepel, ggthemes, hrbrthemes, patchwork, ggtern)
+pacman::p_load(tidyverse, ggrepel, ggthemes, hrbrthemes, patchwork, ggtern, ggplot2)
 ```
 
 ## Importing the data
@@ -21,7 +21,7 @@ pacman::p_load(tidyverse, ggrepel, ggthemes, hrbrthemes, patchwork, ggtern)
 exam_data <- read_csv("data/Exam_data.csv")
 ```
 
-# Trying out ex 2 
+# Trying out ex 2
 
 ```{r}
 english_histogram <- ggplot(exam_data, aes(x = ENGLISH)) + 
@@ -93,7 +93,7 @@ ggplot(exam_data, aes(x = average_score, fill = GENDER)) +
 
 ```
 
-## Try out Patchwork 
+## Try out Patchwork
 
 ```{r}
 
@@ -126,6 +126,7 @@ combined_plot
 ```
 
 # As per given code in Ex2
+
 ## Beyond ggplot theme
 
 ```{r}
@@ -198,15 +199,16 @@ p1 + p2
 
 ## Combining two ggplot2 graphs
 
-```{r}
+```{r,  fig.width= 12 , fig.height= 7}
 
 p1 + p2 | p3
+
 
 ```
 
 ## Combining two ggplot2 graphs
 
-```{r}
+```{r,  fig.width= 12 , fig.height= 7}
 
 ((p1 / p2) | p3) + 
   plot_annotation(tag_levels = 'I')
@@ -227,7 +229,7 @@ p3 + inset_element(p2,
 
 ## Combining two ggplot2 graphs
 
-```{r}
+```{r,  fig.width= 12 , fig.height= 7}
 
 patchwork <- (p1 / p2) | p3
 patchwork & theme_economist()
