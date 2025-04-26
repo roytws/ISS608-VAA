@@ -130,6 +130,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
     </ul>
   </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-in-class-excercise" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">In Class Excercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-in-class-excercise">    
+        <li>
+    <a class="dropdown-item" href="../../In-Class_Ex/In-Class_Ex02/In-Class_Ex02.html" rel="" target="">
+ <span class="dropdown-text">In-Class Exercise 2</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
@@ -215,7 +226,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="install-and-launching-r-packages">Install and launching R packages</h2>
 <p>The code chunk below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched into R.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, ggrepel, ggthemes, hrbrthemes, patchwork, ggtern)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, ggrepel, ggthemes, hrbrthemes, patchwork, ggtern, ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="importing-the-data" class="level2">
@@ -384,22 +395,27 @@ dbl (3): ENGLISH, MATHS, SCIENCE
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
 not found in Windows font database
+
 Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
 not found in Windows font database</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
 family not found in Windows font database
+
 Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
 family not found in Windows font database</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
 font family not found in Windows font database
+
 Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
 font family not found in Windows font database
+
 Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
 font family not found in Windows font database
+
 Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
 font family not found in Windows font database</code></pre>
 </div>
@@ -465,7 +481,7 @@ font family not found in Windows font database</code></pre>
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="Hands-on_Ex02_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+<p><img src="Hands-on_Ex02_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
 </section>
@@ -478,7 +494,7 @@ font family not found in Windows font database</code></pre>
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="Hands-on_Ex02_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<p><img src="Hands-on_Ex02_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
 </section>
@@ -507,7 +523,7 @@ font family not found in Windows font database</code></pre>
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="Hands-on_Ex02_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+<p><img src="Hands-on_Ex02_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
 
