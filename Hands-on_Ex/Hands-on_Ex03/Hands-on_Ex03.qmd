@@ -12,4 +12,358 @@ execute:
 freeze: true
 ---
 
+# 3 Programming Interactive Data Visualisation with R
 
+```{r}
+pacman::p_load(ggiraph, plotly,patchwork, DT, tidyverse) 
+```
+
+## Importing the data
+
+```{r}
+exam_data <- read_csv("chap03/data/Exam_data.csv")
+```
+
+```{r}
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(
+    aes(tooltip = ID),
+    stackgroups = TRUE, 
+    binwidth = 1, 
+    method = "histodot") +
+  scale_y_continuous(NULL, 
+                     breaks = NULL)
+girafe(
+  ggobj = p,
+  width_svg = 6,
+  height_svg = 6*0.618
+)
+```
+
+### Enhancing Dot Interactivity for Clearer Hover Feedback
+
+To make it easier for users to identify which dot they are hovering over, we enhance the dot's appearance by changing its size and color during hover.
+
+```{r}
+exam_data$tooltip <- c(paste0(     
+  "Name = ", exam_data$ID,         
+  "\n Class = ", exam_data$CLASS)) 
+theme_set(theme_minimal(base_size = 14, base_family = "Arial"))
+
+p <- ggplot(data = exam_data, aes(x = MATHS)) +
+  geom_dotplot_interactive(
+    aes(tooltip = tooltip, data_id = ID),
+    stackgroups = TRUE,
+    binwidth = 1,
+    method = "histodot",
+    fill = "#2c7fb8",        # Soft blue fill
+    color = "white",         # Dot border
+    alpha = 0.85
+  ) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(
+    title = "Distribution of Maths Scores",
+    subtitle = "Each dot represents a student. Hover to see details.",
+    caption = "Source: Exam_data.csv",
+    x = "Maths Score",
+    y = NULL
+  ) +
+  theme(
+    plot.title = element_text(size = 18, face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(size = 13, hjust = 0.5),
+    axis.text.x = element_text(size = 12),
+    panel.grid.major.y = element_blank()
+  )
+
+
+options(ggiraph.tooltip_extra_css = "pointer-events: none;")
+
+# Create the interactive widget
+girafe(
+  ggobj = p,
+  width_svg = 8,
+  height_svg = 8 * 0.618,
+  options = list(
+    opts_tooltip(css = "color: red; font-weight: bold; background-color: #f9f9f9;
+                         border: 1px solid #ccc; padding: 6px 10px;
+                         border-radius: 6px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1);"),
+    opts_hover(css = "fill:#f03b20;stroke:white;stroke-width:1.5px;")
+  )
+)
+```
+
+## 3.6.2 Displaying statistics on tooltip
+
+```{r}
+
+tooltip <- function(y, ymax, accuracy = .01) {
+  mean <- scales::number(y, accuracy = accuracy)
+  sem <- scales::number(ymax - y, accuracy = accuracy)
+  paste("Mean maths scores:", mean, "+/-", sem)
+}
+
+gg_point <- ggplot(data=exam_data, 
+                   aes(x = RACE),
+) +
+  stat_summary(aes(y = MATHS, 
+                   tooltip = after_stat(  
+                     tooltip(y, ymax))),  
+    fun.data = "mean_se", 
+    geom = GeomInteractiveCol,  
+    fill = "light blue"
+  ) +
+  stat_summary(aes(y = MATHS),
+    fun.data = mean_se,
+    geom = "errorbar", width = 0.2, size = 0.2
+  )
+
+girafe(ggobj = gg_point,
+       width_svg = 8,
+       height_svg = 8*0.618)
+```
+
+### How to improve 
+
+```{r}
+exam_data <- exam_data %>%
+  mutate(RACE = fct_reorder(RACE, MATHS, .fun = mean, .desc = FALSE))
+
+tooltip <- function(y, ymax, accuracy = .01) {
+  mean <- scales::number(y, accuracy = accuracy)
+  sem <- scales::number(ymax - y, accuracy = accuracy)
+  paste0("Mean Maths Score: ", mean, "\n± Standard Error: ", sem)
+}
+
+gg_point <- ggplot(data = exam_data, aes(x = RACE)) +
+  stat_summary(
+    aes(y = MATHS, tooltip = after_stat(tooltip(y, ymax))),
+    fun.data = "mean_se",
+    geom = GeomInteractiveCol,
+    width = 0.5,
+    fill = "lightblue"
+  ) +
+  stat_summary(
+    aes(y = MATHS),
+    fun.data = mean_se,
+    geom = "errorbar",
+    width = 0.2,
+    size = 0.2
+  ) +
+  scale_y_continuous(breaks = seq(0, 100, by = 10)) +
+  labs(
+    title = "Average Maths Scores by Race",
+    x = "Race",
+    y = "Maths Score"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.title.x = element_text(size = 14),
+    axis.title.y = element_text(size = 14)
+  )
+
+girafe(
+  ggobj = gg_point,
+  width_svg = 8,
+  height_svg = 8 * 0.618,
+  options = list(
+    opts_hover(css = "fill:orange;stroke:black;stroke-width:1.5px;"),
+    opts_tooltip(css = "background-color:white; color:black; border:1px solid black; padding:5px; border-radius:5px;")
+  )
+)
+
+```
+## 3.6.5 Combining tooltip and hover effect
+```{r}
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(              
+    aes(tooltip = CLASS, 
+        data_id = CLASS),              
+    stackgroups = TRUE,                  
+    binwidth = 1,                        
+    method = "histodot") +               
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+girafe(                                  
+  ggobj = p,                             
+  width_svg = 6,                         
+  height_svg = 6*0.618,
+  options = list(                        
+    opts_hover(css = "fill: #202020;"),  
+    opts_hover_inv(css = "opacity:0.2;") 
+  )                                        
+)                                        
+```
+
+### Improve to show additional stats of the class scores
+```{r}
+exam_data <- read_csv("chap03/data/Exam_data.csv")
+class_summary <- exam_data %>%
+  group_by(CLASS) %>%
+  summarise(
+    mean_score = round(mean(MATHS), 2),
+    min_score = min(MATHS, na.rm = TRUE),
+    max_score = max(MATHS, na.rm = TRUE),
+    count = n(),
+    .groups = "drop"
+)
+
+# Join the stats back to main data and add tooltip content
+exam_data <- exam_data %>%
+  left_join(class_summary, by = "CLASS") %>%
+  mutate(tooltip_text = paste0(
+    "Class: ", CLASS, "\n",
+    "Student Score: ", MATHS, "\n",
+    "Class Mean: ", mean_score, "\n",
+    "Min Score: ", min_score, "\n",
+    "Max Score: ", max_score, "\n",
+    "Count: ", count
+  ))
+
+# Dotplot with enhanced tooltip
+p <- ggplot(data = exam_data, aes(x = MATHS)) +
+  geom_dotplot_interactive(
+    aes(tooltip = tooltip_text, data_id = CLASS),
+    stackgroups = TRUE,
+    binwidth = 1,
+    method = "histodot",
+    fill = "#1f77b4",
+    color = "white",
+    alpha = 0.85
+  ) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(
+    title = "Distribution of Maths Scores",
+    x = "Maths Score"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 18),
+    axis.text.x = element_text(size = 12)
+  )
+
+# Interactive rendering
+girafe(
+  ggobj = p,
+  width_svg = 6,
+  height_svg = 6 * 0.618,
+  options = list(
+    opts_hover(css = "fill: #202020; stroke: white; stroke-width: 1.2px;"),
+    opts_hover_inv(css = "opacity: 0.15;"),
+    opts_tooltip(css = "background-color: white; color: black; border: 1px solid #ccc; padding: 5px; border-radius: 4px; font-size: 12px;")
+  )
+)
+```
+
+##3.6.7 Coordinated Multiple Views with ggiraph
+```{r}
+p1 <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(              
+    aes(data_id = ID),              
+    stackgroups = TRUE,                  
+    binwidth = 1,                        
+    method = "histodot") +  
+  coord_cartesian(xlim=c(0,100)) + 
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+
+p2 <- ggplot(data=exam_data, 
+       aes(x = ENGLISH)) +
+  geom_dotplot_interactive(              
+    aes(data_id = ID),              
+    stackgroups = TRUE,                  
+    binwidth = 1,                        
+    method = "histodot") + 
+  coord_cartesian(xlim=c(0,100)) + 
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+
+girafe(code = print(p1 + p2), 
+       width_svg = 6,
+       height_svg = 3,
+       options = list(
+         opts_hover(css = "fill: #202020;"),
+         opts_hover_inv(css = "opacity:0.2;")
+         )
+       ) 
+```
+### try out how to display all 3 subjects
+```{r, fig.width=12, fig.height=20}
+exam_data <- exam_data %>%
+  mutate(
+    total_score = MATHS + ENGLISH + SCIENCE,
+    tooltip_text = paste0(
+      "Maths: ", MATHS, "\n",
+      "English: ", ENGLISH, "\n",
+      "Science: ", SCIENCE, "\n",
+      "Total: ", total_score, " / 300"
+    )
+  )
+
+# Step 2: Maths Plot
+p1 <- ggplot(data = exam_data, aes(x = MATHS)) +
+  geom_dotplot_interactive(
+    aes(data_id = ID, tooltip = tooltip_text),
+    stackgroups = TRUE,
+    binwidth = 1,
+    method = "histodot",
+    fill = "#1f77b4",
+    color = "white",
+    alpha = 0.85
+  ) +
+  coord_cartesian(xlim = c(0, 100)) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(title = "Maths Score", x = "MATHS") +
+  theme_minimal()
+
+# Step 3: English Plot
+p2 <- ggplot(data = exam_data, aes(x = ENGLISH)) +
+  geom_dotplot_interactive(
+    aes(data_id = ID, tooltip = tooltip_text),
+    stackgroups = TRUE,
+    binwidth = 1,
+    method = "histodot",
+    fill = "#2ca02c",
+    color = "white",
+    alpha = 0.85
+  ) +
+  coord_cartesian(xlim = c(0, 100)) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(title = "English Score", x = "ENGLISH") +
+  theme_minimal()
+
+# Step 4: Science Plot
+p3 <- ggplot(data = exam_data, aes(x = SCIENCE)) +
+  geom_dotplot_interactive(
+    aes(data_id = ID, tooltip = tooltip_text),
+    stackgroups = TRUE,
+    binwidth = 1,
+    method = "histodot",
+    fill = "#ff7f0e",
+    color = "white",
+    alpha = 0.85
+  ) +
+  coord_cartesian(xlim = c(0, 100)) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(title = "Science Score", x = "SCIENCE") +
+  theme_minimal()
+
+# Step 5: Combine the 3 plots vertically
+combined_plot <- p1 / p2 / p3
+
+# Step 6: Render as interactive graphic
+girafe(
+  code = print(combined_plot),
+  width_svg = 9,
+  height_svg = 5,
+  options = list(
+    opts_hover(css = "fill: red; stroke: black; stroke-width: 1.5px;"),
+    opts_hover_inv(css = "opacity: 0.2;"),
+    opts_tooltip(css = "background-color: white; color: black; border: 1px solid #ccc; padding: 6px; border-radius: 5px; font-size: 12px;")
+  )
+)
+```
