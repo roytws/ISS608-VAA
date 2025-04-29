@@ -22,7 +22,7 @@ pacman::p_load(ggiraph, plotly,patchwork, DT, tidyverse)
 
 ```{r}
 exam_data <- read_csv("chap03/data/Exam_data.csv")
-```
+``` 
 
 ```{r}
 p <- ggplot(data=exam_data, 
