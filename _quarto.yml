@@ -5,7 +5,7 @@ website:
   title: "ISS608-VAA"
   navbar:
     left: 
-    - text: "Hands-on Excercise"
+    - text: "Hands-on Exercise"
       menu: 
         - text: "Hands-on Exercise 1"
           href: "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html"
@@ -13,7 +13,7 @@ website:
           href: "Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html"
         - text: "Hands-on Exercise 3"
           href: "Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html"    
-    - text: "In Class Excercise"
+    - text: "In Class Exercise"
       menu: 
         - text: "In-Class Exercise 2"
           href: "In-Class_Ex/In-Class_Ex02/In-Class_Ex02.html"
