@@ -414,3 +414,43 @@ plot_ly(
   )
 
 ```
+
+##3.8 Interactive Data Visualisation - crosstalk methods!
+
+```{r}
+DT::datatable(exam_data, class= "compact")
+
+```
+###Try to make the table fit
+
+```{r}
+d <- highlight_key(exam_data)
+
+# 1. Interactive ggplotly plot
+p <- ggplot(d, aes(ENGLISH, MATHS)) +
+  geom_point(size = 2, alpha = 0.7) +
+  coord_cartesian(xlim = c(0, 100), ylim = c(0, 100)) +
+  theme_minimal()
+
+gg <- highlight(ggplotly(p), "plotly_selected")
+
+# 2. Enhanced datatable
+data_table <- DT::datatable(
+  d,
+  options = list(
+    pageLength = 20,
+    scrollY = "600px",
+    autoWidth = TRUE,
+    dom = 'Bfrtip'
+  ),
+  class = "stripe hover compact",
+  rownames = FALSE
+)
+
+# 3. Arrange with wider proportions
+crosstalk::bscols(
+  widths = c(5, 7),  # Give plot more breathing room
+  gg,
+  data_table
+)
+```
