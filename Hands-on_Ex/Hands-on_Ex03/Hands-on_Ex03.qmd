@@ -367,3 +367,50 @@ girafe(
   )
 )
 ```
+
+##3.7 Interactive Data Visualisation - plotly methods!
+
+```{r}
+plot_ly(data = exam_data, 
+        x = ~ENGLISH, 
+        y = ~MATHS, 
+        color = ~RACE)
+```
+### try out using plot_ly
+```{r}
+exam_data <- exam_data %>%
+  mutate(
+    TOTAL = MATHS + ENGLISH + SCIENCE,
+    tooltip_text = paste0(
+      "Class: ", CLASS, "<br>",
+      "Maths: ", MATHS, "<br>",
+      "English: ", ENGLISH, "<br>",
+      "Science: ", SCIENCE, "<br>",
+      "Total: ", TOTAL, " / 300"
+    )
+  )
+
+plot_ly(
+  data = exam_data,
+  x = ~ENGLISH,
+  y = ~MATHS,
+  type = "scatter",
+  mode = "markers",
+  color = ~CLASS,
+  colors = "Set2",  # or try "Paired", "Dark2"
+  text = ~tooltip_text,
+  hoverinfo = "text",
+  marker = list(
+    size = 10,
+    opacity = 0.7,
+    line = list(width = 1, color = "#000000")
+  )
+) %>%
+  layout(
+    title = list(text = "English vs Maths by Class", x = 0.05),
+    xaxis = list(title = "English Score", range = c(0, 100)),
+    yaxis = list(title = "Maths Score", range = c(0, 100)),
+    legend = list(title = list(text = "<b>Class</b>"))
+  )
+
+```
