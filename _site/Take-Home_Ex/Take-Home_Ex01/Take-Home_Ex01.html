@@ -195,6 +195,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#data-cleaning-summary" id="toc-data-cleaning-summary" class="nav-link" data-scroll-target="#data-cleaning-summary">Data Cleaning Summary</a></li>
   </ul></li>
   <li><a href="#data-parameters-and-description" id="toc-data-parameters-and-description" class="nav-link" data-scroll-target="#data-parameters-and-description">Data Parameters and Description</a></li>
+  <li><a href="#eda-1-population-pyramid-age-sex-distribution" id="toc-eda-1-population-pyramid-age-sex-distribution" class="nav-link" data-scroll-target="#eda-1-population-pyramid-age-sex-distribution">EDA 1: Population Pyramid (Age-Sex Distribution)</a>
+  <ul class="collapse">
+  <li><a href="#eda-insights" id="toc-eda-insights" class="nav-link" data-scroll-target="#eda-insights">EDA Insights</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -288,7 +292,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="import-data" class="level2">
 <h2 class="anchored" data-anchor-id="import-data">Import Data</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>population_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"TH01/data/cleaned_population_2024.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pop_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"TH01/data/cleaned_population_2024.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="data-cleaning-summary" class="level3">
 <h3 class="anchored" data-anchor-id="data-cleaning-summary">Data Cleaning Summary</h3>
@@ -322,8 +326,8 @@ Any rows with missing (<code>NA</code>) values in <code>Age</code> or <code>Popu
 <h2 class="anchored" data-anchor-id="data-parameters-and-description">Data Parameters and Description</h2>
 <table class="table">
 <colgroup>
-<col style="width: 22%">
-<col style="width: 77%">
+<col style="width: 25%">
+<col style="width: 75%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -354,8 +358,41 @@ Any rows with missing (<code>NA</code>) values in <code>Age</code> or <code>Popu
 </tr>
 </tbody>
 </table>
+</section>
+<section id="eda-1-population-pyramid-age-sex-distribution" class="level1">
+<h1>EDA 1: Population Pyramid (Age-Sex Distribution)</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pyramid_data <span class="ot">&lt;-</span> pop_data <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Males"</span>, <span class="st">"Females"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Population =</span> <span class="fu">ifelse</span>(Sex <span class="sc">==</span> <span class="st">"Males"</span>, <span class="sc">-</span>Population, Population))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pyramid_data, <span class="fu">aes</span>(<span class="at">x =</span> Age, <span class="at">y =</span> Population, <span class="at">fill =</span> Sex)) <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> abs) <span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Population Pyramid of Singapore (2024)"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Age"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Population (count)"</span>) <span class="sc">+</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-Home_Ex01_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="eda-insights" class="level3">
+<h3 class="anchored" data-anchor-id="eda-insights">EDA Insights</h3>
+<ul>
+<li><p><strong>Consistent Gender Distribution at Younger Ages (0–30)</strong><br>
+Male and female populations are roughly balanced across childhood, teenage, and early working-age groups, indicating a stable birth sex ratio and consistent migration patterns among younger residents.</p></li>
+<li><p><strong>Mid-Age Concentration (Ages 35–54)</strong><br>
+The largest population cohorts are between ages <strong>35 and 54</strong>, suggesting a high concentration of residents in their peak working years. This aligns with the structure of a mature labour force.</p></li>
+<li><p><strong>Visible Gender Divergence After Age 70</strong><br>
+Starting around age <strong>70</strong>, the number of females surpasses the number of males significantly, particularly in the 80+ range. This reflects actual population counts where female longevity exceeds male longevity.</p></li>
+<li><p><strong>Shrinking Base (Ages 0–14)</strong><br>
+The bottom of the pyramid is narrow, with the population under age 15 notably lower than other groups. This suggests that recent birth cohorts are smaller</p></li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

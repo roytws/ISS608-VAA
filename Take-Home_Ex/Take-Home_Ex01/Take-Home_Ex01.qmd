@@ -3,7 +3,10 @@ title: "Take-Home_Ex01"
 author: "Teo Wee Siang Roy"
 date: "May 01, 2025"
 date-modified: "last-modified"
-format: html
+format:
+  html:
+    toc: true
+    theme: default
 editor: visual
 execute: 
   eval: true
@@ -61,7 +64,7 @@ gganimate, gifski, gapminder)
 ## Import Data
 
 ```{r}
-population_data <- read_csv("TH01/data/cleaned_population_2024.csv")
+pop_data <- read_csv("TH01/data/cleaned_population_2024.csv")
 ```
 
 ### Data Cleaning Summary
@@ -95,9 +98,41 @@ To prepare the dataset for visualisation, the following data cleaning steps were
 ## Data Parameters and Description
 
 | **Field Name** | **Field Description**                                                        |
-|----------------|--------------------------------------------------------|
+|------------------|------------------------------------------------------|
 | Planning Area  | Administrative regions in Singapore (e.g. Bedok, Ang Mo Kio, Tampines, etc.) |
 | Subzone        | Subdivisions within each Planning Area                                       |
 | Age            | Age of residents in single years (0 to 100+)                                 |
 | Sex            | Gender category: Male, Female, or Total                                      |
 | Population     | Number of residents for the given demographic group in June 2024             |
+
+# EDA 1: Population Pyramid (Age-Sex Distribution)
+
+
+```{r}
+pyramid_data <- pop_data %>%
+  filter(Sex %in% c("Males", "Females")) %>%
+  mutate(Population = ifelse(Sex == "Males", -Population, Population))
+
+ggplot(pyramid_data, aes(x = Age, y = Population, fill = Sex)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  scale_y_continuous(labels = abs) +
+  labs(title = "Population Pyramid of Singapore (2024)",
+       x = "Age",
+       y = "Population (count)") +
+  theme_minimal()
+
+```
+### EDA Insights
+
+- **Consistent Gender Distribution at Younger Ages (0–30)**  
+  Male and female populations are roughly balanced across childhood, teenage, and early working-age groups, indicating a stable birth sex ratio and consistent migration patterns among younger residents.
+
+- **Mid-Age Concentration (Ages 35–54)**  
+  The largest population cohorts are between ages **35 and 54**, suggesting a high concentration of residents in their peak working years. This aligns with the structure of a mature labour force.
+
+- **Visible Gender Divergence After Age 70**  
+  Starting around age **70**, the number of females surpasses the number of males significantly, particularly in the 80+ range. This reflects actual population counts where female longevity exceeds male longevity.
+
+- **Shrinking Base (Ages 0–14)**  
+  The bottom of the pyramid is narrow, with the population under age 15 notably lower than other groups. This suggests that recent birth cohorts are smaller

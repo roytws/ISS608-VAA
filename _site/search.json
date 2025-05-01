@@ -270,7 +270,7 @@
     "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#import-data",
     "title": "Take-Home_Ex01",
     "section": "Import Data",
-    "text": "Import Data\n\npopulation_data &lt;- read_csv(\"TH01/data/cleaned_population_2024.csv\")\n\n\nData Cleaning Summary\nTo prepare the dataset for visualisation, the following data cleaning steps were applied:\n\nSkipped Metadata Rows\nThe original Excel file contained header and metadata rows. We used skiprows = 2 to access only the actual data records.\nDropped Incomplete Rows\nRemoved rows where any key fields were missing:\n\nSubzone\nAge\nSex\nPopulation (2024)\nThis ensures only valid, complete records are included in the analysis.\n\nRenamed Columns for Clarity\nReplaced generic or auto-generated column names (e.g., Unnamed: x, 2024) with:\n\nPlanning Area, Subzone, Age, Sex, Population\n\nConverted to Numeric Types\nConverted the Age and Population columns to numeric using coercion.\nNon-numeric values were turned into NA and filtered out.\nRemoved Rows with Missing Age or Population\nAny rows with missing (NA) values in Age or Population were dropped after conversion."
+    "text": "Import Data\n\npop_data &lt;- read_csv(\"TH01/data/cleaned_population_2024.csv\")\n\n\nData Cleaning Summary\nTo prepare the dataset for visualisation, the following data cleaning steps were applied:\n\nSkipped Metadata Rows\nThe original Excel file contained header and metadata rows. We used skiprows = 2 to access only the actual data records.\nDropped Incomplete Rows\nRemoved rows where any key fields were missing:\n\nSubzone\nAge\nSex\nPopulation (2024)\nThis ensures only valid, complete records are included in the analysis.\n\nRenamed Columns for Clarity\nReplaced generic or auto-generated column names (e.g., Unnamed: x, 2024) with:\n\nPlanning Area, Subzone, Age, Sex, Population\n\nConverted to Numeric Types\nConverted the Age and Population columns to numeric using coercion.\nNon-numeric values were turned into NA and filtered out.\nRemoved Rows with Missing Age or Population\nAny rows with missing (NA) values in Age or Population were dropped after conversion."
   },
   {
     "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-parameters-and-description",
@@ -278,5 +278,19 @@
     "title": "Take-Home_Ex01",
     "section": "Data Parameters and Description",
     "text": "Data Parameters and Description\n\n\n\n\n\n\n\nField Name\nField Description\n\n\n\n\nPlanning Area\nAdministrative regions in Singapore (e.g. Bedok, Ang Mo Kio, Tampines, etc.)\n\n\nSubzone\nSubdivisions within each Planning Area\n\n\nAge\nAge of residents in single years (0 to 100+)\n\n\nSex\nGender category: Male, Female, or Total\n\n\nPopulation\nNumber of residents for the given demographic group in June 2024"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#code",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#code",
+    "title": "Take-Home_Ex01",
+    "section": "code",
+    "text": "code"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#plot",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#plot",
+    "title": "Take-Home_Ex01",
+    "section": "Plot",
+    "text": "Plot\n\nplot"
   }
 ]
