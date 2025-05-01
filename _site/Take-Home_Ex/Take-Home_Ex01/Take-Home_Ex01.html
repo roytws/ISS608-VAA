@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -149,7 +183,18 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#getting-started" id="toc-getting-started" class="nav-link active" data-scroll-target="#getting-started">Getting Started</a></li>
+  <li><a href="#editorial-brief-visualising-singapores-resident-population-2024" id="toc-editorial-brief-visualising-singapores-resident-population-2024" class="nav-link active" data-scroll-target="#editorial-brief-visualising-singapores-resident-population-2024">Editorial Brief – Visualising Singapore’s Resident Population (2024)</a>
+  <ul class="collapse">
+  <li><a href="#data-source" id="toc-data-source" class="nav-link" data-scroll-target="#data-source">Data Source</a></li>
+  <li><a href="#visualisation-objectives" id="toc-visualisation-objectives" class="nav-link" data-scroll-target="#visualisation-objectives">Visualisation Objectives</a></li>
+  <li><a href="#data-preparation-summary" id="toc-data-preparation-summary" class="nav-link" data-scroll-target="#data-preparation-summary">Data Preparation Summary</a></li>
+  </ul></li>
+  <li><a href="#load-packages" id="toc-load-packages" class="nav-link" data-scroll-target="#load-packages">Load packages</a></li>
+  <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data">Import Data</a>
+  <ul class="collapse">
+  <li><a href="#data-cleaning-summary" id="toc-data-cleaning-summary" class="nav-link" data-scroll-target="#data-cleaning-summary">Data Cleaning Summary</a></li>
+  </ul></li>
+  <li><a href="#data-parameters-and-description" id="toc-data-parameters-and-description" class="nav-link" data-scroll-target="#data-parameters-and-description">Data Parameters and Description</a></li>
   </ul>
 </nav>
     </div>
@@ -182,7 +227,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">May 1, 2025</p>
+      <p class="date-modified">May 2, 2025</p>
     </div>
   </div>
     
@@ -191,8 +236,124 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="getting-started" class="level1">
-<h1>Getting Started</h1>
+<section id="editorial-brief-visualising-singapores-resident-population-2024" class="level2">
+<h2 class="anchored" data-anchor-id="editorial-brief-visualising-singapores-resident-population-2024">Editorial Brief – Visualising Singapore’s Resident Population (2024)</h2>
+<p>As the graphical editor of a media company, I have been tasked to design up to <strong>three impactful data visualisations</strong> to support an article on Singapore’s resident population as of <strong>June 2024</strong>.</p>
+<p>The aim is to help readers quickly understand demographic trends using clear and accessible visuals based on official statistics.</p>
+<section id="data-source" class="level3">
+<h3 class="anchored" data-anchor-id="data-source">Data Source</h3>
+<p><a href="https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data">Department of Statistics Singapore (DOS)</a>: Planning Area and Subzone, Single Year of Age (0–100+), Sex (Male, Female, Total), Resident Population counts (as of June 2024)</p>
+</section>
+<section id="visualisation-objectives" class="level3">
+<h3 class="anchored" data-anchor-id="visualisation-objectives">Visualisation Objectives</h3>
+<ul>
+<li><strong>Relevance</strong>: Support editorial narratives (e.g.&nbsp;ageing population, regional differences)</li>
+<li><strong>Clarity</strong>: Easy for general readers to understand</li>
+<li><strong>Compactness</strong>: Limited to a maximum of three charts</li>
+</ul>
+</section>
+<section id="data-preparation-summary" class="level3">
+<h3 class="anchored" data-anchor-id="data-preparation-summary">Data Preparation Summary</h3>
+<ul>
+<li>Cleaned and filtered for relevant fields (Age, Sex, Planning Area)</li>
+<li>Converted columns to numeric where needed (e.g.&nbsp;Age, Population)</li>
+<li>Aggregated by region and demographic groups for visual storytelling</li>
+</ul>
+</section>
+</section>
+<section id="load-packages" class="level2">
+<h2 class="anchored" data-anchor-id="load-packages">Load packages</h2>
+<p>We begin by loading all required R packages using the <code>pacman::p_load()</code> function. These packages support data wrangling, visualisation, animation, and layout composition for this take-home exercise.</p>
+<ul>
+<li><strong>tidyverse</strong>: Core set of packages for data manipulation, transformation, and visualisation using <code>ggplot2</code>.</li>
+<li><strong>readxl</strong>: To import Excel files (<code>.xlsx</code>), such as the population dataset used in this exercise.</li>
+<li><strong>haven</strong>: Enables importing datasets from software like SPSS, SAS, and Stata.</li>
+<li><strong>ggrepel</strong>: Prevents overlapping text labels in <code>ggplot2</code> plots, improving readability.</li>
+<li><strong>ggthemes</strong>: Provides additional <code>ggplot2</code> themes for publication-quality charts.</li>
+<li><strong>patchwork</strong>: Combines multiple <code>ggplot2</code> plots into a single composite layout.</li>
+<li><strong>ggridges</strong>: Creates ridgeline plots to visualise distributions across categories.</li>
+<li><strong>ggdist</strong>: Supports visualisations of distributions and uncertainty (e.g.&nbsp;dot + interval plots).</li>
+<li><strong>scales</strong>: Useful for formatting axis labels (e.g.&nbsp;commas, percentages, date breaks).</li>
+<li><strong>plotly</strong>: Adds interactivity to static plots made with <code>ggplot2</code>, enabling zoom, hover, etc.</li>
+<li><strong>gganimate</strong>: Enables animation of <code>ggplot2</code> plots across time or other variables.</li>
+<li><strong>gifski</strong>: Required by <code>gganimate</code> to render animations into GIF format.</li>
+<li><strong>gapminder</strong>: A sample dataset often used for animated population plots and trend visualisation.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, readxl, haven, ggrepel, </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>ggthemes, patchwork, ggridges, ggdist, scales, plotly, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>gganimate, gifski, gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="import-data" class="level2">
+<h2 class="anchored" data-anchor-id="import-data">Import Data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>population_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"TH01/data/cleaned_population_2024.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="data-cleaning-summary" class="level3">
+<h3 class="anchored" data-anchor-id="data-cleaning-summary">Data Cleaning Summary</h3>
+<p>To prepare the dataset for visualisation, the following data cleaning steps were applied:</p>
+<ul>
+<li><p><strong>Skipped Metadata Rows</strong><br>
+The original Excel file contained header and metadata rows. We used <code>skiprows = 2</code> to access only the actual data records.</p></li>
+<li><p><strong>Dropped Incomplete Rows</strong><br>
+Removed rows where any key fields were missing:</p>
+<ul>
+<li><code>Subzone</code></li>
+<li><code>Age</code></li>
+<li><code>Sex</code></li>
+<li><code>Population (2024)</code><br>
+This ensures only valid, complete records are included in the analysis.</li>
+</ul></li>
+<li><p><strong>Renamed Columns for Clarity</strong><br>
+Replaced generic or auto-generated column names (e.g., <code>Unnamed: x</code>, <code>2024</code>) with:</p>
+<ul>
+<li><code>Planning Area</code>, <code>Subzone</code>, <code>Age</code>, <code>Sex</code>, <code>Population</code></li>
+</ul></li>
+<li><p><strong>Converted to Numeric Types</strong><br>
+Converted the <code>Age</code> and <code>Population</code> columns to numeric using coercion.<br>
+Non-numeric values were turned into <code>NA</code> and filtered out.</p></li>
+<li><p><strong>Removed Rows with Missing Age or Population</strong><br>
+Any rows with missing (<code>NA</code>) values in <code>Age</code> or <code>Population</code> were dropped after conversion.</p></li>
+</ul>
+</section>
+</section>
+<section id="data-parameters-and-description" class="level2">
+<h2 class="anchored" data-anchor-id="data-parameters-and-description">Data Parameters and Description</h2>
+<table class="table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 77%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Field Name</strong></th>
+<th><strong>Field Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Planning Area</td>
+<td>Administrative regions in Singapore (e.g.&nbsp;Bedok, Ang Mo Kio, Tampines, etc.)</td>
+</tr>
+<tr class="even">
+<td>Subzone</td>
+<td>Subdivisions within each Planning Area</td>
+</tr>
+<tr class="odd">
+<td>Age</td>
+<td>Age of residents in single years (0 to 100+)</td>
+</tr>
+<tr class="even">
+<td>Sex</td>
+<td>Gender category: Male, Female, or Total</td>
+</tr>
+<tr class="odd">
+<td>Population</td>
+<td>Number of residents for the given demographic group in June 2024</td>
+</tr>
+</tbody>
+</table>
 
 
 </section>

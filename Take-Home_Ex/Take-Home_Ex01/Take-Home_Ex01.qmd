@@ -12,4 +12,92 @@ execute:
 freeze: true
 ---
 
-# Getting Started
+## Editorial Brief -- Visualising Singapore's Resident Population (2024)
+
+As the graphical editor of a media company, I have been tasked to design up to **three impactful data visualisations** to support an article on Singapore's resident population as of **June 2024**.
+
+The aim is to help readers quickly understand demographic trends using clear and accessible visuals based on official statistics.
+
+### Data Source
+
+[Department of Statistics Singapore (DOS)](https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data): Planning Area and Subzone, Single Year of Age (0--100+), Sex (Male, Female, Total), Resident Population counts (as of June 2024)
+
+### Visualisation Objectives
+
+-   **Relevance**: Support editorial narratives (e.g. ageing population, regional differences)
+-   **Clarity**: Easy for general readers to understand
+-   **Compactness**: Limited to a maximum of three charts
+
+### Data Preparation Summary
+
+-   Cleaned and filtered for relevant fields (Age, Sex, Planning Area)
+-   Converted columns to numeric where needed (e.g. Age, Population)
+-   Aggregated by region and demographic groups for visual storytelling
+
+## Load packages
+
+We begin by loading all required R packages using the `pacman::p_load()` function. These packages support data wrangling, visualisation, animation, and layout composition for this take-home exercise.
+
+-   **tidyverse**: Core set of packages for data manipulation, transformation, and visualisation using `ggplot2`.
+-   **readxl**: To import Excel files (`.xlsx`), such as the population dataset used in this exercise.
+-   **haven**: Enables importing datasets from software like SPSS, SAS, and Stata.
+-   **ggrepel**: Prevents overlapping text labels in `ggplot2` plots, improving readability.
+-   **ggthemes**: Provides additional `ggplot2` themes for publication-quality charts.
+-   **patchwork**: Combines multiple `ggplot2` plots into a single composite layout.
+-   **ggridges**: Creates ridgeline plots to visualise distributions across categories.
+-   **ggdist**: Supports visualisations of distributions and uncertainty (e.g. dot + interval plots).
+-   **scales**: Useful for formatting axis labels (e.g. commas, percentages, date breaks).
+-   **plotly**: Adds interactivity to static plots made with `ggplot2`, enabling zoom, hover, etc.
+-   **gganimate**: Enables animation of `ggplot2` plots across time or other variables.
+-   **gifski**: Required by `gganimate` to render animations into GIF format.
+-   **gapminder**: A sample dataset often used for animated population plots and trend visualisation.
+
+```{r}
+pacman::p_load(tidyverse, readxl, haven, ggrepel, 
+ggthemes, patchwork, ggridges, ggdist, scales, plotly, 
+gganimate, gifski, gapminder)
+```
+
+## Import Data
+
+```{r}
+population_data <- read_csv("TH01/data/cleaned_population_2024.csv")
+```
+
+### Data Cleaning Summary
+
+To prepare the dataset for visualisation, the following data cleaning steps were applied:
+
+-   **Skipped Metadata Rows**\
+    The original Excel file contained header and metadata rows. We used `skiprows = 2` to access only the actual data records.
+
+-   **Dropped Incomplete Rows**\
+    Removed rows where any key fields were missing:
+
+    -   `Subzone`
+    -   `Age`
+    -   `Sex`
+    -   `Population (2024)`\
+        This ensures only valid, complete records are included in the analysis.
+
+-   **Renamed Columns for Clarity**\
+    Replaced generic or auto-generated column names (e.g., `Unnamed: x`, `2024`) with:
+
+    -   `Planning Area`, `Subzone`, `Age`, `Sex`, `Population`
+
+-   **Converted to Numeric Types**\
+    Converted the `Age` and `Population` columns to numeric using coercion.\
+    Non-numeric values were turned into `NA` and filtered out.
+
+-   **Removed Rows with Missing Age or Population**\
+    Any rows with missing (`NA`) values in `Age` or `Population` were dropped after conversion.
+
+## Data Parameters and Description
+
+| **Field Name** | **Field Description**                                                        |
+|----------------|--------------------------------------------------------|
+| Planning Area  | Administrative regions in Singapore (e.g. Bedok, Ang Mo Kio, Tampines, etc.) |
+| Subzone        | Subdivisions within each Planning Area                                       |
+| Age            | Age of residents in single years (0 to 100+)                                 |
+| Sex            | Gender category: Male, Female, or Total                                      |
+| Population     | Number of residents for the given demographic group in June 2024             |

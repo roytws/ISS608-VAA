@@ -249,6 +249,34 @@
     "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html",
     "title": "Take-Home_Ex01",
     "section": "",
-    "text": "Getting Started"
+    "text": "As the graphical editor of a media company, I have been tasked to design up to three impactful data visualisations to support an article on Singapore’s resident population as of June 2024.\nThe aim is to help readers quickly understand demographic trends using clear and accessible visuals based on official statistics.\n\n\nDepartment of Statistics Singapore (DOS): Planning Area and Subzone, Single Year of Age (0–100+), Sex (Male, Female, Total), Resident Population counts (as of June 2024)\n\n\n\n\nRelevance: Support editorial narratives (e.g. ageing population, regional differences)\nClarity: Easy for general readers to understand\nCompactness: Limited to a maximum of three charts\n\n\n\n\n\nCleaned and filtered for relevant fields (Age, Sex, Planning Area)\nConverted columns to numeric where needed (e.g. Age, Population)\nAggregated by region and demographic groups for visual storytelling"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#editorial-brief-visualising-singapores-resident-population-2024",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#editorial-brief-visualising-singapores-resident-population-2024",
+    "title": "Take-Home_Ex01",
+    "section": "",
+    "text": "As the graphical editor of a media company, I have been tasked to design up to three impactful data visualisations to support an article on Singapore’s resident population as of June 2024.\nThe aim is to help readers quickly understand demographic trends using clear and accessible visuals based on official statistics.\n\n\nDepartment of Statistics Singapore (DOS): Planning Area and Subzone, Single Year of Age (0–100+), Sex (Male, Female, Total), Resident Population counts (as of June 2024)\n\n\n\n\nRelevance: Support editorial narratives (e.g. ageing population, regional differences)\nClarity: Easy for general readers to understand\nCompactness: Limited to a maximum of three charts\n\n\n\n\n\nCleaned and filtered for relevant fields (Age, Sex, Planning Area)\nConverted columns to numeric where needed (e.g. Age, Population)\nAggregated by region and demographic groups for visual storytelling"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#load-packages",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#load-packages",
+    "title": "Take-Home_Ex01",
+    "section": "Load packages",
+    "text": "Load packages\nWe begin by loading all required R packages using the pacman::p_load() function. These packages support data wrangling, visualisation, animation, and layout composition for this take-home exercise.\n\ntidyverse: Core set of packages for data manipulation, transformation, and visualisation using ggplot2.\nreadxl: To import Excel files (.xlsx), such as the population dataset used in this exercise.\nhaven: Enables importing datasets from software like SPSS, SAS, and Stata.\nggrepel: Prevents overlapping text labels in ggplot2 plots, improving readability.\nggthemes: Provides additional ggplot2 themes for publication-quality charts.\npatchwork: Combines multiple ggplot2 plots into a single composite layout.\nggridges: Creates ridgeline plots to visualise distributions across categories.\nggdist: Supports visualisations of distributions and uncertainty (e.g. dot + interval plots).\nscales: Useful for formatting axis labels (e.g. commas, percentages, date breaks).\nplotly: Adds interactivity to static plots made with ggplot2, enabling zoom, hover, etc.\ngganimate: Enables animation of ggplot2 plots across time or other variables.\ngifski: Required by gganimate to render animations into GIF format.\ngapminder: A sample dataset often used for animated population plots and trend visualisation.\n\n\npacman::p_load(tidyverse, readxl, haven, ggrepel, \nggthemes, patchwork, ggridges, ggdist, scales, plotly, \ngganimate, gifski, gapminder)"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#import-data",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#import-data",
+    "title": "Take-Home_Ex01",
+    "section": "Import Data",
+    "text": "Import Data\n\npopulation_data &lt;- read_csv(\"TH01/data/cleaned_population_2024.csv\")\n\n\nData Cleaning Summary\nTo prepare the dataset for visualisation, the following data cleaning steps were applied:\n\nSkipped Metadata Rows\nThe original Excel file contained header and metadata rows. We used skiprows = 2 to access only the actual data records.\nDropped Incomplete Rows\nRemoved rows where any key fields were missing:\n\nSubzone\nAge\nSex\nPopulation (2024)\nThis ensures only valid, complete records are included in the analysis.\n\nRenamed Columns for Clarity\nReplaced generic or auto-generated column names (e.g., Unnamed: x, 2024) with:\n\nPlanning Area, Subzone, Age, Sex, Population\n\nConverted to Numeric Types\nConverted the Age and Population columns to numeric using coercion.\nNon-numeric values were turned into NA and filtered out.\nRemoved Rows with Missing Age or Population\nAny rows with missing (NA) values in Age or Population were dropped after conversion."
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-parameters-and-description",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-parameters-and-description",
+    "title": "Take-Home_Ex01",
+    "section": "Data Parameters and Description",
+    "text": "Data Parameters and Description\n\n\n\n\n\n\n\nField Name\nField Description\n\n\n\n\nPlanning Area\nAdministrative regions in Singapore (e.g. Bedok, Ang Mo Kio, Tampines, etc.)\n\n\nSubzone\nSubdivisions within each Planning Area\n\n\nAge\nAge of residents in single years (0 to 100+)\n\n\nSex\nGender category: Male, Female, or Total\n\n\nPopulation\nNumber of residents for the given demographic group in June 2024"
   }
 ]
