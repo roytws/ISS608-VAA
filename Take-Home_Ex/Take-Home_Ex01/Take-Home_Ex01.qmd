@@ -98,7 +98,7 @@ To prepare the dataset for visualisation, the following data cleaning steps were
 ## Data Parameters and Description
 
 | **Field Name** | **Field Description**                                                        |
-|-------------------|-----------------------------------------------------|
+|--------------------|----------------------------------------------------|
 | Planning Area  | Administrative regions in Singapore (e.g. Bedok, Ang Mo Kio, Tampines, etc.) |
 | Subzone        | Subdivisions within each Planning Area                                       |
 | Age            | Age of residents in single years (0 to 100+)                                 |
@@ -107,32 +107,116 @@ To prepare the dataset for visualisation, the following data cleaning steps were
 
 # EDA 1: Population Pyramid (Age-Sex Distribution)
 
-```{r}
+```{r,fig.width= 8,fig.height= 9}
 pyramid_data <- pop_data %>%
   filter(Sex %in% c("Males", "Females")) %>%
   mutate(Population = ifelse(Sex == "Males", -Population, Population))
 
 ggplot(pyramid_data, aes(x = Age, y = Population, fill = Sex)) +
-  geom_bar(stat = "identity") +
+  geom_bar(stat = "identity", width = 0.9) +
   coord_flip() +
-  scale_y_continuous(labels = abs) +
-  labs(title = "Population Pyramid of Singapore (2024)",
-       x = "Age",
-       y = "Population (count)") +
-  theme_minimal()
-
+  scale_y_continuous(labels = function(x) comma(abs(x))) +
+  scale_fill_manual(
+    values = c("Males" = "#00bfc4", "Females" = "#f8766d"),
+    breaks = c("Males", "Females"),  # ensures correct order in legend
+    labels = c("Males", "Females (Right)")
+  ) +
+  labs(
+    title = "Population Pyramid of Singapore (2024)",
+    subtitle = "Male population is shown on the left, female on the right",
+    x = "Age",
+    y = "Population (count)",
+    fill = "Gender Distribution"
+  ) +
+  theme_minimal(base_family = "Helvetica") +
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 11),
+    legend.position = "bottom",
+    legend.title = element_text(size = 10, face = "bold"),
+    legend.text = element_text(size = 9),
+    plot.margin = margin(10, 10, 10, 10)
+  )
 ```
 
-### EDA Insights
+## EDA 1 Insights
 
--   **Consistent Gender Distribution at Younger Ages (0--30)**\
-    Male and female populations are roughly balanced across childhood, teenage, and early working-age groups, indicating a stable birth sex ratio and consistent migration patterns among younger residents.
+- **Balanced Gender Counts in Ages 0–30**  
+  The population pyramid shows that the male and female populations are nearly equal in every single year of age from 0 to 30, indicating no significant gender disparity in the younger cohorts.
 
--   **Mid-Age Concentration (Ages 35--54)**\
-    The largest population cohorts are between ages **35 and 54**, suggesting a high concentration of residents in their peak working years. This aligns with the structure of a mature labour force.
+- **Highest Population Concentration in Ages 35–54**  
+  The widest horizontal bars are found in the 35–54 age range for both sexes, making this the most populous segment of the resident population.
 
--   **Visible Gender Divergence After Age 70**\
-    Starting around age **70**, the number of females surpasses the number of males significantly, particularly in the 80+ range. This reflects actual population counts where female longevity exceeds male longevity.
+- **Greater Female Population in Ages 70 and Above**  
+  Beginning at around age 70, the length of the bars representing females becomes consistently longer than those of males. The difference becomes especially large in the 80–100+ range, where females clearly outnumber males.
 
--   **Shrinking Base (Ages 0--14)**\
-    The bottom of the pyramid is narrow, with the population under age 15 notably lower than other groups. This suggests that recent birth cohorts are smaller.
+- **Smaller Cohorts Below Age 15**  
+  The pyramid base (ages 0–14) is narrower compared to middle age groups, reflecting that younger age cohorts are smaller in size relative to those born in earlier decades.
+
+# EDA 2: Top 10 Planning Areas by Total Population and Elderly Population (Age 65+)
+
+```{r,fig.width= 9,fig.height= 12}
+top_total <- pop_data %>%
+  filter(Sex == "Total") %>%
+  group_by(`Planning Area`) %>%
+  summarise(TotalPopulation = sum(Population, na.rm = TRUE)) %>%
+  arrange(desc(TotalPopulation)) %>%
+  slice_max(TotalPopulation, n = 10)
+
+plot_total <- ggplot(top_total, aes(x = reorder(`Planning Area`, TotalPopulation), y = TotalPopulation)) +
+  geom_col(fill = "#2b8cbe") +
+  geom_text(aes(label = scales::comma(TotalPopulation)), hjust = -0.1, size = 3) +
+  coord_flip() +
+  scale_y_continuous(labels = label_comma(), expand = expansion(mult = c(0, 0.1))) +
+  labs(title = "Top 10 Planning Areas by Total Population") +
+  theme_minimal(base_family = "Helvetica") +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    axis.title = element_blank(),
+    panel.grid.major.y = element_blank()
+  )
+
+# Top 10 by Elderly (Age 65+)
+top_elderly <- pop_data %>%
+  filter(Sex == "Total", Age >= 65) %>%
+  group_by(`Planning Area`) %>%
+  summarise(ElderlyPopulation = sum(Population, na.rm = TRUE)) %>%
+  arrange(desc(ElderlyPopulation)) %>%
+  slice_max(ElderlyPopulation, n = 10)
+
+plot_elderly <- ggplot(top_elderly, aes(x = reorder(`Planning Area`, ElderlyPopulation), y = ElderlyPopulation)) +
+  geom_col(fill = "#e34a33") +
+  geom_text(aes(label = scales::comma(ElderlyPopulation)), hjust = -0.1, size = 3) +
+  coord_flip() +
+  scale_y_continuous(labels = label_comma(), expand = expansion(mult = c(0, 0.1))) +
+  labs(title = "Top 10 Planning Areas by Elderly Population (65+)") +
+  theme_minimal(base_family = "Helvetica") +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    axis.title = element_blank(),
+    panel.grid.major.y = element_blank()
+  )
+
+# Combine using patchwork
+plot_total / plot_elderly + 
+  plot_annotation(title = "Comparison of Population Distribution by Planning Area (2024)",
+                  theme = theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5)))
+```
+## EDA 2 Insights
+
+- **Bedok, Tampines, and Jurong West Appear in Both Rankings**  
+  These three planning areas rank in the **top 10 for both total population and elderly population (65+)**, indicating they are high-density towns with large absolute numbers of seniors.
+
+- **Central Area Ranks High in Total Population but Not in Elderly Count**  
+  While the Central Area appears in the total population chart, it is **absent from the elderly chart**, suggesting a **lower proportion of elderly residents** — possibly due to its mixed commercial-residential nature.
+
+- **Ang Mo Kio and Bukit Merah Appear Only in the Elderly Ranking**  
+  These areas do **not rank among the top 10 in total population** but have **high elderly counts**, implying a relatively **older resident base** compared to newer towns.
+
+- **Woodlands and Sengkang Rank High in Total but Not Elderly Population**  
+  These towns appear in the **total population top 10** but are **absent in the elderly top 10**, indicating a **younger demographic composition**.
+
+- **Elderly Population Distribution is More Uniform**  
+  Compared to the total population, the **elderly population values are closer in range**, suggesting a **more even spread of seniors** across the top-ranked areas.

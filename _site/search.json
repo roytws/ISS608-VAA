@@ -292,5 +292,19 @@
     "title": "Take-Home_Ex01",
     "section": "Plot",
     "text": "Plot\n\nplot"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-1-insights",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-1-insights",
+    "title": "Take-Home_Ex01",
+    "section": "EDA 1 Insights",
+    "text": "EDA 1 Insights\n\nBalanced Gender Counts in Ages 0–30\nThe population pyramid shows that the male and female populations are nearly equal in every single year of age from 0 to 30, indicating no significant gender disparity in the younger cohorts.\nHighest Population Concentration in Ages 35–54\nThe widest horizontal bars are found in the 35–54 age range for both sexes, making this the most populous segment of the resident population.\nGreater Female Population in Ages 70 and Above\nBeginning at around age 70, the length of the bars representing females becomes consistently longer than those of males. The difference becomes especially large in the 80–100+ range, where females clearly outnumber males.\nSmaller Cohorts Below Age 15\nThe pyramid base (ages 0–14) is narrower compared to middle age groups, reflecting that younger age cohorts are smaller in size relative to those born in earlier decades."
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-2-insights",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-2-insights",
+    "title": "Take-Home_Ex01",
+    "section": "EDA 2 Insights",
+    "text": "EDA 2 Insights\n\nBedok, Tampines, and Jurong West Appear in Both Rankings\nThese three planning areas rank in the top 10 for both total population and elderly population (65+), indicating they are high-density towns with large absolute numbers of seniors.\nCentral Area Ranks High in Total Population but Not in Elderly Count\nWhile the Central Area appears in the total population chart, it is absent from the elderly chart, suggesting a lower proportion of elderly residents — possibly due to its mixed commercial-residential nature.\nAng Mo Kio and Bukit Merah Appear Only in the Elderly Ranking\nThese areas do not rank among the top 10 in total population but have high elderly counts, implying a relatively older resident base compared to newer towns.\nWoodlands and Sengkang Rank High in Total but Not Elderly Population\nThese towns appear in the total population top 10 but are absent in the elderly top 10, indicating a younger demographic composition.\nElderly Population Distribution is More Uniform\nCompared to the total population, the elderly population values are closer in range, suggesting a more even spread of seniors across the top-ranked areas."
   }
 ]
