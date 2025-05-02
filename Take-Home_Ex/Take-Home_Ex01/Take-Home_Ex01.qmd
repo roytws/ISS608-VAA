@@ -292,7 +292,7 @@ ggplot(pop_percent, aes(x = `Planning Area`, y = Share, fill = Age_Group)) +
   )
 ```
 
-## EDA 3 Insights: Age Group Composition by Planning Area (2024)
+## EDA 3 Insights
 
 
 - **Higher Elderly Proportions**  
