@@ -203,6 +203,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#eda-2-insights" id="toc-eda-2-insights" class="nav-link" data-scroll-target="#eda-2-insights">EDA 2 Insights</a></li>
   </ul></li>
+  <li><a href="#eda-3-top-10-planning-areas-by-total-population-and-elderly-population-age-65" id="toc-eda-3-top-10-planning-areas-by-total-population-and-elderly-population-age-65" class="nav-link" data-scroll-target="#eda-3-top-10-planning-areas-by-total-population-and-elderly-population-age-65">EDA 3: Top 10 Planning Areas by Total Population and Elderly Population (Age 65+)</a>
+  <ul class="collapse">
+  <li><a href="#eda-3-insights-age-group-composition-by-planning-area-2024" id="toc-eda-3-insights-age-group-composition-by-planning-area-2024" class="nav-link" data-scroll-target="#eda-3-insights-age-group-composition-by-planning-area-2024">EDA 3 Insights: Age Group Composition by Planning Area (2024)</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -459,10 +463,9 @@ The pyramid base (ages 0–14) is narrower compared to middle age groups, reflec
 <span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>()</span>
 <span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine using patchwork</span></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>plot_total <span class="sc">/</span> plot_elderly <span class="sc">+</span> </span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">"Comparison of Population Distribution by Planning Area (2024)"</span>,</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>                  <span class="at">theme =</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>plot_total <span class="sc">/</span> plot_elderly <span class="sc">+</span> </span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">"Comparison of Population Distribution by Planning Area (2024)"</span>,</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>                  <span class="at">theme =</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Take-Home_Ex01_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="864"></p>
 </div>
@@ -480,6 +483,99 @@ These areas do <strong>not rank among the top 10 in total population</strong> bu
 These towns appear in the <strong>total population top 10</strong> but are <strong>absent in the elderly top 10</strong>, indicating a <strong>younger demographic composition</strong>.</p></li>
 <li><p><strong>Elderly Population Distribution is More Uniform</strong><br>
 Compared to the total population, the <strong>elderly population values are closer in range</strong>, suggesting a <strong>more even spread of seniors</strong> across the top-ranked areas.</p></li>
+</ul>
+</section>
+</section>
+<section id="eda-3-top-10-planning-areas-by-total-population-and-elderly-population-age-65" class="level1">
+<h1>EDA 3: Top 10 Planning Areas by Total Population and Elderly Population (Age 65+)</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>age_levels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Elderly (65+)"</span>, <span class="st">"Middle-aged Adults (40–64)"</span>,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Young Adults (20–39)"</span>, <span class="st">"Teenagers (13–19)"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Children (0–12)"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>age_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Elderly (65+)"</span> <span class="ot">=</span> <span class="st">"#a6d854"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Middle-aged Adults (40–64)"</span> <span class="ot">=</span> <span class="st">"#e78ac3"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Young Adults (20–39)"</span> <span class="ot">=</span> <span class="st">"#8da0cb"</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Teenagers (13–19)"</span> <span class="ot">=</span> <span class="st">"#fc8d62"</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Children (0–12)"</span> <span class="ot">=</span> <span class="st">"#66c2a5"</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>pop_grouped <span class="ot">&lt;-</span> pop_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Total"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Age_Group =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">&gt;=</span> <span class="dv">0</span>  <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span> <span class="dv">12</span>  <span class="sc">~</span> <span class="st">"Children (0–12)"</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">&gt;=</span> <span class="dv">13</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span> <span class="dv">19</span>  <span class="sc">~</span> <span class="st">"Teenagers (13–19)"</span>,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">&gt;=</span> <span class="dv">20</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span> <span class="dv">39</span>  <span class="sc">~</span> <span class="st">"Young Adults (20–39)"</span>,</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">&gt;=</span> <span class="dv">40</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span> <span class="dv">64</span>  <span class="sc">~</span> <span class="st">"Middle-aged Adults (40–64)"</span>,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">&gt;=</span> <span class="dv">65</span>              <span class="sc">~</span> <span class="st">"Elderly (65+)"</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Age_Group =</span> <span class="fu">factor</span>(Age_Group, <span class="at">levels =</span> age_levels)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Planning Area</span><span class="st">`</span>, Age_Group) <span class="sc">%&gt;%</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Population =</span> <span class="fu">sum</span>(Population), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>pop_percent <span class="ot">&lt;-</span> pop_grouped <span class="sc">%&gt;%</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Planning Area</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Total =</span> <span class="fu">sum</span>(Population),</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>         <span class="at">Share =</span> Population <span class="sc">/</span> Total) <span class="sc">%&gt;%</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Planning Area</span><span class="st">`</span>), <span class="st">`</span><span class="at">Planning Area</span><span class="st">`</span> <span class="sc">!=</span> <span class="st">"NA"</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>ordering <span class="ot">&lt;-</span> pop_percent <span class="sc">%&gt;%</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age_Group <span class="sc">==</span> <span class="st">"Elderly (65+)"</span>, <span class="st">`</span><span class="at">Planning Area</span><span class="st">`</span> <span class="sc">!=</span> <span class="st">"Total"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Share)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(<span class="st">`</span><span class="at">Planning Area</span><span class="st">`</span>)</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>pop_percent<span class="sc">$</span><span class="st">`</span><span class="at">Planning Area</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>  pop_percent<span class="sc">$</span><span class="st">`</span><span class="at">Planning Area</span><span class="st">`</span>,</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Total"</span>, ordering)</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>pop_percent<span class="sc">$</span>Age_Group <span class="ot">&lt;-</span> <span class="fu">factor</span>(pop_percent<span class="sc">$</span>Age_Group, <span class="at">levels =</span> <span class="fu">rev</span>(age_levels))</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pop_percent, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Planning Area</span><span class="st">`</span>, <span class="at">y =</span> Share, <span class="at">fill =</span> Age_Group)) <span class="sc">+</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">percent_format</span>(<span class="at">accuracy =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span>(age_colors),</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> (age_levels)</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Age Group Composition by Planning Area (2024)"</span>,</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Bars and legend start from Elderly (65+)"</span>,</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Planning Area"</span>,</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Proportion of Total Population"</span>,</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Age Group"</span></span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_family =</span> <span class="st">"Helvetica"</span>) <span class="sc">+</span></span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>),</span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>)</span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-Home_Ex01_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<section id="eda-3-insights-age-group-composition-by-planning-area-2024" class="level2">
+<h2 class="anchored" data-anchor-id="eda-3-insights-age-group-composition-by-planning-area-2024">EDA 3 Insights: Age Group Composition by Planning Area (2024)</h2>
+<ul>
+<li><p><strong>Higher Elderly Proportions</strong><br>
+Planning areas such as <strong>Outram</strong>, <strong>Bukit Merah</strong>, and <strong>Ang Mo Kio</strong> have visibly higher proportions of residents aged <strong>65 and above</strong>.</p></li>
+<li><p><strong>Younger Population Profiles</strong><br>
+Areas like <strong>Punggol</strong>, <strong>Sembawang</strong>, and <strong>Tengah</strong> show larger proportions of <strong>Children (0–12)</strong> and <strong>Young Adults (20–39)</strong>, with smaller Elderly segments.</p></li>
+<li><p><strong>Middle-aged Adults Dominate Most Areas</strong><br>
+The <strong>40–64</strong> age group forms the largest proportion in most planning areas, indicating a dominant working-age population.</p></li>
+<li><p><strong>“Total” Row Reflects National Age Structure</strong><br>
+The bar labeled <strong>“Total”</strong> reflects the overall distribution of age groups across all planning areas and serves as a baseline for comparison.</p></li>
+<li><p><strong>Smaller Young Dependent Segments</strong><br>
+In most planning areas, <strong>Children</strong> and <strong>Teenagers</strong> together constitute less than <strong>25%</strong> of the population.</p></li>
+<li><p><strong>Balanced Age Distribution in Selected Areas</strong><br>
+Some areas such as <strong>Jurong West</strong> and <strong>Woodlands</strong> display relatively balanced proportions across all five age groups.</p></li>
 </ul>
 
 

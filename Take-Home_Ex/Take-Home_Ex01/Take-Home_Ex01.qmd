@@ -199,7 +199,6 @@ plot_elderly <- ggplot(top_elderly, aes(x = reorder(`Planning Area`, ElderlyPopu
     panel.grid.major.y = element_blank()
   )
 
-# Combine using patchwork
 plot_total / plot_elderly + 
   plot_annotation(title = "Comparison of Population Distribution by Planning Area (2024)",
                   theme = theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5)))
@@ -220,3 +219,96 @@ plot_total / plot_elderly +
 
 - **Elderly Population Distribution is More Uniform**  
   Compared to the total population, the **elderly population values are closer in range**, suggesting a **more even spread of seniors** across the top-ranked areas.
+
+# EDA 3: Top 10 Planning Areas by Total Population and Elderly Population (Age 65+)
+```{r,fig.width= 10,fig.height= 12}
+age_levels <- c("Elderly (65+)", "Middle-aged Adults (40–64)",
+                "Young Adults (20–39)", "Teenagers (13–19)",
+                "Children (0–12)")
+
+age_colors <- c(
+  "Elderly (65+)" = "#a6d854",
+  "Middle-aged Adults (40–64)" = "#e78ac3",
+  "Young Adults (20–39)" = "#8da0cb",
+  "Teenagers (13–19)" = "#fc8d62",
+  "Children (0–12)" = "#66c2a5"
+)
+
+pop_grouped <- pop_data %>%
+  filter(Sex == "Total") %>%
+  mutate(Age_Group = case_when(
+    Age >= 0  & Age <= 12  ~ "Children (0–12)",
+    Age >= 13 & Age <= 19  ~ "Teenagers (13–19)",
+    Age >= 20 & Age <= 39  ~ "Young Adults (20–39)",
+    Age >= 40 & Age <= 64  ~ "Middle-aged Adults (40–64)",
+    Age >= 65              ~ "Elderly (65+)"
+  )) %>%
+  mutate(Age_Group = factor(Age_Group, levels = age_levels)) %>%
+  group_by(`Planning Area`, Age_Group) %>%
+  summarise(Population = sum(Population), .groups = "drop")
+
+pop_percent <- pop_grouped %>%
+  group_by(`Planning Area`) %>%
+  mutate(Total = sum(Population),
+         Share = Population / Total) %>%
+  ungroup() %>%
+  filter(!is.na(`Planning Area`), `Planning Area` != "NA")
+
+ordering <- pop_percent %>%
+  filter(Age_Group == "Elderly (65+)", `Planning Area` != "Total") %>%
+  arrange(desc(Share)) %>%
+  pull(`Planning Area`)
+
+pop_percent$`Planning Area` <- factor(
+  pop_percent$`Planning Area`,
+  levels = c("Total", ordering)
+)
+
+pop_percent$Age_Group <- factor(pop_percent$Age_Group, levels = rev(age_levels))
+
+ggplot(pop_percent, aes(x = `Planning Area`, y = Share, fill = Age_Group)) +
+  geom_col(width = 0.8) +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  scale_fill_manual(
+    values =(age_colors),
+    breaks = (age_levels)
+  ) +
+  coord_flip() +
+  labs(
+    title = "Age Group Composition by Planning Area (2024)",
+    subtitle = "Bars and legend start from Elderly (65+)",
+    x = "Planning Area",
+    y = "Proportion of Total Population",
+    fill = "Age Group"
+  ) +
+  theme_minimal(base_family = "Helvetica") +
+  theme(
+    plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5),
+    legend.position = "bottom",
+    legend.title = element_text(size = 10, face = "bold"),
+    legend.text = element_text(size = 9),
+    axis.text = element_text(size = 9)
+  )
+```
+
+## EDA 3 Insights: Age Group Composition by Planning Area (2024)
+
+
+- **Higher Elderly Proportions**  
+  Planning areas such as **Outram**, **Bukit Merah**, and **Ang Mo Kio** have visibly higher proportions of residents aged **65 and above**.
+
+- **Younger Population Profiles**  
+  Areas like **Punggol**, **Sembawang**, and **Tengah** show larger proportions of **Children (0–12)** and **Young Adults (20–39)**, with smaller Elderly segments.
+
+- **Middle-aged Adults Dominate Most Areas**  
+  The **40–64** age group forms the largest proportion in most planning areas, indicating a dominant working-age population.
+
+- **"Total" Row Reflects National Age Structure**  
+  The bar labeled **"Total"** reflects the overall distribution of age groups across all planning areas and serves as a baseline for comparison.
+
+- **Smaller Young Dependent Segments**  
+  In most planning areas, **Children** and **Teenagers** together constitute less than **25%** of the population.
+
+- **Balanced Age Distribution in Selected Areas**  
+  Some areas such as **Jurong West** and **Woodlands** display relatively balanced proportions across all five age groups.
