@@ -129,7 +129,7 @@ ggplot(pyramid_data, aes(x = Age, y = Population, fill = Sex)) +
   theme_minimal(base_family = "Helvetica") +
   theme(
     plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
-    plot.subtitle = element_text(size = 12, hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5,color = "grey40"),
     axis.text = element_text(size = 10),
     axis.title = element_text(size = 11),
     legend.position = "top",
@@ -139,19 +139,84 @@ ggplot(pyramid_data, aes(x = Age, y = Population, fill = Sex)) +
   )
 ```
 
+```{r,fig.width= 8,fig.height= 9,echo=FALSE}
+
+pyramid_data <- pop_data %>%
+  filter(Sex %in% c("Males", "Females")) %>%
+  mutate(
+    Population = ifelse(Sex == "Males", -Population, Population),
+    Age_Group = case_when(
+      Age >= 0  & Age <= 12  ~ "Children (0–12)",
+      Age >= 13 & Age <= 19  ~ "Teenagers (13–19)",
+      Age >= 20 & Age <= 39  ~ "Young Adults (20–39)",
+      Age >= 40 & Age <= 64  ~ "Middle-aged Adults (40–64)",
+      Age >= 65              ~ "Elderly (65+)"
+    ),
+    Age_Group = factor(
+      Age_Group,
+      levels = c(
+        "Children (0–12)",
+        "Teenagers (13–19)",
+        "Young Adults (20–39)",
+        "Middle-aged Adults (40–64)",
+        "Elderly (65+)"
+      )
+    )
+)
+# Create population pyramid grouped by age group
+ggplot(pyramid_data, aes(x = Age_Group, y = Population, fill = Sex)) +
+  geom_bar(stat = "identity", position = "stack", width = 0.8) +
+  coord_flip() +
+  scale_y_continuous(labels = function(x) comma(abs(x))) +
+  scale_fill_manual(
+    values = c("Males" = "#00bfc4", "Females" = "#f8766d"),
+    breaks = c("Males", "Females"),
+    labels = c("Males", "Females")
+  ) +
+  labs(
+    title = "Segmented Population Pyramid of Singapore (2024)",
+    subtitle = "Grouped by key life stages. Male population on the left, female on the right.",
+    x = "Age Group",
+    y = "Population (count)",
+    fill = "Gender Distribution"
+  ) +
+  theme_minimal(base_family = "Helvetica") +
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5,color = "grey40"),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 11),
+    legend.position = "top",
+    legend.title = element_text(size = 10, face = "bold"),
+    legend.text = element_text(size = 9),
+    plot.margin = margin(10, 10, 10, 10)
+  )
+```
+
+
 ## EDA 1 Insights
 
-- **Balanced Gender Counts in Ages 0–30**  
-  The population pyramid shows that the male and female populations are nearly equal in every single year of age from 0 to 30, indicating no significant gender disparity in the younger cohorts.
+The following insights were derived from two visualizations:  
+1. A population pyramid by **individual age**  
+2. A segmented pyramid grouped by **age stages**  
 
-- **Highest Population Concentration in Ages 35–54**  
-  The widest horizontal bars are found in the 35–54 age range for both sexes, making this the most populous segment of the resident population.
+**Balanced Gender Counts in Ages 0–19**  
+- Both the individual and grouped charts show that male and female populations are nearly equal from age 0 to 19  
+- This includes the "Children (0–12)" and "Teenagers (13–19)" segments  
+- The bars are symmetrical for both sexes, indicating no gender disparity in the younger cohorts  
 
-- **Greater Female Population in Ages 70 and Above**  
-  Beginning at around age 70, the length of the bars representing females becomes consistently longer than those of males. The difference becomes especially large in the 80–100+ range, where females clearly outnumber males.
+**Largest Population in Middle-aged Adults (40–64)**  
+- The "Middle-aged Adults (40–64)" age group is the most populous, with the widest stacked bar  
+- This observation holds true in both visualizations  
 
-- **Smaller Cohorts Below Age 15**  
-  The pyramid base (ages 0–14) is narrower compared to middle age groups, reflecting that younger age cohorts are smaller in size relative to those born in earlier decades.
+**Greater Female Presence in Elderly (65+)**  
+- In the individual age plot, females outnumber males starting around age 70  
+- The difference becomes increasingly prominent in the 80 to 100+ range  
+- This is reinforced in the grouped pyramid where the "Elderly (65+)" bar is longer for females  
+
+**Smaller Cohorts in Youth (Ages 0–19)**  
+- The "Children (0–12)" and "Teenagers (13–19)" groups have the shortest bars  
+- This reflects a shrinking young population, as seen in the narrow base of the age-specific pyramid  
 
 # EDA 2: Top 10 Planning Areas by Total Population and Elderly Population (Age 65+)
 
@@ -286,7 +351,7 @@ ggplot(pop_percent, aes(x = `Planning Area`, y = Share, fill = Age_Group)) +
   theme_minimal(base_family = "Helvetica") +
   theme(
     plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
-    plot.subtitle = element_text(size = 12, hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5, color = "grey40"),
     legend.position = "bottom",
     legend.title = element_text(size = 10, face = "bold"),
     legend.text = element_text(size = 9),
