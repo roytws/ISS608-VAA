@@ -119,7 +119,7 @@ ggplot(pyramid_data, aes(x = Age, y = Population, fill = Sex)) +
   scale_fill_manual(
     values = c("Males" = "#00bfc4", "Females" = "#f8766d"),
     breaks = c("Males", "Females"),  # ensures correct order in legend
-    labels = c("Males", "Females (Right)")
+    labels = c("Males", "Females")
   ) +
   labs(
     title = "Population Pyramid of Singapore (2024)",
