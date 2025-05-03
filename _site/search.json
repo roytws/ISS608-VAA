@@ -172,14 +172,28 @@
     "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html",
     "title": "Take-Home_Ex01",
     "section": "",
-    "text": "As the graphical editor of a media company, I have been tasked to design up to three impactful data visualisations to support an article on Singapore’s resident population as of June 2024.\nThe aim is to help readers quickly understand demographic trends using clear and accessible visuals based on official statistics. ### Data Source\nDepartment of Statistics Singapore (DOS): Planning Area and Subzone, Single Year of Age (0–100+), Sex (Male, Female, Total), Resident Population counts (as of June 2024)\n\n\n\nRelevance: Support editorial narratives (e.g. ageing population, regional differences)\nClarity: Easy for general readers to understand\nCompactness: Limited to a maximum of three charts"
+    "text": "As the graphical editor of a media company, I have been tasked to design up to three impactful data visualisations to support an article on Singapore’s resident population as of June 2024.\nThe aim is to help readers quickly understand demographic trends using clear and accessible visuals based on official statistics.\n\n\nDepartment of Statistics Singapore (DOS): Planning Area and Subzone, Single Year of Age (0–100+), Sex (Male, Female, Total), Resident Population counts (as of June 2024)\n\n\n\n\nRelevance: Support editorial narratives (e.g. ageing population, regional differences)\nClarity: Easy for general readers to understand\nCompactness: Limited to a maximum of three charts"
   },
   {
     "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#editorial-brief-visualising-singapores-resident-population-2024",
     "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#editorial-brief-visualising-singapores-resident-population-2024",
     "title": "Take-Home_Ex01",
     "section": "",
-    "text": "As the graphical editor of a media company, I have been tasked to design up to three impactful data visualisations to support an article on Singapore’s resident population as of June 2024.\nThe aim is to help readers quickly understand demographic trends using clear and accessible visuals based on official statistics. ### Data Source\nDepartment of Statistics Singapore (DOS): Planning Area and Subzone, Single Year of Age (0–100+), Sex (Male, Female, Total), Resident Population counts (as of June 2024)\n\n\n\nRelevance: Support editorial narratives (e.g. ageing population, regional differences)\nClarity: Easy for general readers to understand\nCompactness: Limited to a maximum of three charts"
+    "text": "As the graphical editor of a media company, I have been tasked to design up to three impactful data visualisations to support an article on Singapore’s resident population as of June 2024.\nThe aim is to help readers quickly understand demographic trends using clear and accessible visuals based on official statistics.\n\n\nDepartment of Statistics Singapore (DOS): Planning Area and Subzone, Single Year of Age (0–100+), Sex (Male, Female, Total), Resident Population counts (as of June 2024)\n\n\n\n\nRelevance: Support editorial narratives (e.g. ageing population, regional differences)\nClarity: Easy for general readers to understand\nCompactness: Limited to a maximum of three charts"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-preparation-summary",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-preparation-summary",
+    "title": "Take-Home_Ex01",
+    "section": "Data Preparation Summary",
+    "text": "Data Preparation Summary\n\nCleaned and filtered for relevant fields (Age, Sex, Planning Area)\nConverted columns to numeric where needed (e.g. Age, Population)\nAggregated by region and demographic groups for visual storytelling\n\n\nData Cleaning Summary\nTo prepare the dataset for visualisation, the following data cleaning steps were applied:\n\nSkipped Metadata Rows\nThe original Excel file contained header and metadata rows. We used skiprows = 2 to access only the actual data records.\nDropped Incomplete Rows\nRemoved rows where any key fields were missing:\n\nSubzone\nAge\nSex\nPopulation (2024)\nThis ensures only valid, complete records are included in the analysis.\n\nRenamed Columns for Clarity\nReplaced generic or auto-generated column names (e.g., Unnamed: x, 2024) with:\n\nPlanning Area, Subzone, Age, Sex, Population\n\nConverted to Numeric Types\nConverted the Age and Population columns to numeric using coercion.\nNon-numeric values were turned into NA and filtered out.\nRemoved Rows with Missing Age or Population\nAny rows with missing (NA) values in Age or Population were dropped after conversion."
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-parameters-and-description",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-parameters-and-description",
+    "title": "Take-Home_Ex01",
+    "section": "Data Parameters and Description",
+    "text": "Data Parameters and Description\n\n\n\n\n\n\n\nField Name\nField Description\n\n\n\n\nPlanning Area\nAdministrative regions in Singapore (e.g. Bedok, Ang Mo Kio, Tampines, etc.)\n\n\nSubzone\nSubdivisions within each Planning Area\n\n\nAge\nAge of residents in single years (0 to 100+)\n\n\nSex\nGender category: Male, Female, or Total\n\n\nPopulation\nNumber of residents for the given demographic group in June 2024"
   },
   {
     "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#load-packages",
@@ -194,13 +208,6 @@
     "title": "Take-Home_Ex01",
     "section": "Import Data",
     "text": "Import Data\n\npop_data &lt;- read_csv(\"TH01/data/cleaned_population_2024.csv\")"
-  },
-  {
-    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-parameters-and-description",
-    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-parameters-and-description",
-    "title": "Take-Home_Ex01",
-    "section": "Data Parameters and Description",
-    "text": "Data Parameters and Description\n\n\n\n\n\n\n\nField Name\nField Description\n\n\n\n\nPlanning Area\nAdministrative regions in Singapore (e.g. Bedok, Ang Mo Kio, Tampines, etc.)\n\n\nSubzone\nSubdivisions within each Planning Area\n\n\nAge\nAge of residents in single years (0 to 100+)\n\n\nSex\nGender category: Male, Female, or Total\n\n\nPopulation\nNumber of residents for the given demographic group in June 2024"
   },
   {
     "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-1-insights",
@@ -222,12 +229,5 @@
     "title": "Take-Home_Ex01",
     "section": "EDA 3 Insights",
     "text": "EDA 3 Insights\n\nHigher Elderly Proportions\nPlanning areas such as Outram, Bukit Merah, and Ang Mo Kio have visibly higher proportions of residents aged 65 and above.\nYounger Population Profiles\nAreas like Punggol, Sembawang, and Tengah show larger proportions of Children (0–12) and Young Adults (20–39), with smaller Elderly segments.\nMiddle-aged Adults Dominate Most Areas\nThe 40–64 age group forms the largest proportion in most planning areas, indicating a dominant working-age population.\n“Total” Row Reflects National Age Structure\nThe bar labeled “Total” reflects the overall distribution of age groups across all planning areas and serves as a baseline for comparison.\nSmaller Young Dependent Segments\nIn most planning areas, Children and Teenagers together constitute less than 25% of the population.\nBalanced Age Distribution in Selected Areas\nSome areas such as Jurong West and Woodlands display relatively balanced proportions across all five age groups."
-  },
-  {
-    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-preparation-summary",
-    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-preparation-summary",
-    "title": "Take-Home_Ex01",
-    "section": "Data Preparation Summary",
-    "text": "Data Preparation Summary\n\nCleaned and filtered for relevant fields (Age, Sex, Planning Area)\nConverted columns to numeric where needed (e.g. Age, Population)\nAggregated by region and demographic groups for visual storytelling\n\n\nData Cleaning Summary\nTo prepare the dataset for visualisation, the following data cleaning steps were applied:\n\nSkipped Metadata Rows\nThe original Excel file contained header and metadata rows. We used skiprows = 2 to access only the actual data records.\nDropped Incomplete Rows\nRemoved rows where any key fields were missing:\n\nSubzone\nAge\nSex\nPopulation (2024)\nThis ensures only valid, complete records are included in the analysis.\n\nRenamed Columns for Clarity\nReplaced generic or auto-generated column names (e.g., Unnamed: x, 2024) with:\n\nPlanning Area, Subzone, Age, Sex, Population\n\nConverted to Numeric Types\nConverted the Age and Population columns to numeric using coercion.\nNon-numeric values were turned into NA and filtered out.\nRemoved Rows with Missing Age or Population\nAny rows with missing (NA) values in Age or Population were dropped after conversion."
   }
 ]

@@ -20,6 +20,7 @@ freeze: true
 As the graphical editor of a media company, I have been tasked to design up to **three impactful data visualisations** to support an article on Singapore's resident population as of **June 2024**.
 
 The aim is to help readers quickly understand demographic trends using clear and accessible visuals based on official statistics.
+
 ### Data Source
 
 [Department of Statistics Singapore (DOS)](https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data): Planning Area and Subzone, Single Year of Age (0--100+), Sex (Male, Female, Total), Resident Population counts (as of June 2024)
@@ -116,7 +117,7 @@ ggplot(pyramid_data, aes(x = Age, y = Population, fill = Sex)) +
   scale_y_continuous(labels = function(x) comma(abs(x))) +
   scale_fill_manual(
     values = c("Males" = "#00bfc4", "Females" = "#f8766d"),
-    breaks = c("Males", "Females"),  # ensures correct order in legend
+    breaks = c("Males", "Females"), 
     labels = c("Males", "Females")
   ) +
   labs(
@@ -163,7 +164,7 @@ pyramid_data <- pop_data %>%
       )
     )
 )
-# Create population pyramid grouped by age group
+
 ggplot(pyramid_data, aes(x = Age_Group, y = Population, fill = Sex)) +
   geom_bar(stat = "identity", position = "stack", width = 0.8) +
   coord_flip() +
@@ -299,47 +300,64 @@ age_colors <- c(
 
 pop_grouped <- pop_data %>%
   filter(Sex == "Total") %>%
-  mutate(Age_Group = case_when(
-    Age >= 0  & Age <= 12  ~ "Children (0–12)",
-    Age >= 13 & Age <= 19  ~ "Teenagers (13–19)",
-    Age >= 20 & Age <= 39  ~ "Young Adults (20–39)",
-    Age >= 40 & Age <= 64  ~ "Middle-aged Adults (40–64)",
-    Age >= 65              ~ "Elderly (65+)"
-  )) %>%
-  mutate(Age_Group = factor(Age_Group, levels = age_levels)) %>%
+  mutate(
+    Age_Group = case_when(
+      Age >= 0  & Age <= 12  ~ "Children (0–12)",
+      Age >= 13 & Age <= 19  ~ "Teenagers (13–19)",
+      Age >= 20 & Age <= 39  ~ "Young Adults (20–39)",
+      Age >= 40 & Age <= 64  ~ "Middle-aged Adults (40–64)",
+      Age >= 65              ~ "Elderly (65+)"
+    )
+  ) %>%
+  filter(!is.na(Age_Group)) %>%  
   group_by(`Planning Area`, Age_Group) %>%
   summarise(Population = sum(Population), .groups = "drop")
 
+
 pop_percent <- pop_grouped %>%
   mutate(`Planning Area` = trimws(`Planning Area`)) %>%
-  filter(!is.na(`Planning Area`), `Planning Area` != "", toupper(`Planning Area`) != "NA") %>%
+  filter(
+    !is.na(`Planning Area`),
+    `Planning Area` != "",
+    `Planning Area` != "NA",  
+    `Planning Area` != "Total"
+  ) %>%
   group_by(`Planning Area`) %>%
-  mutate(Total = sum(Population),
-         Share = Population / Total) %>%
+  mutate(
+    Total = sum(Population),
+    Share = Population / Total
+  ) %>%
   ungroup()
 
+
+if("NA" %in% pop_percent$`Planning Area`) {
+  print("Warning: 'NA' string still found in Planning Area")
+}
+
+
 ordering <- pop_percent %>%
-  filter(Age_Group == "Elderly (65+)", `Planning Area` != "Total") %>%
+  filter(Age_Group == "Elderly (65+)") %>%
   arrange(desc(Share)) %>%
   pull(`Planning Area`)
 
-pop_percent$`Planning Area` <- factor(
-  pop_percent$`Planning Area`,
-  levels = c("Total", ordering)
-)
+ordering <- ordering[!is.na(ordering) & ordering != "NA"]
 
+pop_percent$`Planning Area` <- factor(pop_percent$`Planning Area`, levels = ordering)
 pop_percent$Age_Group <- factor(pop_percent$Age_Group, levels = rev(age_levels))
+
+pop_percent <- pop_percent %>%
+  filter(`Planning Area` != "NA" & !is.na(`Planning Area`))
 
 ggplot(pop_percent, aes(x = `Planning Area`, y = Share, fill = Age_Group)) +
   geom_col(width = 0.8) +
-  geom_text(aes(label = scales::percent(Share, accuracy = 1)),
-            position = position_stack(vjust = 0.5),
-            size = 5, color = "white") +
-  scale_y_continuous(labels = percent_format(accuracy = 1)) +
-  scale_fill_manual(
-    values = age_colors,
-    breaks = age_levels
+  geom_text(
+    aes(label = percent(Share, accuracy = 1)),
+    position = position_stack(vjust = 0.5),
+    size = 5,
+    color = "white"
   ) +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  scale_fill_manual(values = age_colors, breaks = age_levels) +
   coord_flip() +
   labs(
     title = "Age Group Composition by Planning Area (2024)",
