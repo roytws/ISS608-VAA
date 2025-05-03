@@ -114,7 +114,7 @@ pyramid_data <- pop_data %>%
 
 ggplot(pyramid_data, aes(x = Age, y = Population, fill = Sex)) +
   geom_bar(stat = "identity", width = 0.9) +
-  coord_flip() +
+  coord_flip() + scale_x_continuous(limits = c(0, 100)) +
   scale_y_continuous(labels = function(x) comma(abs(x))) +
   scale_fill_manual(
     values = c("Males" = "#00bfc4", "Females" = "#f8766d"),
@@ -134,7 +134,7 @@ ggplot(pyramid_data, aes(x = Age, y = Population, fill = Sex)) +
     plot.subtitle = element_text(size = 12, hjust = 0.5),
     axis.text = element_text(size = 10),
     axis.title = element_text(size = 11),
-    legend.position = "bottom",
+    legend.position = "top",
     legend.title = element_text(size = 10, face = "bold"),
     legend.text = element_text(size = 9),
     plot.margin = margin(10, 10, 10, 10)
