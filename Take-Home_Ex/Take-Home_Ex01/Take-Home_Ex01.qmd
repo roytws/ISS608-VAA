@@ -220,7 +220,7 @@ plot_total / plot_elderly +
 - **Elderly Population Distribution is More Uniform**  
   Compared to the total population, the **elderly population values are closer in range**, suggesting a **more even spread of seniors** across the top-ranked areas.
 
-# EDA 3: Top 10 Planning Areas by Total Population and Elderly Population (Age 65+)
+# EDA 3 : Age Group Composition by Planning Area
 ```{r,fig.width= 10,fig.height= 12}
 age_levels <- c("Elderly (65+)", "Middle-aged Adults (40–64)",
                 "Young Adults (20–39)", "Teenagers (13–19)",
@@ -248,11 +248,12 @@ pop_grouped <- pop_data %>%
   summarise(Population = sum(Population), .groups = "drop")
 
 pop_percent <- pop_grouped %>%
+  mutate(`Planning Area` = trimws(`Planning Area`)) %>%
+  filter(!is.na(`Planning Area`), `Planning Area` != "", toupper(`Planning Area`) != "NA") %>%
   group_by(`Planning Area`) %>%
   mutate(Total = sum(Population),
          Share = Population / Total) %>%
-  ungroup() %>%
-  filter(!is.na(`Planning Area`), `Planning Area` != "NA")
+  ungroup()
 
 ordering <- pop_percent %>%
   filter(Age_Group == "Elderly (65+)", `Planning Area` != "Total") %>%
@@ -268,10 +269,13 @@ pop_percent$Age_Group <- factor(pop_percent$Age_Group, levels = rev(age_levels))
 
 ggplot(pop_percent, aes(x = `Planning Area`, y = Share, fill = Age_Group)) +
   geom_col(width = 0.8) +
+  geom_text(aes(label = scales::percent(Share, accuracy = 1)),
+            position = position_stack(vjust = 0.5),
+            size = 2.5, color = "white") +
   scale_y_continuous(labels = percent_format(accuracy = 1)) +
   scale_fill_manual(
-    values =(age_colors),
-    breaks = (age_levels)
+    values = age_colors,
+    breaks = age_levels
   ) +
   coord_flip() +
   labs(
