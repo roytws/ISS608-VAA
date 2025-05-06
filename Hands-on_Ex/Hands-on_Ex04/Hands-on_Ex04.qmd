@@ -1,0 +1,16 @@
+---
+title: "Take-Home_Ex04"
+author: "Teo Wee Siang Roy"
+date: "May 06, 2025"
+date-modified: "last-modified"
+format:
+  html:
+    toc: true
+    theme: default
+editor: visual
+execute: 
+  eval: true
+  echo: true
+  warning: false
+freeze: true
+---
