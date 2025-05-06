@@ -140,7 +140,7 @@ ggplot(pyramid_data, aes(x = Age, y = Population, fill = Sex)) +
   )
 ```
 
-```{r,fig.width= 8,fig.height= 9,echo=FALSE}
+```{r,fig.width= 8,fig.height= 9}
 
 pyramid_data <- pop_data %>%
   filter(Sex %in% c("Males", "Females")) %>%
