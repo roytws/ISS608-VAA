@@ -280,76 +280,6 @@
     "text": "Visualizing the uncertainty of point estimates with interactive error bars\n\nshared_df = SharedData$new(my_sum)\n\nbscols(widths = c(4,8),\n       ggplotly((ggplot(shared_df) +\n                   geom_errorbar(aes(\n                     x=reorder(RACE, -mean),\n                     ymin=mean-2.58*se, \n                     ymax=mean+2.58*se), \n                     width=0.2, \n                     colour=\"black\", \n                     alpha=0.9, \n                     size=0.5) +\n                   geom_point(aes(\n                     x=RACE, \n                     y=mean, \n                     text = paste(\"Race:\", `RACE`, \n                                  \"&lt;br&gt;N:\", `n`,\n                                  \"&lt;br&gt;Avg. Scores:\", round(mean, digits = 2),\n                                  \"&lt;br&gt;95% CI:[\", \n                                  round((mean-2.58*se), digits = 2), \",\",\n                                  round((mean+2.58*se), digits = 2),\"]\")),\n                     stat=\"identity\", \n                     color=\"red\", \n                     size = 1.5, \n                     alpha=1) + \n                   xlab(\"Race\") + \n                   ylab(\"Average Scores\") + \n                   theme_minimal() + \n                   theme(axis.text.x = element_text(\n                     angle = 45, vjust = 0.5, hjust=1)) +\n                   ggtitle(\"99% Confidence interval of average /&lt;br&gt;maths scores by race\")), \n                tooltip = \"text\"), \n       DT::datatable(shared_df, \n                     rownames = FALSE, \n                     class=\"compact\", \n                     width=\"90%\", \n                     options = list(pageLength = 10,\n                                    scrollX=T), \n                     colnames = c(\"No. of pupils\", \n                                  \"Avg Scores\",\n                                  \"Std Dev\",\n                                  \"Std Error\")) %&gt;%\n         formatRound(columns=c('mean', 'sd', 'se'),\n                     digits=2))"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "ISS608-VAA",
-    "section": "",
-    "text": "Welcome to ISSS608 Visual Analytics and Applications.\nIn this website, you will find my coursework prepared for this course"
-  },
-  {
-    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html",
-    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html",
-    "title": "Take-Home_Ex01",
-    "section": "",
-    "text": "As the graphical editor of a media company, I have been tasked to design up to three impactful data visualisations to support an article on Singapore’s resident population as of June 2024.\nThe aim is to help readers quickly understand demographic trends using clear and accessible visuals based on official statistics.\n\n\nDepartment of Statistics Singapore (DOS): Planning Area and Subzone, Single Year of Age (0–100+), Sex (Male, Female, Total), Resident Population counts (as of June 2024)\n\n\n\n\nRelevance: Support editorial narratives (e.g. ageing population, regional differences)\nClarity: Easy for general readers to understand\nCompactness: Limited to a maximum of three charts"
-  },
-  {
-    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#editorial-brief-visualising-singapores-resident-population-2024",
-    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#editorial-brief-visualising-singapores-resident-population-2024",
-    "title": "Take-Home_Ex01",
-    "section": "",
-    "text": "As the graphical editor of a media company, I have been tasked to design up to three impactful data visualisations to support an article on Singapore’s resident population as of June 2024.\nThe aim is to help readers quickly understand demographic trends using clear and accessible visuals based on official statistics.\n\n\nDepartment of Statistics Singapore (DOS): Planning Area and Subzone, Single Year of Age (0–100+), Sex (Male, Female, Total), Resident Population counts (as of June 2024)\n\n\n\n\nRelevance: Support editorial narratives (e.g. ageing population, regional differences)\nClarity: Easy for general readers to understand\nCompactness: Limited to a maximum of three charts"
-  },
-  {
-    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-preparation-summary",
-    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-preparation-summary",
-    "title": "Take-Home_Ex01",
-    "section": "Data Preparation Summary",
-    "text": "Data Preparation Summary\n\nCleaned and filtered for relevant fields (Age, Sex, Planning Area)\nConverted columns to numeric where needed (e.g. Age, Population)\nAggregated by region and demographic groups for visual storytelling\n\n\nData Cleaning Summary\nTo prepare the dataset for visualisation, the following data cleaning steps were applied:\n\nSkipped Metadata Rows\nThe original Excel file contained header and metadata rows. We used skiprows = 2 to access only the actual data records.\nDropped Incomplete Rows\nRemoved rows where any key fields were missing:\n\nSubzone\nAge\nSex\nPopulation (2024)\nThis ensures only valid, complete records are included in the analysis.\n\nRenamed Columns for Clarity\nReplaced generic or auto-generated column names (e.g., Unnamed: x, 2024) with:\n\nPlanning Area, Subzone, Age, Sex, Population\n\nConverted to Numeric Types\nConverted the Age and Population columns to numeric using coercion.\nNon-numeric values were turned into NA and filtered out.\nRemoved Rows with Missing Age or Population\nAny rows with missing (NA) values in Age or Population were dropped after conversion."
-  },
-  {
-    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-parameters-and-description",
-    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-parameters-and-description",
-    "title": "Take-Home_Ex01",
-    "section": "Data Parameters and Description",
-    "text": "Data Parameters and Description\n\n\n\n\n\n\n\nField Name\nField Description\n\n\n\n\nPlanning Area\nAdministrative regions in Singapore (e.g. Bedok, Ang Mo Kio, Tampines, etc.)\n\n\nSubzone\nSubdivisions within each Planning Area\n\n\nAge\nAge of residents in single years (0 to 100+)\n\n\nSex\nGender category: Male, Female, or Total\n\n\nPopulation\nNumber of residents for the given demographic group in June 2024"
-  },
-  {
-    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#load-packages",
-    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#load-packages",
-    "title": "Take-Home_Ex01",
-    "section": "Load packages",
-    "text": "Load packages\nWe begin by loading all required R packages using the pacman::p_load() function. These packages support data wrangling, visualisation, animation, and layout composition for this take-home exercise.\n\ntidyverse: Core set of packages for data manipulation, transformation, and visualisation using ggplot2.\nreadxl: To import Excel files (.xlsx), such as the population dataset used in this exercise.\nhaven: Enables importing datasets from software like SPSS, SAS, and Stata.\nggrepel: Prevents overlapping text labels in ggplot2 plots, improving readability.\nggthemes: Provides additional ggplot2 themes for publication-quality charts.\npatchwork: Combines multiple ggplot2 plots into a single composite layout.\nggridges: Creates ridgeline plots to visualise distributions across categories.\nggdist: Supports visualisations of distributions and uncertainty (e.g. dot + interval plots).\nscales: Useful for formatting axis labels (e.g. commas, percentages, date breaks).\nplotly: Adds interactivity to static plots made with ggplot2, enabling zoom, hover, etc.\ngganimate: Enables animation of ggplot2 plots across time or other variables.\ngifski: Required by gganimate to render animations into GIF format.\ngapminder: A sample dataset often used for animated population plots and trend visualisation.\n\n\npacman::p_load(tidyverse, readxl, haven, ggrepel, \nggthemes, patchwork, ggridges, ggdist, scales, plotly, \ngganimate, gifski, gapminder)"
-  },
-  {
-    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#import-data",
-    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#import-data",
-    "title": "Take-Home_Ex01",
-    "section": "Import Data",
-    "text": "Import Data\n\npop_data &lt;- read_csv(\"TH01/data/cleaned_population_2024.csv\")"
-  },
-  {
-    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-1-insights",
-    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-1-insights",
-    "title": "Take-Home_Ex01",
-    "section": "EDA 1 Insights",
-    "text": "EDA 1 Insights\nThe following insights were derived from two visualizations:\n1. A population pyramid by individual age\n2. A segmented pyramid grouped by age stages\nBalanced Gender Counts in Ages 0–19\n- Both the individual and grouped charts show that male and female populations are nearly equal from age 0 to 19\n- This includes the “Children (0–12)” and “Teenagers (13–19)” segments\n- The bars are symmetrical for both sexes, indicating no gender disparity in the younger cohorts\nLargest Population in Middle-aged Adults (40–64)\n- The “Middle-aged Adults (40–64)” age group is the most populous, with the widest stacked bar\n- This observation holds true in both visualizations\nGreater Female Presence in Elderly (65+)\n- In the individual age plot, females outnumber males starting around age 70\n- The difference becomes increasingly prominent in the 80 to 100+ range\n- This is reinforced in the grouped pyramid where the “Elderly (65+)” bar is longer for females\nSmaller Cohorts in Youth (Ages 0–19)\n- The “Children (0–12)” and “Teenagers (13–19)” groups have the shortest bars\n- This reflects a shrinking young population, as seen in the narrow base of the age-specific pyramid"
-  },
-  {
-    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-2-insights",
-    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-2-insights",
-    "title": "Take-Home_Ex01",
-    "section": "EDA 2 Insights",
-    "text": "EDA 2 Insights\n\nBedok, Tampines, and Jurong West Appear in Both Rankings\nThese three planning areas rank in the top 10 for both total population and elderly population (65+), indicating they are high-density towns with large absolute numbers of seniors.\nCentral Area Ranks High in Total Population but Not in Elderly Count\nWhile the Central Area appears in the total population chart, it is absent from the elderly chart, suggesting a lower proportion of elderly residents — possibly due to its mixed commercial-residential nature.\nAng Mo Kio and Bukit Merah Appear Only in the Elderly Ranking\nThese areas do not rank among the top 10 in total population but have high elderly counts, implying a relatively older resident base compared to newer towns.\nWoodlands and Sengkang Rank High in Total but Not Elderly Population\nThese towns appear in the total population top 10 but are absent in the elderly top 10, indicating a younger demographic composition.\nElderly Population Distribution is More Uniform\nCompared to the total population, the elderly population values are closer in range, suggesting a more even spread of seniors across the top-ranked areas."
-  },
-  {
-    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-3-insights",
-    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-3-insights",
-    "title": "Take-Home_Ex01",
-    "section": "EDA 3 Insights",
-    "text": "EDA 3 Insights\n\nHigher Elderly Proportions\nPlanning areas such as Outram, Bukit Merah, and Ang Mo Kio have visibly higher proportions of residents aged 65 and above.\nYounger Population Profiles\nAreas like Punggol, Sembawang, and Tengah show larger proportions of Children (0–12) and Young Adults (20–39), with smaller Elderly segments.\nMiddle-aged Adults Dominate Most Areas\nThe 40–64 age group forms the largest proportion in most planning areas, indicating a dominant working-age population.\n“Total” Row Reflects National Age Structure\nThe bar labeled “Total” reflects the overall distribution of age groups across all planning areas and serves as a baseline for comparison.\nSmaller Young Dependent Segments\nIn most planning areas, Children and Teenagers together constitute less than 25% of the population.\nBalanced Age Distribution in Selected Areas\nSome areas such as Jurong West and Woodlands display relatively balanced proportions across all five age groups."
-  },
-  {
     "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#visualizing-the-uncertainty-of-point-estimates-ggdist-methods",
     "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#visualizing-the-uncertainty-of-point-estimates-ggdist-methods",
     "title": "Hands-on Exercise 4",
@@ -411,5 +341,75 @@
     "title": "Hands-on Exercise 4",
     "section": "Interactive Funnel Plot: plotly + ggplot2",
     "text": "Interactive Funnel Plot: plotly + ggplot2\n\nfp_ggplotly &lt;- ggplotly(p,\n  tooltip = c(\"label\", \n              \"x\", \n              \"y\"))\nfp_ggplotly"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ISS608-VAA",
+    "section": "",
+    "text": "Welcome to ISSS608 Visual Analytics and Applications.\nIn this website, you will find my coursework prepared for this course"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html",
+    "title": "Take-Home_Ex01 part 1",
+    "section": "",
+    "text": "As the graphical editor of a media company, I have been tasked to design up to three impactful data visualisations to support an article on Singapore’s resident population as of June 2024.\nThe aim is to help readers quickly understand demographic trends using clear and accessible visuals based on official statistics.\n\n\nDepartment of Statistics Singapore (DOS): Planning Area and Subzone, Single Year of Age (0–100+), Sex (Male, Female, Total), Resident Population counts (as of June 2024)\n\n\n\n\nRelevance: Support editorial narratives (e.g. ageing population, regional differences)\nClarity: Easy for general readers to understand\nCompactness: Limited to a maximum of three charts"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#editorial-brief-visualising-singapores-resident-population-2024",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#editorial-brief-visualising-singapores-resident-population-2024",
+    "title": "Take-Home_Ex01 part 1",
+    "section": "",
+    "text": "As the graphical editor of a media company, I have been tasked to design up to three impactful data visualisations to support an article on Singapore’s resident population as of June 2024.\nThe aim is to help readers quickly understand demographic trends using clear and accessible visuals based on official statistics.\n\n\nDepartment of Statistics Singapore (DOS): Planning Area and Subzone, Single Year of Age (0–100+), Sex (Male, Female, Total), Resident Population counts (as of June 2024)\n\n\n\n\nRelevance: Support editorial narratives (e.g. ageing population, regional differences)\nClarity: Easy for general readers to understand\nCompactness: Limited to a maximum of three charts"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-preparation-summary",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-preparation-summary",
+    "title": "Take-Home_Ex01 part 1",
+    "section": "Data Preparation Summary",
+    "text": "Data Preparation Summary\n\nCleaned and filtered for relevant fields (Age, Sex, Planning Area)\nConverted columns to numeric where needed (e.g. Age, Population)\nAggregated by region and demographic groups for visual storytelling\n\n\nData Cleaning Summary\nTo prepare the dataset for visualisation, the following data cleaning steps were applied:\n\nSkipped Metadata Rows\nThe original Excel file contained header and metadata rows. We used skiprows = 2 to access only the actual data records.\nDropped Incomplete Rows\nRemoved rows where any key fields were missing:\n\nSubzone\nAge\nSex\nPopulation (2024)\nThis ensures only valid, complete records are included in the analysis.\n\nRenamed Columns for Clarity\nReplaced generic or auto-generated column names (e.g., Unnamed: x, 2024) with:\n\nPlanning Area, Subzone, Age, Sex, Population\n\nConverted to Numeric Types\nConverted the Age and Population columns to numeric using coercion.\nNon-numeric values were turned into NA and filtered out.\nRemoved Rows with Missing Age or Population\nAny rows with missing (NA) values in Age or Population were dropped after conversion."
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-parameters-and-description",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#data-parameters-and-description",
+    "title": "Take-Home_Ex01 part 1",
+    "section": "Data Parameters and Description",
+    "text": "Data Parameters and Description\n\n\n\n\n\n\n\nField Name\nField Description\n\n\n\n\nPlanning Area\nAdministrative regions in Singapore (e.g. Bedok, Ang Mo Kio, Tampines, etc.)\n\n\nSubzone\nSubdivisions within each Planning Area\n\n\nAge\nAge of residents in single years (0 to 100+)\n\n\nSex\nGender category: Male, Female, or Total\n\n\nPopulation\nNumber of residents for the given demographic group in June 2024"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#load-packages",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#load-packages",
+    "title": "Take-Home_Ex01 part 1",
+    "section": "Load packages",
+    "text": "Load packages\nWe begin by loading all required R packages using the pacman::p_load() function. These packages support data wrangling, visualisation, animation, and layout composition for this take-home exercise.\n\ntidyverse: Core set of packages for data manipulation, transformation, and visualisation using ggplot2.\nreadxl: To import Excel files (.xlsx), such as the population dataset used in this exercise.\nhaven: Enables importing datasets from software like SPSS, SAS, and Stata.\nggrepel: Prevents overlapping text labels in ggplot2 plots, improving readability.\nggthemes: Provides additional ggplot2 themes for publication-quality charts.\npatchwork: Combines multiple ggplot2 plots into a single composite layout.\nggridges: Creates ridgeline plots to visualise distributions across categories.\nggdist: Supports visualisations of distributions and uncertainty (e.g. dot + interval plots).\nscales: Useful for formatting axis labels (e.g. commas, percentages, date breaks).\nplotly: Adds interactivity to static plots made with ggplot2, enabling zoom, hover, etc.\ngganimate: Enables animation of ggplot2 plots across time or other variables.\ngifski: Required by gganimate to render animations into GIF format.\ngapminder: A sample dataset often used for animated population plots and trend visualisation.\n\n\npacman::p_load(tidyverse, readxl, haven, ggrepel, \nggthemes, patchwork, ggridges, ggdist, scales, plotly, \ngganimate, gifski, gapminder)"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#import-data",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#import-data",
+    "title": "Take-Home_Ex01 part 1",
+    "section": "Import Data",
+    "text": "Import Data\n\npop_data &lt;- read_csv(\"TH01/data/cleaned_population_2024.csv\")"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-1-insights",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-1-insights",
+    "title": "Take-Home_Ex01 part 1",
+    "section": "EDA 1 Insights",
+    "text": "EDA 1 Insights\nThe following insights were derived from two visualizations:\n1. A population pyramid by individual age\n2. A segmented pyramid grouped by age stages\nBalanced Gender Counts in Ages 0–19\n- Both the individual and grouped charts show that male and female populations are nearly equal from age 0 to 19\n- This includes the “Children (0–12)” and “Teenagers (13–19)” segments\n- The bars are symmetrical for both sexes, indicating no gender disparity in the younger cohorts\nLargest Population in Middle-aged Adults (40–64)\n- The “Middle-aged Adults (40–64)” age group is the most populous, with the widest stacked bar\n- This observation holds true in both visualizations\nGreater Female Presence in Elderly (65+)\n- In the individual age plot, females outnumber males starting around age 70\n- The difference becomes increasingly prominent in the 80 to 100+ range\n- This is reinforced in the grouped pyramid where the “Elderly (65+)” bar is longer for females\nSmaller Cohorts in Youth (Ages 0–19)\n- The “Children (0–12)” and “Teenagers (13–19)” groups have the shortest bars\n- This reflects a shrinking young population, as seen in the narrow base of the age-specific pyramid"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-2-insights",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-2-insights",
+    "title": "Take-Home_Ex01 part 1",
+    "section": "EDA 2 Insights",
+    "text": "EDA 2 Insights\n\nBedok, Tampines, and Jurong West Appear in Both Rankings\nThese three planning areas rank in the top 10 for both total population and elderly population (65+), indicating they are high-density towns with large absolute numbers of seniors.\nCentral Area Ranks High in Total Population but Not in Elderly Count\nWhile the Central Area appears in the total population chart, it is absent from the elderly chart, suggesting a lower proportion of elderly residents — possibly due to its mixed commercial-residential nature.\nAng Mo Kio and Bukit Merah Appear Only in the Elderly Ranking\nThese areas do not rank among the top 10 in total population but have high elderly counts, implying a relatively older resident base compared to newer towns.\nWoodlands and Sengkang Rank High in Total but Not Elderly Population\nThese towns appear in the total population top 10 but are absent in the elderly top 10, indicating a younger demographic composition.\nElderly Population Distribution is More Uniform\nCompared to the total population, the elderly population values are closer in range, suggesting a more even spread of seniors across the top-ranked areas."
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-3-insights",
+    "href": "Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html#eda-3-insights",
+    "title": "Take-Home_Ex01 part 1",
+    "section": "EDA 3 Insights",
+    "text": "EDA 3 Insights\n\nHigher Elderly Proportions\nPlanning areas such as Outram, Bukit Merah, and Ang Mo Kio have visibly higher proportions of residents aged 65 and above.\nYounger Population Profiles\nAreas like Punggol, Sembawang, and Tengah show larger proportions of Children (0–12) and Young Adults (20–39), with smaller Elderly segments.\nMiddle-aged Adults Dominate Most Areas\nThe 40–64 age group forms the largest proportion in most planning areas, indicating a dominant working-age population.\n“Total” Row Reflects National Age Structure\nThe bar labeled “Total” reflects the overall distribution of age groups across all planning areas and serves as a baseline for comparison.\nSmaller Young Dependent Segments\nIn most planning areas, Children and Teenagers together constitute less than 25% of the population.\nBalanced Age Distribution in Selected Areas\nSome areas such as Jurong West and Woodlands display relatively balanced proportions across all five age groups."
   }
 ]

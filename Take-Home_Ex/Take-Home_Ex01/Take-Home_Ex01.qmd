@@ -1,5 +1,5 @@
 ---
-title: "Take-Home_Ex01"
+title: "Take-Home_Ex01 part 1"
 author: "Teo Wee Siang Roy"
 date: "May 01, 2025"
 date-modified: "last-modified"
@@ -14,6 +14,9 @@ execute:
   warning: false
 freeze: true
 ---
+```{r}
+
+```
 
 ## Editorial Brief -- Visualising Singapore's Resident Population (2024)
 
