@@ -14,9 +14,6 @@ execute:
   warning: false
 freeze: true
 ---
-```{r}
-
-```
 
 ## Editorial Brief -- Visualising Singapore's Resident Population (2024)
 
