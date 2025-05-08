@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -177,7 +211,36 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#reviewed-submission" id="toc-reviewed-submission" class="nav-link active" data-scroll-target="#reviewed-submission">Reviewed Submission</a></li>
+  <li><a href="#load-packages" id="toc-load-packages" class="nav-link" data-scroll-target="#load-packages">Load packages</a></li>
+  <li><a href="#load-dataset-and-data-processing" id="toc-load-dataset-and-data-processing" class="nav-link" data-scroll-target="#load-dataset-and-data-processing">Load dataset and data processing</a></li>
+  <li><a href="#gender-ratio-analysis-by-region-as-reference" id="toc-gender-ratio-analysis-by-region-as-reference" class="nav-link" data-scroll-target="#gender-ratio-analysis-by-region-as-reference">Gender Ratio Analysis by Region (As reference)</a>
+  <ul class="collapse">
+  <li><a href="#three-good-design-principles-applied" id="toc-three-good-design-principles-applied" class="nav-link" data-scroll-target="#three-good-design-principles-applied">✅ Three Good Design Principles Applied</a></li>
+  <li><a href="#three-areas-for-further-improvement" id="toc-three-areas-for-further-improvement" class="nav-link" data-scroll-target="#three-areas-for-further-improvement">❌ Three Areas for Further Improvement</a></li>
+  <li><a href="#graph-as-reference-first-graph" id="toc-graph-as-reference-first-graph" class="nav-link" data-scroll-target="#graph-as-reference-first-graph">Graph as reference first graph</a></li>
+  <li><a href="#improvement-1-what-was-improved" id="toc-improvement-1-what-was-improved" class="nav-link" data-scroll-target="#improvement-1-what-was-improved">🔧 Improvement 1: What Was Improved</a>
+  <ul class="collapse">
+  <li><a href="#from-absolute-counts-to-proportional-comparison" id="toc-from-absolute-counts-to-proportional-comparison" class="nav-link" data-scroll-target="#from-absolute-counts-to-proportional-comparison">1. From Absolute Counts to Proportional Comparison</a></li>
+  <li><a href="#embedded-dual-level-information-in-labels" id="toc-embedded-dual-level-information-in-labels" class="nav-link" data-scroll-target="#embedded-dual-level-information-in-labels">2. Embedded Dual-Level Information in Labels</a></li>
+  <li><a href="#improved-label-positioning-and-readability" id="toc-improved-label-positioning-and-readability" class="nav-link" data-scroll-target="#improved-label-positioning-and-readability">3. Improved Label Positioning and Readability</a></li>
+  <li><a href="#chart-type-aligns-with-analytical-purpose" id="toc-chart-type-aligns-with-analytical-purpose" class="nav-link" data-scroll-target="#chart-type-aligns-with-analytical-purpose">4. Chart Type Aligns with Analytical Purpose</a></li>
+  <li><a href="#improvement-outlines" id="toc-improvement-outlines" class="nav-link" data-scroll-target="#improvement-outlines">Improvement outlines</a></li>
+  </ul></li>
+  <li><a href="#improvement-summary-2-what-was-further-improved" id="toc-improvement-summary-2-what-was-further-improved" class="nav-link" data-scroll-target="#improvement-summary-2-what-was-further-improved">🔧 Improvement Summary 2: What Was Further Improved</a>
+  <ul class="collapse">
+  <li><a href="#switched-from-percentage-to-actual-population-on-the-x-axis" id="toc-switched-from-percentage-to-actual-population-on-the-x-axis" class="nav-link" data-scroll-target="#switched-from-percentage-to-actual-population-on-the-x-axis">1. Switched from Percentage to Actual Population on the X-Axis</a></li>
+  <li><a href="#horizontal-layout-enhances-label-readability-and-comparison" id="toc-horizontal-layout-enhances-label-readability-and-comparison" class="nav-link" data-scroll-target="#horizontal-layout-enhances-label-readability-and-comparison">2. Horizontal Layout Enhances Label Readability and Comparison</a></li>
+  <li><a href="#regions-sorted-by-total-population" id="toc-regions-sorted-by-total-population" class="nav-link" data-scroll-target="#regions-sorted-by-total-population">3. Regions Sorted by Total Population</a></li>
+  <li><a href="#maintained-rich-dual-layer-labels" id="toc-maintained-rich-dual-layer-labels" class="nav-link" data-scroll-target="#maintained-rich-dual-layer-labels">4. Maintained Rich, Dual-Layer Labels</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -208,7 +271,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">May 8, 2025</p>
+      <p class="date-modified">May 9, 2025</p>
     </div>
   </div>
     
@@ -217,8 +280,375 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<section id="reviewed-submission" class="level1">
+<h1>Reviewed Submission</h1>
+<p>This review is based on the submission by <strong>Sandra Jacob</strong>, available at:<br>
+🔗 <a href="https://sandrajacob-isss608.netlify.app/takehome_exercises/takehome_ex01/takehomeex01">https://sandrajacob-isss608.netlify.app/takehome_exercises/takehome_ex01/takehomeex01</a></p>
+</section>
+<section id="load-packages" class="level1">
+<h1>Load packages</h1>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, haven,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               ggrepel, ggthemes,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>               ggridges, ggdist,colorspace,ggdist,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>               patchwork, scales, ggplot2, </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>               matrixStats, treemapify, showtext)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="load-dataset-and-data-processing" class="level1">
+<h1>Load dataset and data processing</h1>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>respopagesex2024 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"TH01_2/data/respopagesex2024.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>show_col_types <span class="ot">=</span> <span class="cn">FALSE</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(respopagesex2024))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">PA</th>
+<th style="text-align: left;">SZ</th>
+<th style="text-align: left;">Age</th>
+<th style="text-align: left;">Sex</th>
+<th style="text-align: right;">Pop</th>
+<th style="text-align: right;">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Ang Mo Kio</td>
+<td style="text-align: left;">Ang Mo Kio Town Centre</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">Males</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2024</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ang Mo Kio</td>
+<td style="text-align: left;">Ang Mo Kio Town Centre</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">Females</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2024</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ang Mo Kio</td>
+<td style="text-align: left;">Ang Mo Kio Town Centre</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Males</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2024</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ang Mo Kio</td>
+<td style="text-align: left;">Ang Mo Kio Town Centre</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Females</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2024</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ang Mo Kio</td>
+<td style="text-align: left;">Ang Mo Kio Town Centre</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Males</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2024</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ang Mo Kio</td>
+<td style="text-align: left;">Ang Mo Kio Town Centre</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Females</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2024</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>respopagesex2024[<span class="fu">duplicated</span>(respopagesex2024),]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 0 × 6
+# ℹ 6 variables: PA &lt;chr&gt;, SZ &lt;chr&gt;, Age &lt;chr&gt;, Sex &lt;chr&gt;, Pop &lt;dbl&gt;,
+#   Time &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>planning_areas <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"TH01_2/data/Planning_areas_of_Singapore_2.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>respop_with_region <span class="ot">&lt;-</span> respopagesex2024 <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(planning_areas, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"PA"</span> <span class="ot">=</span> <span class="st">"Name (English)"</span>))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>respop_cleaned <span class="ot">&lt;-</span> respop_with_region <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="st">`</span><span class="at">Time</span><span class="st">`</span>, <span class="sc">-</span><span class="st">`</span><span class="at">Malay</span><span class="st">`</span>, <span class="sc">-</span><span class="st">`</span><span class="at">Chinese</span><span class="st">`</span>, <span class="sc">-</span><span class="st">`</span><span class="at">Pinyin</span><span class="st">`</span>, <span class="sc">-</span><span class="st">`</span><span class="at">Tamil</span><span class="st">`</span>, <span class="sc">-</span><span class="st">`</span><span class="at">Area (km2)</span><span class="st">`</span>, <span class="sc">-</span><span class="st">`</span><span class="at">Population</span><span class="st">`</span>, <span class="sc">-</span><span class="st">`</span><span class="at">Density (/km2)</span><span class="st">`</span>, <span class="sc">-</span><span class="st">`</span><span class="at">Subzones</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="gender-ratio-analysis-by-region-as-reference" class="level1">
+<h1>Gender Ratio Analysis by Region (As reference)</h1>
+<section id="three-good-design-principles-applied" class="level2">
+<h2 class="anchored" data-anchor-id="three-good-design-principles-applied">✅ Three Good Design Principles Applied</h2>
+<ol type="1">
+<li><p><strong>Clear and Descriptive Title with Proper Axis Labels</strong> The chart’s title — <em>“Male and Female Population by Region”</em> — succinctly conveys the purpose of the visualisation. Coupled with clearly labeled axes (<em>“Region”</em> and <em>“Total Population”</em>), this design adheres to fundamental <strong>graphical integrity</strong> and supports rapid comprehension. It aligns with best practices for enhancing <strong>cognitive accessibility</strong> in data graphics.</p></li>
+<li><p><strong>Strategic Use of Color for Categorical Differentiation</strong> The use of high-contrast, intuitive colors (maroon for Females and navy for Males) effectively encodes the <strong>categorical variable (Sex)</strong>. This leverages <strong>pre-attentive visual processing</strong>, enabling users to instantly distinguish between gender groups. The visual encoding is both <strong>aesthetically pleasing and functionally efficient</strong>, which is crucial in comparative visualisations.</p></li>
+<li><p><strong>Inclusion of Percentage Labels to Add Analytical Depth</strong> Each bar is annotated with percentage labels that represent the proportion of each gender within its respective region. This additional layer of information transforms a basic bar chart into a more <strong>analytically enriched visual</strong>, allowing users to compare both absolute values and relative gender compositions simultaneously. This reflects the principle of <strong>“deriving insight” rather than merely displaying raw data”</strong> — a key goal in visual analytics.</p></li>
+</ol>
+</section>
+<section id="three-areas-for-further-improvement" class="level2">
+<h2 class="anchored" data-anchor-id="three-areas-for-further-improvement">❌ Three Areas for Further Improvement</h2>
+<ol type="1">
+<li><strong>Label Overlap and Legibility Concerns</strong></li>
+</ol>
+<p>While the inclusion of percentage labels is commendable, their placement <strong>above the bars</strong> results in visual congestion—especially in regions like <em>North-East</em> and <em>West</em>, where the height differences between segments are minimal. This diminishes readability and increases cognitive load. To resolve this:</p>
+<ul>
+<li>Place labels <strong>inside the bars</strong> using <code>position_stack(vjust = 0.5)</code></li>
+<li>Use a <strong>horizontal layout</strong> to increase label spacing</li>
+<li>Reduce font size or apply <code>ggrepel</code> for smart label adjustment</li>
+</ul>
+<ol start="2" type="1">
+<li><strong>Lack of Alignment Between Data and Message</strong></li>
+</ol>
+<p>Although percentage labels are presented, the <strong>bar height still encodes absolute values</strong>. This can lead viewers to focus on population differences rather than proportional differences. A <strong>100% stacked bar chart</strong> would better align with the intent to highlight <strong>gender balance within each region</strong>.</p>
+<ol start="3" type="1">
+<li><strong>Suboptimal Chart Type for Comparative Ratios</strong></li>
+</ol>
+<p>Grouped bar charts are ideal for comparing totals but are less effective for showing <strong>composition within a group</strong>. A <strong>normalized horizontal stacked bar chart</strong> would:</p>
+<ul>
+<li>More clearly show <strong>gender proportion</strong></li>
+<li>Eliminate vertical label collisions</li>
+<li>Follow a natural <strong>left-to-right reading flow</strong> that supports comparison</li>
+</ul>
+</section>
+<section id="graph-as-reference-first-graph" class="level2">
+<h2 class="anchored" data-anchor-id="graph-as-reference-first-graph">Graph as reference first graph</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>gender_summary_long <span class="ot">&lt;-</span> respop_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region, Sex) <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Total_Pop =</span> <span class="fu">sum</span>(Pop), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate total population per region</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>gender_summary_long <span class="ot">&lt;-</span> gender_summary_long <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region) <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Region_Total =</span> <span class="fu">sum</span>(Total_Pop),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Percent =</span> (Total_Pop <span class="sc">/</span> Region_Total) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot side-by-side bars</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gender_summary_long, <span class="fu">aes</span>(<span class="at">x =</span> Region, <span class="at">y =</span> Total_Pop, <span class="at">fill =</span> Sex)) <span class="sc">+</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(Percent, <span class="dv">1</span>), <span class="st">"%"</span>)),</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>),</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>, <span class="at">family =</span> <span class="st">"nunito"</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Male and Female Population by Region"</span>,</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Region"</span>,</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Total Population"</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_family =</span> <span class="st">"nunito"</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">family =</span> <span class="st">"nunito"</span>)) <span class="sc">+</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Females"</span> <span class="ot">=</span> <span class="st">"#662633"</span>, <span class="st">"Males"</span> <span class="ot">=</span> <span class="st">"#2C3C60"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Take-Home_Ex01_2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="improvement-1-what-was-improved" class="level2">
+<h2 class="anchored" data-anchor-id="improvement-1-what-was-improved">🔧 Improvement 1: What Was Improved</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>gender_summary_long <span class="ot">&lt;-</span> respop_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region, Sex) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Total_Pop =</span> <span class="fu">sum</span>(Pop), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region) <span class="sc">%&gt;%</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Region_Total =</span> <span class="fu">sum</span>(Total_Pop),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Percent =</span> (Total_Pop <span class="sc">/</span> Region_Total) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(Percent, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">("</span>, scales<span class="sc">::</span><span class="fu">comma</span>(Total_Pop), <span class="st">")"</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot: stacked bar with % + population inside bars</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gender_summary_long, <span class="fu">aes</span>(<span class="at">x =</span> Region, <span class="at">y =</span> Percent, <span class="at">fill =</span> Sex)) <span class="sc">+</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"stack"</span>, <span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Percentage + population inside each segment</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> Label),</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>, <span class="at">family =</span> <span class="st">"nunito"</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Gender Distribution by Region (2024)"</span>,</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Each bar shows gender % and absolute population count"</span>,</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Region"</span>,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Percentage (%)"</span>,</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Gender"</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>(<span class="at">scale =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Females"</span> <span class="ot">=</span> <span class="st">"#A93226"</span>, <span class="st">"Males"</span> <span class="ot">=</span> <span class="st">"#2C3E50"</span>)) <span class="sc">+</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_family =</span> <span class="st">"nunito"</span>) <span class="sc">+</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">15</span>),</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">11</span>)</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Take-Home_Ex01_2_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<p>This revised visualisation enhance both analytical clarity and graphical integrity:</p>
+<section id="from-absolute-counts-to-proportional-comparison" class="level3">
+<h3 class="anchored" data-anchor-id="from-absolute-counts-to-proportional-comparison">1. From Absolute Counts to Proportional Comparison</h3>
+<ul>
+<li><strong>Original</strong>: Displayed only raw population counts for each gender, which made it difficult to compare the gender distribution within each region.</li>
+<li><strong>Improved</strong>: Transformed into a <strong>100% stacked bar chart</strong> that normalises each region to 100%, making it much easier to compare <strong>gender ratios</strong> across regions.</li>
+</ul>
+</section>
+<section id="embedded-dual-level-information-in-labels" class="level3">
+<h3 class="anchored" data-anchor-id="embedded-dual-level-information-in-labels">2. Embedded Dual-Level Information in Labels</h3>
+<ul>
+<li><strong>Original</strong>: Included either percentage or total population as labels, but not both.</li>
+<li><strong>Improved</strong>: Combined both <strong>percentage and absolute count</strong> in each label (e.g., <code>48.7%\n(123,456)</code>), allowing the viewer to simultaneously interpret <strong>relative proportion and actual magnitude</strong>.</li>
+</ul>
+</section>
+<section id="improved-label-positioning-and-readability" class="level3">
+<h3 class="anchored" data-anchor-id="improved-label-positioning-and-readability">3. Improved Label Positioning and Readability</h3>
+<ul>
+<li><strong>Original</strong>: Percentage labels were placed outside the bars, leading to overlapping and reduced clarity, especially for regions with similar male/female proportions.</li>
+<li><strong>Improved</strong>: Labels are now <strong>placed inside the bar segments</strong> using <code>position_stack(vjust = 0.5)</code>, increasing legibility and reducing visual clutter.</li>
+</ul>
+</section>
+<section id="chart-type-aligns-with-analytical-purpose" class="level3">
+<h3 class="anchored" data-anchor-id="chart-type-aligns-with-analytical-purpose">4. Chart Type Aligns with Analytical Purpose</h3>
+<ul>
+<li><strong>Original</strong>: Used a grouped bar chart, which is more appropriate for comparing absolute values across categories.</li>
+<li><strong>Improved</strong>: Switched to a <strong>stacked bar layout</strong>, which better supports the analytical objective of comparing <strong>gender balance within each region</strong>.</li>
+</ul>
+</section>
+<section id="improvement-outlines" class="level3">
+<h3 class="anchored" data-anchor-id="improvement-outlines">Improvement outlines</h3>
+<p>These improvements follow the visual design principles outlined in <em>Lesson 2: Designing Graphs to Enlighten</em>, particularly:</p>
+<ul>
+<li>Using the <strong>right chart to match the message</strong></li>
+<li>Enhancing <strong>interpretability</strong> through derived metrics</li>
+<li>Leveraging <strong>pre-attentive features</strong> like color and label placement</li>
+</ul>
+</section>
+</section>
+<section id="improvement-summary-2-what-was-further-improved" class="level2">
+<h2 class="anchored" data-anchor-id="improvement-summary-2-what-was-further-improved">🔧 Improvement Summary 2: What Was Further Improved</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>gender_summary_long <span class="ot">&lt;-</span> respop_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region, Sex) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Total_Pop =</span> <span class="fu">sum</span>(Pop), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region) <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Region_Total =</span> <span class="fu">sum</span>(Total_Pop),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Region_Percent =</span> <span class="fu">round</span>((Total_Pop <span class="sc">/</span> Region_Total) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Label =</span> <span class="fu">paste0</span>(Region_Percent, <span class="st">"%</span><span class="sc">\n</span><span class="st">("</span>, scales<span class="sc">::</span><span class="fu">comma</span>(Total_Pop), <span class="st">")"</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">Region =</span> <span class="fu">fct_reorder</span>(Region, Region_Total, <span class="at">.desc =</span> <span class="cn">TRUE</span>),  <span class="co"># sort by Region_Total</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Sex =</span> <span class="fu">factor</span>(Sex, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Males"</span>, <span class="st">"Females"</span>))           <span class="co"># ensure stacking order</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Region, Sex)  <span class="co"># ensure correct stacking order</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gender_summary_long, <span class="fu">aes</span>(<span class="at">y =</span> Region, <span class="at">x =</span> Total_Pop, <span class="at">fill =</span> Sex)) <span class="sc">+</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"stack"</span>, <span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> Label),</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="st">"nunito"</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Total Male and Female Population by Region (2024)"</span>,</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Labels show % within each region and absolute population"</span>,</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Total Population"</span>,</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Region"</span>,</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Gender"</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_comma</span>(),</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1000000</span>, <span class="dv">100000</span>)</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Females"</span> <span class="ot">=</span> <span class="st">"#A93226"</span>, <span class="st">"Males"</span> <span class="ot">=</span> <span class="st">"#2C3E50"</span>)) <span class="sc">+</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_family =</span> <span class="st">"nunito"</span>) <span class="sc">+</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">15</span>),</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">11</span>)</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Take-Home_Ex01_2_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<p>Building on the earlier stacked percentage chart, this updated visualisation improves the clarity, comparability, and contextual storytelling of the gender distribution across regions in 2024.</p>
+<section id="switched-from-percentage-to-actual-population-on-the-x-axis" class="level3">
+<h3 class="anchored" data-anchor-id="switched-from-percentage-to-actual-population-on-the-x-axis">1. Switched from Percentage to Actual Population on the X-Axis</h3>
+<ul>
+<li><strong>Previous</strong>: X-axis showed gender <strong>percentage share</strong>, which helped with proportion comparison but hid the actual population scale.</li>
+<li><strong>Improved</strong>: Uses <strong>raw population values</strong> on the x-axis (with comma formatting and 100k breaks), enabling clear comparison of <strong>both gender ratio and total population</strong> per region.</li>
+</ul>
+</section>
+<section id="horizontal-layout-enhances-label-readability-and-comparison" class="level3">
+<h3 class="anchored" data-anchor-id="horizontal-layout-enhances-label-readability-and-comparison">2. Horizontal Layout Enhances Label Readability and Comparison</h3>
+<ul>
+<li><strong>Previous</strong>: Vertical bars made category names harder to read, and labels could overlap in crowded segments.</li>
+<li><strong>Improved</strong>: <strong>Horizontal stacked bars</strong> make region names easier to scan and reduce label collision, improving overall <strong>legibility</strong> and alignment with <strong>natural left-to-right reading flow</strong>.</li>
+</ul>
+</section>
+<section id="regions-sorted-by-total-population" class="level3">
+<h3 class="anchored" data-anchor-id="regions-sorted-by-total-population">3. Regions Sorted by Total Population</h3>
+<ul>
+<li><strong>Previous</strong>: Regions were presented in arbitrary or default order, which reduced analytical clarity.</li>
+<li><strong>Improved</strong>: Regions are now <strong>sorted in descending order of total population</strong>, highlighting population scale differences and making the chart easier to interpret at a glance.</li>
+</ul>
+</section>
+<section id="maintained-rich-dual-layer-labels" class="level3">
+<h3 class="anchored" data-anchor-id="maintained-rich-dual-layer-labels">4. Maintained Rich, Dual-Layer Labels</h3>
+<ul>
+<li>Each bar segment still includes a <strong>concise label</strong> that combines the percentage share and absolute count (e.g., <code>50.5% (302,710)</code>), enabling multi-level insight in a compact, readable form.</li>
+</ul>
+<p>These refinements not only retain the strengths of the previous version but enhance the visual’s ability to communicate both <strong>structure (proportions)</strong> and <strong>magnitude (totals)</strong> — an important principle covered in <em>Lesson 2: Designing Graphs to Enlighten</em>.</p>
 
 
+</section>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

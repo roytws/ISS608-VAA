@@ -7,6 +7,7 @@ format:
   html:
     toc: true
     theme: default
+    code-fold: show
 editor: visual
 execute: 
   eval: true
@@ -14,3 +15,248 @@ execute:
   warning: false
 freeze: true
 ---
+# Reviewed Submission
+
+This review is based on the submission by **Sandra Jacob**, available at:  
+🔗 [https://sandrajacob-isss608.netlify.app/takehome_exercises/takehome_ex01/takehomeex01](https://sandrajacob-isss608.netlify.app/takehome_exercises/takehome_ex01/takehomeex01)
+
+# Load packages
+```{r}
+pacman::p_load(tidyverse, haven,
+               ggrepel, ggthemes,
+               ggridges, ggdist,colorspace,ggdist,
+               patchwork, scales, ggplot2, 
+               matrixStats, treemapify, showtext)
+```
+
+# Load dataset and data processing
+```{r}
+
+respopagesex2024 <- read_csv("TH01_2/data/respopagesex2024.csv")
+show_col_types = FALSE
+
+knitr::kable(head(respopagesex2024))
+```
+
+```{r}
+respopagesex2024[duplicated(respopagesex2024),]
+```
+
+```{r}
+planning_areas <- read_csv("TH01_2/data/Planning_areas_of_Singapore_2.csv")
+```
+
+```{r}
+respop_with_region <- respopagesex2024 %>%
+  left_join(planning_areas, by = c("PA" = "Name (English)"))
+
+respop_cleaned <- respop_with_region %>%
+  select(-`Time`, -`Malay`, -`Chinese`, -`Pinyin`, -`Tamil`, -`Area (km2)`, -`Population`, -`Density (/km2)`, -`Subzones`)
+```
+
+# Gender Ratio Analysis by Region (As reference)
+
+## ✅ Three Good Design Principles Applied
+
+1. **Clear and Descriptive Title with Proper Axis Labels**
+The chart’s title — *"Male and Female Population by Region"* — succinctly conveys the purpose of the visualisation. Coupled with clearly labeled axes (*"Region"* and *"Total Population"*), this design adheres to fundamental **graphical integrity** and supports rapid comprehension. It aligns with best practices for enhancing **cognitive accessibility** in data graphics.
+
+2. **Strategic Use of Color for Categorical Differentiation**
+The use of high-contrast, intuitive colors (maroon for Females and navy for Males) effectively encodes the **categorical variable (Sex)**. This leverages **pre-attentive visual processing**, enabling users to instantly distinguish between gender groups. The visual encoding is both **aesthetically pleasing and functionally efficient**, which is crucial in comparative visualisations.
+
+3. **Inclusion of Percentage Labels to Add Analytical Depth**
+Each bar is annotated with percentage labels that represent the proportion of each gender within its respective region. This additional layer of information transforms a basic bar chart into a more **analytically enriched visual**, allowing users to compare both absolute values and relative gender compositions simultaneously. This reflects the principle of **"deriving insight" rather than merely displaying raw data"** — a key goal in visual analytics.
+
+
+## ❌ Three Areas for Further Improvement
+
+1. **Label Overlap and Legibility Concerns**
+
+While the inclusion of percentage labels is commendable, their placement **above the bars** results in visual congestion—especially in regions like *North-East* and *West*, where the height differences between segments are minimal. This diminishes readability and increases cognitive load. To resolve this:
+
+- Place labels **inside the bars** using `position_stack(vjust = 0.5)`
+- Use a **horizontal layout** to increase label spacing
+- Reduce font size or apply `ggrepel` for smart label adjustment
+
+2. **Lack of Alignment Between Data and Message**
+
+Although percentage labels are presented, the **bar height still encodes absolute values**. 
+This can lead viewers to focus on population differences rather than proportional differences. 
+A **100% stacked bar chart** would better align with the intent to highlight **gender balance within each region**.
+
+3. **Suboptimal Chart Type for Comparative Ratios**
+
+Grouped bar charts are ideal for comparing totals but are less effective for showing **composition within a group**. 
+A **normalized horizontal stacked bar chart** would:
+
+- More clearly show **gender proportion**
+- Eliminate vertical label collisions
+- Follow a natural **left-to-right reading flow** that supports comparison
+
+## Graph as reference first graph 
+```{r}
+gender_summary_long <- respop_cleaned %>%
+  group_by(Region, Sex) %>%
+  summarise(Total_Pop = sum(Pop), .groups = "drop")
+
+#Calculate total population per region
+gender_summary_long <- gender_summary_long %>%
+  group_by(Region) %>%
+  mutate(
+    Region_Total = sum(Total_Pop),
+    Percent = (Total_Pop / Region_Total) * 100
+  )
+
+#Plot side-by-side bars
+ggplot(gender_summary_long, aes(x = Region, y = Total_Pop, fill = Sex)) +
+  geom_col(position = "dodge") +
+  geom_text(
+    aes(label = paste0(round(Percent, 1), "%")),
+    position = position_dodge(width = 0.9),
+    vjust = -0.5,
+    size = 3, family = "nunito"
+  ) +
+  labs(
+    title = "Male and Female Population by Region",
+    x = "Region",
+    y = "Total Population"
+  ) +
+  scale_y_continuous(labels = scales::comma) +
+  theme_minimal(base_family = "nunito") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5),plot.title = element_text(hjust = 0.5, size = 15, face = "bold", family = "nunito")) +
+  scale_fill_manual(values = c("Females" = "#662633", "Males" = "#2C3C60"))
+```
+## 🔧 Improvement 1: What Was Improved
+
+```{r,fig.width= 10,fig.height= 6}
+gender_summary_long <- respop_cleaned %>%
+  group_by(Region, Sex) %>%
+  summarise(Total_Pop = sum(Pop), .groups = "drop") %>%
+  group_by(Region) %>%
+  mutate(
+    Region_Total = sum(Total_Pop),
+    Percent = (Total_Pop / Region_Total) * 100,
+    Label = paste0(round(Percent, 1), "%\n(", scales::comma(Total_Pop), ")")
+  )
+
+# Plot: stacked bar with % + population inside bars
+ggplot(gender_summary_long, aes(x = Region, y = Percent, fill = Sex)) +
+  geom_col(position = "stack", width = 0.6) +
+
+  # Percentage + population inside each segment
+  geom_text(
+    aes(label = Label),
+    position = position_stack(vjust = 0.5),
+    color = "white",
+    size = 3, family = "nunito"
+  ) +
+
+  labs(
+    title = "Gender Distribution by Region (2024)",
+    subtitle = "Each bar shows gender % and absolute population count",
+    x = "Region",
+    y = "Percentage (%)",
+    fill = "Gender"
+  ) +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  scale_fill_manual(values = c("Females" = "#A93226", "Males" = "#2C3E50")) +
+  theme_minimal(base_family = "nunito") +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 15),
+    plot.subtitle = element_text(hjust = 0.5, size = 11)
+  )
+```
+
+This revised visualisation enhance both analytical clarity and graphical integrity:
+
+### 1. From Absolute Counts to Proportional Comparison
+- **Original**: Displayed only raw population counts for each gender, which made it difficult to compare the gender distribution within each region.
+- **Improved**: Transformed into a **100% stacked bar chart** that normalises each region to 100%, making it much easier to compare **gender ratios** across regions.
+
+### 2. Embedded Dual-Level Information in Labels
+- **Original**: Included either percentage or total population as labels, but not both.
+- **Improved**: Combined both **percentage and absolute count** in each label (e.g., `48.7%\n(123,456)`), allowing the viewer to simultaneously interpret **relative proportion and actual magnitude**.
+
+### 3. Improved Label Positioning and Readability
+- **Original**: Percentage labels were placed outside the bars, leading to overlapping and reduced clarity, especially for regions with similar male/female proportions.
+- **Improved**: Labels are now **placed inside the bar segments** using `position_stack(vjust = 0.5)`, increasing legibility and reducing visual clutter.
+
+### 4. Chart Type Aligns with Analytical Purpose
+- **Original**: Used a grouped bar chart, which is more appropriate for comparing absolute values across categories.
+- **Improved**: Switched to a **stacked bar layout**, which better supports the analytical objective of comparing **gender balance within each region**.
+
+### Improvement outlines
+These improvements follow the visual design principles outlined in 
+*Lesson 2: Designing Graphs to Enlighten*, particularly:
+
+- Using the **right chart to match the message**
+- Enhancing **interpretability** through derived metrics
+- Leveraging **pre-attentive features** like color and label placement
+
+## 🔧 Improvement Summary 2: What Was Further Improved
+
+```{r,fig.width= 10,fig.height= 6}
+gender_summary_long <- respop_cleaned %>%
+  group_by(Region, Sex) %>%
+  summarise(Total_Pop = sum(Pop), .groups = "drop") %>%
+  group_by(Region) %>%
+  mutate(
+    Region_Total = sum(Total_Pop),
+    Region_Percent = round((Total_Pop / Region_Total) * 100, 1),
+    Label = paste0(Region_Percent, "%\n(", scales::comma(Total_Pop), ")")
+  ) %>%
+  ungroup() %>%
+  mutate(
+    Region = fct_reorder(Region, Region_Total, .desc = TRUE),  # sort by Region_Total
+    Sex = factor(Sex, levels = c("Males", "Females"))           # ensure stacking order
+  ) %>%
+  arrange(Region, Sex)  # ensure correct stacking order
+
+# Plot
+ggplot(gender_summary_long, aes(y = Region, x = Total_Pop, fill = Sex)) +
+  geom_col(position = "stack", width = 0.6) +
+  geom_text(
+    aes(label = Label),
+    position = position_stack(vjust = 0.5),
+    color = "white",
+    size = 3,
+    family = "nunito"
+  ) +
+  labs(
+    title = "Total Male and Female Population by Region (2024)",
+    subtitle = "Labels show % within each region and absolute population",
+    x = "Total Population",
+    y = "Region",
+    fill = "Gender"
+  ) +
+  scale_x_continuous(
+    labels = scales::label_comma(),
+    breaks = seq(0, 1000000, 100000)
+  ) +
+  scale_fill_manual(values = c("Females" = "#A93226", "Males" = "#2C3E50")) +
+  theme_minimal(base_family = "nunito") +
+  theme(
+    axis.text.y = element_text(size = 10),
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 15),
+    plot.subtitle = element_text(hjust = 0.5, size = 11)
+  )
+```
+Building on the earlier stacked percentage chart, this updated visualisation improves the clarity, comparability, and contextual storytelling of the gender distribution across regions in 2024.
+
+### 1. Switched from Percentage to Actual Population on the X-Axis
+- **Previous**: X-axis showed gender **percentage share**, which helped with proportion comparison but hid the actual population scale.
+- **Improved**: Uses **raw population values** on the x-axis (with comma formatting and 100k breaks), enabling clear comparison of **both gender ratio and total population** per region.
+
+### 2. Horizontal Layout Enhances Label Readability and Comparison
+- **Previous**: Vertical bars made category names harder to read, and labels could overlap in crowded segments.
+- **Improved**: **Horizontal stacked bars** make region names easier to scan and reduce label collision, improving overall **legibility** and alignment with **natural left-to-right reading flow**.
+
+### 3. Regions Sorted by Total Population
+- **Previous**: Regions were presented in arbitrary or default order, which reduced analytical clarity.
+- **Improved**: Regions are now **sorted in descending order of total population**, highlighting population scale differences and making the chart easier to interpret at a glance.
+
+### 4. Maintained Rich, Dual-Layer Labels
+- Each bar segment still includes a **concise label** that combines the percentage share and absolute count (e.g., `50.5% (302,710)`), enabling multi-level insight in a compact, readable form.
+
+
+These refinements not only retain the strengths of the previous version but enhance the visual’s ability to communicate both **structure (proportions)** and **magnitude (totals)** — an important principle covered in *Lesson 2: Designing Graphs to Enlighten*.
