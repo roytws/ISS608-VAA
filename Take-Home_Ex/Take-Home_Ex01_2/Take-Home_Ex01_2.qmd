@@ -54,17 +54,20 @@ respop_cleaned <- respop_with_region %>%
   select(-`Time`, -`Malay`, -`Chinese`, -`Pinyin`, -`Tamil`, -`Area (km2)`, -`Population`, -`Density (/km2)`, -`Subzones`)
 ```
 
-# Gender Ratio Analysis by Region (As reference)
+# Gender Ratio Analysis by Region (1st plot)
 
 ## ✅ Three Good Design Principles Applied
 
 1. **Clear and Descriptive Title with Proper Axis Labels**
+
 The chart’s title — *"Male and Female Population by Region"* — succinctly conveys the purpose of the visualisation. Coupled with clearly labeled axes (*"Region"* and *"Total Population"*), this design adheres to fundamental **graphical integrity** and supports rapid comprehension. It aligns with best practices for enhancing **cognitive accessibility** in data graphics.
 
 2. **Strategic Use of Color for Categorical Differentiation**
+
 The use of high-contrast, intuitive colors (maroon for Females and navy for Males) effectively encodes the **categorical variable (Sex)**. This leverages **pre-attentive visual processing**, enabling users to instantly distinguish between gender groups. The visual encoding is both **aesthetically pleasing and functionally efficient**, which is crucial in comparative visualisations.
 
 3. **Inclusion of Percentage Labels to Add Analytical Depth**
+
 Each bar is annotated with percentage labels that represent the proportion of each gender within its respective region. This additional layer of information transforms a basic bar chart into a more **analytically enriched visual**, allowing users to compare both absolute values and relative gender compositions simultaneously. This reflects the principle of **"deriving insight" rather than merely displaying raw data"** — a key goal in visual analytics.
 
 
