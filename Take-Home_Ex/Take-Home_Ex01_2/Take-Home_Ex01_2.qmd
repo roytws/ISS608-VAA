@@ -56,6 +56,38 @@ respop_cleaned <- respop_with_region %>%
 
 # Gender Ratio Analysis by Region (1st plot)
 
+```{r}
+gender_summary_long <- respop_cleaned %>%
+  group_by(Region, Sex) %>%
+  summarise(Total_Pop = sum(Pop), .groups = "drop")
+
+#Calculate total population per region
+gender_summary_long <- gender_summary_long %>%
+  group_by(Region) %>%
+  mutate(
+    Region_Total = sum(Total_Pop),
+    Percent = (Total_Pop / Region_Total) * 100
+  )
+
+#Plot side-by-side bars
+ggplot(gender_summary_long, aes(x = Region, y = Total_Pop, fill = Sex)) +
+  geom_col(position = "dodge") +
+  geom_text(
+    aes(label = paste0(round(Percent, 1), "%")),
+    position = position_dodge(width = 0.9),
+    vjust = -0.5,
+    size = 3, family = "nunito"
+  ) +
+  labs(
+    title = "Male and Female Population by Region",
+    x = "Region",
+    y = "Total Population"
+  ) +
+  scale_y_continuous(labels = scales::comma) +
+  theme_minimal(base_family = "nunito") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5),plot.title = element_text(hjust = 0.5, size = 15, face = "bold", family = "nunito")) +
+  scale_fill_manual(values = c("Females" = "#662633", "Males" = "#2C3C60"))
+```
+
 ## ✅ Three Good Design Principles Applied
 
 1. **Clear and Descriptive Title with Proper Axis Labels**
@@ -96,38 +128,7 @@ A **normalized horizontal stacked bar chart** would:
 - Eliminate vertical label collisions
 - Follow a natural **left-to-right reading flow** that supports comparison
 
-## Graph as reference first graph 
-```{r}
-gender_summary_long <- respop_cleaned %>%
-  group_by(Region, Sex) %>%
-  summarise(Total_Pop = sum(Pop), .groups = "drop")
 
-#Calculate total population per region
-gender_summary_long <- gender_summary_long %>%
-  group_by(Region) %>%
-  mutate(
-    Region_Total = sum(Total_Pop),
-    Percent = (Total_Pop / Region_Total) * 100
-  )
-
-#Plot side-by-side bars
-ggplot(gender_summary_long, aes(x = Region, y = Total_Pop, fill = Sex)) +
-  geom_col(position = "dodge") +
-  geom_text(
-    aes(label = paste0(round(Percent, 1), "%")),
-    position = position_dodge(width = 0.9),
-    vjust = -0.5,
-    size = 3, family = "nunito"
-  ) +
-  labs(
-    title = "Male and Female Population by Region",
-    x = "Region",
-    y = "Total Population"
-  ) +
-  scale_y_continuous(labels = scales::comma) +
-  theme_minimal(base_family = "nunito") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5),plot.title = element_text(hjust = 0.5, size = 15, face = "bold", family = "nunito")) +
-  scale_fill_manual(values = c("Females" = "#662633", "Males" = "#2C3C60"))
-```
 ## 🔧 Improvement 1: What Was Improved
 
 ```{r,fig.width= 10,fig.height= 6}
@@ -261,5 +262,5 @@ Building on the earlier stacked percentage chart, this updated visualisation imp
 ### 4. Maintained Rich, Dual-Layer Labels
 - Each bar segment still includes a **concise label** that combines the percentage share and absolute count (e.g., `50.5% (302,710)`), enabling multi-level insight in a compact, readable form.
 
-
+### Improvement outlines
 These refinements not only retain the strengths of the previous version but enhance the visual’s ability to communicate both **structure (proportions)** and **magnitude (totals)** — an important principle covered in *Lesson 2: Designing Graphs to Enlighten*.

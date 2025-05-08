@@ -222,7 +222,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#three-good-design-principles-applied" id="toc-three-good-design-principles-applied" class="nav-link" data-scroll-target="#three-good-design-principles-applied">✅ Three Good Design Principles Applied</a></li>
   <li><a href="#three-areas-for-further-improvement" id="toc-three-areas-for-further-improvement" class="nav-link" data-scroll-target="#three-areas-for-further-improvement">❌ Three Areas for Further Improvement</a></li>
-  <li><a href="#graph-as-reference-first-graph" id="toc-graph-as-reference-first-graph" class="nav-link" data-scroll-target="#graph-as-reference-first-graph">Graph as reference first graph</a></li>
   <li><a href="#improvement-1-what-was-improved" id="toc-improvement-1-what-was-improved" class="nav-link" data-scroll-target="#improvement-1-what-was-improved">🔧 Improvement 1: What Was Improved</a>
   <ul class="collapse">
   <li><a href="#from-absolute-counts-to-proportional-comparison" id="toc-from-absolute-counts-to-proportional-comparison" class="nav-link" data-scroll-target="#from-absolute-counts-to-proportional-comparison">1. From Absolute Counts to Proportional Comparison</a></li>
@@ -237,6 +236,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#horizontal-layout-enhances-label-readability-and-comparison" id="toc-horizontal-layout-enhances-label-readability-and-comparison" class="nav-link" data-scroll-target="#horizontal-layout-enhances-label-readability-and-comparison">2. Horizontal Layout Enhances Label Readability and Comparison</a></li>
   <li><a href="#regions-sorted-by-total-population" id="toc-regions-sorted-by-total-population" class="nav-link" data-scroll-target="#regions-sorted-by-total-population">3. Regions Sorted by Total Population</a></li>
   <li><a href="#maintained-rich-dual-layer-labels" id="toc-maintained-rich-dual-layer-labels" class="nav-link" data-scroll-target="#maintained-rich-dual-layer-labels">4. Maintained Rich, Dual-Layer Labels</a></li>
+  <li><a href="#improvement-outlines-1" id="toc-improvement-outlines-1" class="nav-link" data-scroll-target="#improvement-outlines-1">Improvement outlines</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -403,6 +403,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="gender-ratio-analysis-by-region-1st-plot" class="level1">
 <h1>Gender Ratio Analysis by Region (1st plot)</h1>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>gender_summary_long <span class="ot">&lt;-</span> respop_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region, Sex) <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Total_Pop =</span> <span class="fu">sum</span>(Pop), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate total population per region</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>gender_summary_long <span class="ot">&lt;-</span> gender_summary_long <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region) <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Region_Total =</span> <span class="fu">sum</span>(Total_Pop),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Percent =</span> (Total_Pop <span class="sc">/</span> Region_Total) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot side-by-side bars</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gender_summary_long, <span class="fu">aes</span>(<span class="at">x =</span> Region, <span class="at">y =</span> Total_Pop, <span class="at">fill =</span> Sex)) <span class="sc">+</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(Percent, <span class="dv">1</span>), <span class="st">"%"</span>)),</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>),</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>, <span class="at">family =</span> <span class="st">"nunito"</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Male and Female Population by Region"</span>,</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Region"</span>,</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Total Population"</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_family =</span> <span class="st">"nunito"</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">family =</span> <span class="st">"nunito"</span>)) <span class="sc">+</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Females"</span> <span class="ot">=</span> <span class="st">"#662633"</span>, <span class="st">"Males"</span> <span class="ot">=</span> <span class="st">"#2C3C60"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Take-Home_Ex01_2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 <section id="three-good-design-principles-applied" class="level2">
 <h2 class="anchored" data-anchor-id="three-good-design-principles-applied">✅ Three Good Design Principles Applied</h2>
 <ol type="1">
@@ -442,46 +479,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Eliminate vertical label collisions</li>
 <li>Follow a natural <strong>left-to-right reading flow</strong> that supports comparison</li>
 </ul>
-</section>
-<section id="graph-as-reference-first-graph" class="level2">
-<h2 class="anchored" data-anchor-id="graph-as-reference-first-graph">Graph as reference first graph</h2>
-<div class="cell">
-<details open="">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>gender_summary_long <span class="ot">&lt;-</span> respop_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region, Sex) <span class="sc">%&gt;%</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Total_Pop =</span> <span class="fu">sum</span>(Pop), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate total population per region</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>gender_summary_long <span class="ot">&lt;-</span> gender_summary_long <span class="sc">%&gt;%</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region) <span class="sc">%&gt;%</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Region_Total =</span> <span class="fu">sum</span>(Total_Pop),</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Percent =</span> (Total_Pop <span class="sc">/</span> Region_Total) <span class="sc">*</span> <span class="dv">100</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot side-by-side bars</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gender_summary_long, <span class="fu">aes</span>(<span class="at">x =</span> Region, <span class="at">y =</span> Total_Pop, <span class="at">fill =</span> Sex)) <span class="sc">+</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(Percent, <span class="dv">1</span>), <span class="st">"%"</span>)),</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>),</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>,</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>, <span class="at">family =</span> <span class="st">"nunito"</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Male and Female Population by Region"</span>,</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Region"</span>,</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Total Population"</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_family =</span> <span class="st">"nunito"</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">family =</span> <span class="st">"nunito"</span>)) <span class="sc">+</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Females"</span> <span class="ot">=</span> <span class="st">"#662633"</span>, <span class="st">"Males"</span> <span class="ot">=</span> <span class="st">"#2C3C60"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="Take-Home_Ex01_2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
 </section>
 <section id="improvement-1-what-was-improved" class="level2">
 <h2 class="anchored" data-anchor-id="improvement-1-what-was-improved">🔧 Improvement 1: What Was Improved</h2>
@@ -650,6 +647,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>Each bar segment still includes a <strong>concise label</strong> that combines the percentage share and absolute count (e.g., <code>50.5% (302,710)</code>), enabling multi-level insight in a compact, readable form.</li>
 </ul>
+</section>
+<section id="improvement-outlines-1" class="level3">
+<h3 class="anchored" data-anchor-id="improvement-outlines-1">Improvement outlines</h3>
 <p>These refinements not only retain the strengths of the previous version but enhance the visual’s ability to communicate both <strong>structure (proportions)</strong> and <strong>magnitude (totals)</strong> — an important principle covered in <em>Lesson 2: Designing Graphs to Enlighten</em>.</p>
 
 
