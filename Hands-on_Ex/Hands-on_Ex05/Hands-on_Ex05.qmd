@@ -327,6 +327,7 @@ visNetwork(GAStech_nodes, GAStech_edges_vis) %>%
 ```
 
 ## drop down list by id
+
 ```{r}
 GAStech_edges_vis <- GAStech_edges_aggregated %>%
   rename(from = source, to = target)
@@ -372,8 +373,6 @@ visNetwork(GAStech_nodes, GAStech_edges_vis) %>%
 ```
 
 ## Interactivity
-
-
 
 ```{r}
 
