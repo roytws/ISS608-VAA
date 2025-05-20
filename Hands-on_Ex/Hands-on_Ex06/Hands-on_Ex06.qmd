@@ -155,18 +155,98 @@ ggplot(top4_attacks,
 air <- read_excel("chap06/data/arrivals_by_air.xlsx")
 ```
 
+## Deriving month and year fields
+
+```{r}
+air$month <- factor(month(air$`Month-Year`), 
+                    levels=1:12, 
+                    labels=month.abb, 
+                    ordered=TRUE) 
+air$year <- year(ymd(air$`Month-Year`))
+
+```
+
+## Extracting the target country
+
+```{r}
+Vietnam <- air %>% 
+  select(`Vietnam`, 
+         month, 
+         year) %>%
+  filter(year >= 2010)
+```
+
+## Computing year average arrivals by month
+```{r}
+hline.data <- Vietnam %>% 
+  group_by(month) %>%
+  summarise(avgvalue = mean(`Vietnam`))
 
 
+```
 
+## Plotting the cycle plot
+```{r,fig.width= 10}
+ggplot() + 
+  geom_line(data=Vietnam,
+            aes(x=year, 
+                y=`Vietnam`, 
+                group=month), 
+            colour="black") +
+  geom_hline(aes(yintercept=avgvalue), 
+             data=hline.data, 
+             linetype=6, 
+             colour="red", 
+             size=0.5) + 
+  facet_grid(~month) +
+  labs(axis.text.x = element_blank(),
+       title = "Visitor arrivals from Vietnam by air, Jan 2010-Dec 2019") +
+  xlab("") +
+  ylab("No. of Visitors") +
+  theme_tufte(base_family = "Helvetica")
+```
+## to plot better and clearer 
 
+```{r,fig.width= 10,fig.height= 6}
+Vietnam$Date <- as.Date(paste(Vietnam$year, Vietnam$month, "01", sep = "-"), format = "%Y-%B-%d")
 
+ggplot() + 
+  geom_line(data = Vietnam,
+            aes(x = Date, y = `Vietnam`, group = month),
+            colour = "black") +
+  geom_hline(data = hline.data,
+             aes(yintercept = avgvalue),
+             linetype = 6,
+             colour = "red",
+             size = 0.5) +
+  facet_wrap(~month, ncol = 3) +  # More flexible layout than facet_grid
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y") +  # Show more x labels
+  labs(title = "Visitor arrivals from Vietnam by air, Jan 2010–Dec 2019",
+       x = "", y = "No. of Visitors") +
+  theme_tufte(base_family = "Helvetica") +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 7),
+    strip.text = element_text(face = "bold")
+  )
+```
 
+# Plotting Slopegraph
 
+## Data Import
+```{r}
+rice <- read_csv("chap06/data/rice.csv")
+```
 
-
-
-
-
+##  Plotting the slopegraph
+```{r}
+rice %>% 
+  mutate(Year = factor(Year)) %>%
+  filter(Year %in% c(1961, 1980)) %>%
+  newggslopegraph(Year, Yield, Country,
+                Title = "Rice Yield of Top 11 Asian Counties",
+                SubTitle = "1961-1980",
+                Caption = "Prepared by: Dr. Kam Tin Seong")
+```
 
 
 
