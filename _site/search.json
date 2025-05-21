@@ -483,11 +483,123 @@
     "text": "Interactivity\n\n\nCode\nGAStech_edges_vis &lt;- GAStech_edges_aggregated %&gt;%\n  rename(from = source, to = target)\n\nvisNetwork(GAStech_nodes, GAStech_edges_vis) %&gt;%\n  visIgraphLayout(layout = \"layout_with_fr\") %&gt;%\n  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %&gt;%\n  visLegend() %&gt;%\n  visLayout(randomSeed = 123)"
   },
   {
+    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html",
+    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html",
+    "title": "Hands-on Exercise 6",
+    "section": "",
+    "text": "Code\npacman::p_load(scales, viridis, lubridate, ggthemes,\n               gridExtra, readxl, knitr, data.table,\n               CGPfunctions, ggHoriPlot, tidyverse)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#examine-data-structure",
+    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#examine-data-structure",
+    "title": "Hands-on Exercise 6",
+    "section": "Examine Data Structure",
+    "text": "Examine Data Structure\n\n\nCode\nkable(head(attacks))\n\n\n\n\n\ntimestamp\nsource_country\ntz\n\n\n\n\n2015-03-12 15:59:16\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:00:48\nFR\nEurope/Paris\n\n\n2015-03-12 16:02:26\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:02:38\nUS\nAmerica/Chicago\n\n\n2015-03-12 16:03:22\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:03:45\nCN\nAsia/Shanghai"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#plotting-multiple-calendar-heatmaps",
+    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#plotting-multiple-calendar-heatmaps",
+    "title": "Hands-on Exercise 6",
+    "section": "Plotting Multiple Calendar Heatmaps",
+    "text": "Plotting Multiple Calendar Heatmaps\n\n\nCode\nattacks_by_country &lt;- count(\n  attacks, source_country) %&gt;%\n  mutate(percent = percent(n/sum(n))) %&gt;%\n  arrange(desc(n))\n\n\n\n\nCode\ntop4 &lt;- attacks_by_country$source_country[1:4]\ntop4_attacks &lt;- attacks %&gt;%\n  filter(source_country %in% top4) %&gt;%\n  count(source_country, wkday, hour) %&gt;%\n  ungroup() %&gt;%\n  mutate(source_country = factor(\n    source_country, levels = top4)) %&gt;%\n  na.omit()"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#plot-multiple-calender-heatmap",
+    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#plot-multiple-calender-heatmap",
+    "title": "Hands-on Exercise 6",
+    "section": "plot multiple calender heatmap",
+    "text": "plot multiple calender heatmap\n\n\nCode\nggplot(top4_attacks, \n       aes(hour, \n           wkday, \n           fill = n)) + \n  geom_tile(color = \"white\", \n          size = 0.1) + \n  theme_tufte(base_family = \"Helvetica\") + \n  coord_equal() +\n  scale_fill_gradient(name = \"# of attacks\",\n                    low = \"sky blue\", \n                    high = \"dark blue\") +\n  facet_wrap(~source_country, ncol = 2) +\n  labs(x = NULL, y = NULL, \n     title = \"Attacks on top 4 countries by weekday and time of day\") +\n  theme(axis.ticks = element_blank(),\n        axis.text.x = element_text(size = 7),\n        plot.title = element_text(hjust = 0.5),\n        legend.title = element_text(size = 8),\n        legend.text = element_text(size = 6) )\n\n\nWarning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family\nnot found in Windows font database\n\n\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\n\n\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#deriving-month-and-year-fields",
+    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#deriving-month-and-year-fields",
+    "title": "Hands-on Exercise 6",
+    "section": "Deriving month and year fields",
+    "text": "Deriving month and year fields\n\n\nCode\nair$month &lt;- factor(month(air$`Month-Year`), \n                    levels=1:12, \n                    labels=month.abb, \n                    ordered=TRUE) \nair$year &lt;- year(ymd(air$`Month-Year`))"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#extracting-the-target-country",
+    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#extracting-the-target-country",
+    "title": "Hands-on Exercise 6",
+    "section": "Extracting the target country",
+    "text": "Extracting the target country\n\n\nCode\nVietnam &lt;- air %&gt;% \n  select(`Vietnam`, \n         month, \n         year) %&gt;%\n  filter(year &gt;= 2010)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#computing-year-average-arrivals-by-month",
+    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#computing-year-average-arrivals-by-month",
+    "title": "Hands-on Exercise 6",
+    "section": "Computing year average arrivals by month",
+    "text": "Computing year average arrivals by month\n\n\nCode\nhline.data &lt;- Vietnam %&gt;% \n  group_by(month) %&gt;%\n  summarise(avgvalue = mean(`Vietnam`))"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#plotting-the-cycle-plot",
+    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#plotting-the-cycle-plot",
+    "title": "Hands-on Exercise 6",
+    "section": "Plotting the cycle plot",
+    "text": "Plotting the cycle plot\n\n\nCode\nggplot() + \n  geom_line(data=Vietnam,\n            aes(x=year, \n                y=`Vietnam`, \n                group=month), \n            colour=\"black\") +\n  geom_hline(aes(yintercept=avgvalue), \n             data=hline.data, \n             linetype=6, \n             colour=\"red\", \n             size=0.5) + \n  facet_grid(~month) +\n  labs(axis.text.x = element_blank(),\n       title = \"Visitor arrivals from Vietnam by air, Jan 2010-Dec 2019\") +\n  xlab(\"\") +\n  ylab(\"No. of Visitors\") +\n  theme_tufte(base_family = \"Helvetica\")\n\n\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\n\n\nWarning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family\nnot found in Windows font database\n\n\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\n\n\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#to-plot-better-and-clearer",
+    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#to-plot-better-and-clearer",
+    "title": "Hands-on Exercise 6",
+    "section": "to plot better and clearer",
+    "text": "to plot better and clearer\n\n\nCode\nVietnam$Date &lt;- as.Date(paste(Vietnam$year, Vietnam$month, \"01\", sep = \"-\"), format = \"%Y-%B-%d\")\n\nggplot() + \n  geom_line(data = Vietnam,\n            aes(x = Date, y = `Vietnam`, group = month),\n            colour = \"black\") +\n  geom_hline(data = hline.data,\n             aes(yintercept = avgvalue),\n             linetype = 6,\n             colour = \"red\",\n             size = 0.5) +\n  facet_wrap(~month, ncol = 3) +  # More flexible layout than facet_grid\n  scale_x_date(date_breaks = \"2 years\", date_labels = \"%Y\") +  # Show more x labels\n  labs(title = \"Visitor arrivals from Vietnam by air, Jan 2010–Dec 2019\",\n       x = \"\", y = \"No. of Visitors\") +\n  theme_tufte(base_family = \"Helvetica\") +\n  theme(\n    axis.text.x = element_text(angle = 45, hjust = 1, size = 7),\n    strip.text = element_text(face = \"bold\")\n  )\n\n\nWarning: Removed 10 rows containing missing values or values outside the scale range\n(`geom_line()`).\n\n\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\n\n\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#data-import",
+    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#data-import",
+    "title": "Hands-on Exercise 6",
+    "section": "Data Import",
+    "text": "Data Import\n\n\nCode\nrice &lt;- read_csv(\"chap06/data/rice.csv\")\n\n\nRows: 550 Columns: 4\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (1): Country\ndbl (3): Year, Yield, Production\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#plotting-the-slopegraph",
+    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#plotting-the-slopegraph",
+    "title": "Hands-on Exercise 6",
+    "section": "Plotting the slopegraph",
+    "text": "Plotting the slopegraph\n\n\nCode\nrice %&gt;% \n  mutate(Year = factor(Year)) %&gt;%\n  filter(Year %in% c(1961, 1980)) %&gt;%\n  newggslopegraph(Year, Yield, Country,\n                Title = \"Rice Yield of Top 11 Asian Counties\",\n                SubTitle = \"1961-1980\",\n                Caption = \"Prepared by: Dr. Kam Tin Seong\")\n\n\n\nConverting 'Year' to an ordered factor"
+  },
+  {
     "objectID": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html",
     "href": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html",
     "title": "In-Class Ex 05",
     "section": "",
     "text": "Code\npacman::p_load(tidyverse, jsonlite,\n               SmartEDA, tidygraph,\n               ggraph)\n\n\n\n\n\n\n\nCode\nkg &lt;- fromJSON(\"data/MC1_graph.json\")\n\n\n\n\n\n\nCode\nstr(kg, max.level = 1)\n\n\nList of 5\n $ directed  : logi TRUE\n $ multigraph: logi TRUE\n $ graph     :List of 2\n $ nodes     :'data.frame': 17412 obs. of  10 variables:\n $ links     :'data.frame': 37857 obs. of  4 variables:\n\n\n\n\n\n\n\nCode\nnodes_tbl &lt;- as_tibble(kg$nodes)\nedges_tbl &lt;- as_tibble(kg$links)\n\n\n\n\n\n\n\n\nCode\nggplot(data = edges_tbl, aes(y = `Edge Type`)) +\n  geom_bar()\n\n\n\n\n\n\n\nCode\nggplot(data = nodes_tbl, aes(y = `Node Type`)) +\n  geom_bar()\n\n\n\n\n\n\n\n\n\n\n\n\nCode\nid_map &lt;- tibble(\n  id = nodes_tbl$id,\n  index = seq_len(nrow(nodes_tbl))\n)\n\n\n\n\n\n\n\nCode\nedges_tbl &lt;- edges_tbl %&gt;%\n  left_join(id_map, by = c(\"source\" = \"id\")) %&gt;%\n  rename(from = index) %&gt;%\n  left_join(id_map, by = c(\"target\" = \"id\")) %&gt;%\n  rename(to = index)\n\n\n\n\n\n\n\nCode\nedges_tbl &lt;- edges_tbl %&gt;%\n  filter(!is.na(from), !is.na(to))\n\n\n\n\n\n\n\nCode\ngraph &lt;- tbl_graph(\n  nodes = nodes_tbl,\n  edges = edges_tbl,\n  directed = kg$directed\n)\n\n\n\n\n\n\n\n\nCode\nset.seed(1234)\n\n\n\n\n\n\nCode\nggraph(graph, layout = \"fr\") +\n  geom_edge_link(alpha = 0.3, colour = \"gray\") +\n  geom_node_point(aes(color = `Node Type`), size = 4) +\n  geom_node_text(aes(label = name), repel = TRUE, size = 2.5) +\n  theme_void()\n\n\n\n\n\n\nCode\ngraph_memberof &lt;- graph %&gt;%\n  activate(edges) %&gt;%\n  filter(`Edge Type` == \"MemberOf\")\n\n\n\n\n\n(i.e.,used in these edges)\n\n\nCode\nused_node_indices &lt;- graph_memberof %&gt;%\n  activate(edges) %&gt;%\n  as_tibble() %&gt;%\n  select(from, to) %&gt;%\n  unlist() %&gt;%\n  unique()\n\n\n\n\n\n\n\nCode\ngraph_memberof &lt;- graph_memberof %&gt;%\n  activate(nodes) %&gt;%\n  mutate(row_id = row_number()) %&gt;%\n  filter(row_id %in% used_node_indices) %&gt;%\n  select(-row_id)  # optional cleanup\n\n\n\n\n\n\n\nCode\nggraph(graph_memberof,\n       layout = \"fr\") +\n  geom_edge_link(alpha = 0.5,\n                 colour = \"gray\") +\n  geom_node_point(aes(color = `Node Type`),\n                  size = 1) +\n  geom_node_text(aes(label = name),\n                 repel = TRUE,\n                 size = 2.5) +\n  theme_void()\n\n\nWarning: ggrepel: 789 unlabeled data points (too many overlaps). Consider\nincreasing max.overlaps"
+  },
+  {
+    "objectID": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#import-package",
+    "href": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#import-package",
+    "title": "In-Class Ex 05",
+    "section": "",
+    "text": "Code\npacman::p_load(tidyverse, jsonlite,\n               SmartEDA, tidygraph,\n               ggraph)"
+  },
+  {
+    "objectID": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#import-data",
+    "href": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#import-data",
+    "title": "In-Class Ex 05",
+    "section": "",
+    "text": "Code\nkg &lt;- fromJSON(\"data/MC1_graph.json\")\n\n\n\n\n\n\nCode\nstr(kg, max.level = 1)\n\n\nList of 5\n $ directed  : logi TRUE\n $ multigraph: logi TRUE\n $ graph     :List of 2\n $ nodes     :'data.frame': 17412 obs. of  10 variables:\n $ links     :'data.frame': 37857 obs. of  4 variables:\n\n\n\n\n\n\n\nCode\nnodes_tbl &lt;- as_tibble(kg$nodes)\nedges_tbl &lt;- as_tibble(kg$links)"
+  },
+  {
+    "objectID": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#initial-eda",
+    "href": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#initial-eda",
+    "title": "In-Class Ex 05",
+    "section": "",
+    "text": "Code\nggplot(data = edges_tbl, aes(y = `Edge Type`)) +\n  geom_bar()\n\n\n\n\n\n\n\nCode\nggplot(data = nodes_tbl, aes(y = `Node Type`)) +\n  geom_bar()"
+  },
+  {
+    "objectID": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#create-knowledge-graph",
+    "href": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#create-knowledge-graph",
+    "title": "In-Class Ex 05",
+    "section": "",
+    "text": "Code\nid_map &lt;- tibble(\n  id = nodes_tbl$id,\n  index = seq_len(nrow(nodes_tbl))\n)\n\n\n\n\n\n\n\nCode\nedges_tbl &lt;- edges_tbl %&gt;%\n  left_join(id_map, by = c(\"source\" = \"id\")) %&gt;%\n  rename(from = index) %&gt;%\n  left_join(id_map, by = c(\"target\" = \"id\")) %&gt;%\n  rename(to = index)\n\n\n\n\n\n\n\nCode\nedges_tbl &lt;- edges_tbl %&gt;%\n  filter(!is.na(from), !is.na(to))\n\n\n\n\n\n\n\nCode\ngraph &lt;- tbl_graph(\n  nodes = nodes_tbl,\n  edges = edges_tbl,\n  directed = kg$directed\n)"
+  },
+  {
+    "objectID": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#visualising-the-knowledge-graph-control-the-layout-with-the-value",
+    "href": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#visualising-the-knowledge-graph-control-the-layout-with-the-value",
+    "title": "In-Class Ex 05",
+    "section": "",
+    "text": "Code\nset.seed(1234)\n\n\n\n\n\n\nCode\nggraph(graph, layout = \"fr\") +\n  geom_edge_link(alpha = 0.3, colour = \"gray\") +\n  geom_node_point(aes(color = `Node Type`), size = 4) +\n  geom_node_text(aes(label = name), repel = TRUE, size = 2.5) +\n  theme_void()\n\n\n\n\n\n\nCode\ngraph_memberof &lt;- graph %&gt;%\n  activate(edges) %&gt;%\n  filter(`Edge Type` == \"MemberOf\")\n\n\n\n\n\n(i.e.,used in these edges)\n\n\nCode\nused_node_indices &lt;- graph_memberof %&gt;%\n  activate(edges) %&gt;%\n  as_tibble() %&gt;%\n  select(from, to) %&gt;%\n  unlist() %&gt;%\n  unique()\n\n\n\n\n\n\n\nCode\ngraph_memberof &lt;- graph_memberof %&gt;%\n  activate(nodes) %&gt;%\n  mutate(row_id = row_number()) %&gt;%\n  filter(row_id %in% used_node_indices) %&gt;%\n  select(-row_id)  # optional cleanup\n\n\n\n\n\n\n\nCode\nggraph(graph_memberof,\n       layout = \"fr\") +\n  geom_edge_link(alpha = 0.5,\n                 colour = \"gray\") +\n  geom_node_point(aes(color = `Node Type`),\n                  size = 1) +\n  geom_node_text(aes(label = name),\n                 repel = TRUE,\n                 size = 2.5) +\n  theme_void()\n\n\nWarning: ggrepel: 789 unlabeled data points (too many overlaps). Consider\nincreasing max.overlaps"
   },
   {
     "objectID": "index.html",
@@ -593,117 +705,5 @@
     "title": "Take-Home_Ex01 part 2",
     "section": "🔧 Improvement Summary 2: What Was Further Improved",
     "text": "🔧 Improvement Summary 2: What Was Further Improved\n\n\nCode\ngender_summary_long &lt;- respop_cleaned %&gt;%\n  group_by(Region, Sex) %&gt;%\n  summarise(Total_Pop = sum(Pop), .groups = \"drop\") %&gt;%\n  group_by(Region) %&gt;%\n  mutate(\n    Region_Total = sum(Total_Pop),\n    Region_Percent = round((Total_Pop / Region_Total) * 100, 1),\n    Label = paste0(Region_Percent, \"%\\n(\", scales::comma(Total_Pop), \")\")\n  ) %&gt;%\n  ungroup() %&gt;%\n  mutate(\n    Region = fct_reorder(Region, Region_Total, .desc = TRUE),  # sort by Region_Total\n    Sex = factor(Sex, levels = c(\"Males\", \"Females\"))           # ensure stacking order\n  ) %&gt;%\n  arrange(Region, Sex)  # ensure correct stacking order\n\n# Plot\nggplot(gender_summary_long, aes(y = Region, x = Total_Pop, fill = Sex)) +\n  geom_col(position = \"stack\", width = 0.6) +\n  geom_text(\n    aes(label = Label),\n    position = position_stack(vjust = 0.5),\n    color = \"white\",\n    size = 3,\n    family = \"nunito\"\n  ) +\n  labs(\n    title = \"Total Male and Female Population by Region (2024)\",\n    subtitle = \"Labels show % within each region and absolute population\",\n    x = \"Total Population\",\n    y = \"Region\",\n    fill = \"Gender\"\n  ) +\n  scale_x_continuous(\n    labels = scales::label_comma(),\n    breaks = seq(0, 1000000, 100000)\n  ) +\n  scale_fill_manual(values = c(\"Females\" = \"#A93226\", \"Males\" = \"#2C3E50\")) +\n  theme_minimal(base_family = \"nunito\") +\n  theme(\n    axis.text.y = element_text(size = 10),\n    plot.title = element_text(hjust = 0.5, face = \"bold\", size = 15),\n    plot.subtitle = element_text(hjust = 0.5, size = 11)\n  )\n\n\n\n\n\nBuilding on the earlier stacked percentage chart, this updated visualisation improves the clarity, comparability, and contextual storytelling of the gender distribution across regions in 2024.\n\n1. Switched from Percentage to Actual Population on the X-Axis\n\nPrevious: X-axis showed gender percentage share, which helped with proportion comparison but hid the actual population scale.\nImproved: Uses raw population values on the x-axis (with comma formatting and 100k breaks), enabling clear comparison of both gender ratio and total population per region.\n\n\n\n2. Horizontal Layout Enhances Label Readability and Comparison\n\nPrevious: Vertical bars made category names harder to read, and labels could overlap in crowded segments.\nImproved: Horizontal stacked bars make region names easier to scan and reduce label collision, improving overall legibility and alignment with natural left-to-right reading flow.\n\n\n\n3. Regions Sorted by Total Population\n\nPrevious: Regions were presented in arbitrary or default order, which reduced analytical clarity.\nImproved: Regions are now sorted in descending order of total population, highlighting population scale differences and making the chart easier to interpret at a glance.\n\n\n\n4. Maintained Rich, Dual-Layer Labels\n\nEach bar segment still includes a concise label that combines the percentage share and absolute count (e.g., 50.5% (302,710)), enabling multi-level insight in a compact, readable form.\n\n\n\nImprovement outlines\nThese refinements not only retain the strengths of the previous version but enhance the visual’s ability to communicate both structure (proportions) and magnitude (totals) — an important principle covered in Lesson 2: Designing Graphs to Enlighten."
-  },
-  {
-    "objectID": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#import-package",
-    "href": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#import-package",
-    "title": "In-Class Ex 05",
-    "section": "",
-    "text": "Code\npacman::p_load(tidyverse, jsonlite,\n               SmartEDA, tidygraph,\n               ggraph)"
-  },
-  {
-    "objectID": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#import-data",
-    "href": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#import-data",
-    "title": "In-Class Ex 05",
-    "section": "",
-    "text": "Code\nkg &lt;- fromJSON(\"data/MC1_graph.json\")\n\n\n\n\n\n\nCode\nstr(kg, max.level = 1)\n\n\nList of 5\n $ directed  : logi TRUE\n $ multigraph: logi TRUE\n $ graph     :List of 2\n $ nodes     :'data.frame': 17412 obs. of  10 variables:\n $ links     :'data.frame': 37857 obs. of  4 variables:\n\n\n\n\n\n\n\nCode\nnodes_tbl &lt;- as_tibble(kg$nodes)\nedges_tbl &lt;- as_tibble(kg$links)"
-  },
-  {
-    "objectID": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#initial-eda",
-    "href": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#initial-eda",
-    "title": "In-Class Ex 05",
-    "section": "",
-    "text": "Code\nggplot(data = edges_tbl, aes(y = `Edge Type`)) +\n  geom_bar()\n\n\n\n\n\n\n\nCode\nggplot(data = nodes_tbl, aes(y = `Node Type`)) +\n  geom_bar()"
-  },
-  {
-    "objectID": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#create-knowledge-graph",
-    "href": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#create-knowledge-graph",
-    "title": "In-Class Ex 05",
-    "section": "",
-    "text": "Code\nid_map &lt;- tibble(\n  id = nodes_tbl$id,\n  index = seq_len(nrow(nodes_tbl))\n)\n\n\n\n\n\n\n\nCode\nedges_tbl &lt;- edges_tbl %&gt;%\n  left_join(id_map, by = c(\"source\" = \"id\")) %&gt;%\n  rename(from = index) %&gt;%\n  left_join(id_map, by = c(\"target\" = \"id\")) %&gt;%\n  rename(to = index)\n\n\n\n\n\n\n\nCode\nedges_tbl &lt;- edges_tbl %&gt;%\n  filter(!is.na(from), !is.na(to))\n\n\n\n\n\n\n\nCode\ngraph &lt;- tbl_graph(\n  nodes = nodes_tbl,\n  edges = edges_tbl,\n  directed = kg$directed\n)"
-  },
-  {
-    "objectID": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#visualising-the-knowledge-graph-control-the-layout-with-the-value",
-    "href": "In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html#visualising-the-knowledge-graph-control-the-layout-with-the-value",
-    "title": "In-Class Ex 05",
-    "section": "",
-    "text": "Code\nset.seed(1234)\n\n\n\n\n\n\nCode\nggraph(graph, layout = \"fr\") +\n  geom_edge_link(alpha = 0.3, colour = \"gray\") +\n  geom_node_point(aes(color = `Node Type`), size = 4) +\n  geom_node_text(aes(label = name), repel = TRUE, size = 2.5) +\n  theme_void()\n\n\n\n\n\n\nCode\ngraph_memberof &lt;- graph %&gt;%\n  activate(edges) %&gt;%\n  filter(`Edge Type` == \"MemberOf\")\n\n\n\n\n\n(i.e.,used in these edges)\n\n\nCode\nused_node_indices &lt;- graph_memberof %&gt;%\n  activate(edges) %&gt;%\n  as_tibble() %&gt;%\n  select(from, to) %&gt;%\n  unlist() %&gt;%\n  unique()\n\n\n\n\n\n\n\nCode\ngraph_memberof &lt;- graph_memberof %&gt;%\n  activate(nodes) %&gt;%\n  mutate(row_id = row_number()) %&gt;%\n  filter(row_id %in% used_node_indices) %&gt;%\n  select(-row_id)  # optional cleanup\n\n\n\n\n\n\n\nCode\nggraph(graph_memberof,\n       layout = \"fr\") +\n  geom_edge_link(alpha = 0.5,\n                 colour = \"gray\") +\n  geom_node_point(aes(color = `Node Type`),\n                  size = 1) +\n  geom_node_text(aes(label = name),\n                 repel = TRUE,\n                 size = 2.5) +\n  theme_void()\n\n\nWarning: ggrepel: 789 unlabeled data points (too many overlaps). Consider\nincreasing max.overlaps"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html",
-    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html",
-    "title": "In-Class Ex 06",
-    "section": "",
-    "text": "Code\npacman::p_load(scales, viridis, lubridate, ggthemes,\n               gridExtra, readxl, knitr, data.table,\n               CGPfunctions, ggHoriPlot, tidyverse)"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#examine-data-structure",
-    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#examine-data-structure",
-    "title": "In-Class Ex 06",
-    "section": "Examine Data Structure",
-    "text": "Examine Data Structure\n\n\nCode\nkable(head(attacks))\n\n\n\n\n\ntimestamp\nsource_country\ntz\n\n\n\n\n2015-03-12 15:59:16\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:00:48\nFR\nEurope/Paris\n\n\n2015-03-12 16:02:26\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:02:38\nUS\nAmerica/Chicago\n\n\n2015-03-12 16:03:22\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:03:45\nCN\nAsia/Shanghai"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#plotting-multiple-calendar-heatmaps",
-    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#plotting-multiple-calendar-heatmaps",
-    "title": "In-Class Ex 06",
-    "section": "Plotting Multiple Calendar Heatmaps",
-    "text": "Plotting Multiple Calendar Heatmaps\n\n\nCode\nattacks_by_country &lt;- count(\n  attacks, source_country) %&gt;%\n  mutate(percent = percent(n/sum(n))) %&gt;%\n  arrange(desc(n))\n\n\n\n\nCode\ntop4 &lt;- attacks_by_country$source_country[1:4]\ntop4_attacks &lt;- attacks %&gt;%\n  filter(source_country %in% top4) %&gt;%\n  count(source_country, wkday, hour) %&gt;%\n  ungroup() %&gt;%\n  mutate(source_country = factor(\n    source_country, levels = top4)) %&gt;%\n  na.omit()"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#plot-multiple-calender-heatmap",
-    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#plot-multiple-calender-heatmap",
-    "title": "In-Class Ex 06",
-    "section": "plot multiple calender heatmap",
-    "text": "plot multiple calender heatmap\n\n\nCode\nggplot(top4_attacks, \n       aes(hour, \n           wkday, \n           fill = n)) + \n  geom_tile(color = \"white\", \n          size = 0.1) + \n  theme_tufte(base_family = \"Helvetica\") + \n  coord_equal() +\n  scale_fill_gradient(name = \"# of attacks\",\n                    low = \"sky blue\", \n                    high = \"dark blue\") +\n  facet_wrap(~source_country, ncol = 2) +\n  labs(x = NULL, y = NULL, \n     title = \"Attacks on top 4 countries by weekday and time of day\") +\n  theme(axis.ticks = element_blank(),\n        axis.text.x = element_text(size = 7),\n        plot.title = element_text(hjust = 0.5),\n        legend.title = element_text(size = 8),\n        legend.text = element_text(size = 6) )\n\n\nWarning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family\nnot found in Windows font database\n\n\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\n\n\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#deriving-month-and-year-fields",
-    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#deriving-month-and-year-fields",
-    "title": "In-Class Ex 06",
-    "section": "Deriving month and year fields",
-    "text": "Deriving month and year fields\n\n\nCode\nair$month &lt;- factor(month(air$`Month-Year`), \n                    levels=1:12, \n                    labels=month.abb, \n                    ordered=TRUE) \nair$year &lt;- year(ymd(air$`Month-Year`))"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#extracting-the-target-country",
-    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#extracting-the-target-country",
-    "title": "In-Class Ex 06",
-    "section": "Extracting the target country",
-    "text": "Extracting the target country\n\n\nCode\nVietnam &lt;- air %&gt;% \n  select(`Vietnam`, \n         month, \n         year) %&gt;%\n  filter(year &gt;= 2010)"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#computing-year-average-arrivals-by-month",
-    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#computing-year-average-arrivals-by-month",
-    "title": "In-Class Ex 06",
-    "section": "Computing year average arrivals by month",
-    "text": "Computing year average arrivals by month\n\n\nCode\nhline.data &lt;- Vietnam %&gt;% \n  group_by(month) %&gt;%\n  summarise(avgvalue = mean(`Vietnam`))"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#plotting-the-cycle-plot",
-    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#plotting-the-cycle-plot",
-    "title": "In-Class Ex 06",
-    "section": "Plotting the cycle plot",
-    "text": "Plotting the cycle plot\n\n\nCode\nggplot() + \n  geom_line(data=Vietnam,\n            aes(x=year, \n                y=`Vietnam`, \n                group=month), \n            colour=\"black\") +\n  geom_hline(aes(yintercept=avgvalue), \n             data=hline.data, \n             linetype=6, \n             colour=\"red\", \n             size=0.5) + \n  facet_grid(~month) +\n  labs(axis.text.x = element_blank(),\n       title = \"Visitor arrivals from Vietnam by air, Jan 2010-Dec 2019\") +\n  xlab(\"\") +\n  ylab(\"No. of Visitors\") +\n  theme_tufte(base_family = \"Helvetica\")\n\n\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\n\n\nWarning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family\nnot found in Windows font database\n\n\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\n\n\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#to-plot-better-and-clearer",
-    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#to-plot-better-and-clearer",
-    "title": "In-Class Ex 06",
-    "section": "to plot better and clearer",
-    "text": "to plot better and clearer\n\n\nCode\nVietnam$Date &lt;- as.Date(paste(Vietnam$year, Vietnam$month, \"01\", sep = \"-\"), format = \"%Y-%B-%d\")\n\nggplot() + \n  geom_line(data = Vietnam,\n            aes(x = Date, y = `Vietnam`, group = month),\n            colour = \"black\") +\n  geom_hline(data = hline.data,\n             aes(yintercept = avgvalue),\n             linetype = 6,\n             colour = \"red\",\n             size = 0.5) +\n  facet_wrap(~month, ncol = 3) +  # More flexible layout than facet_grid\n  scale_x_date(date_breaks = \"2 years\", date_labels = \"%Y\") +  # Show more x labels\n  labs(title = \"Visitor arrivals from Vietnam by air, Jan 2010–Dec 2019\",\n       x = \"\", y = \"No. of Visitors\") +\n  theme_tufte(base_family = \"Helvetica\") +\n  theme(\n    axis.text.x = element_text(angle = 45, hjust = 1, size = 7),\n    strip.text = element_text(face = \"bold\")\n  )\n\n\nWarning: Removed 10 rows containing missing values or values outside the scale range\n(`geom_line()`).\n\n\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\n\n\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#data-import",
-    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#data-import",
-    "title": "In-Class Ex 06",
-    "section": "Data Import",
-    "text": "Data Import\n\n\nCode\nrice &lt;- read_csv(\"chap06/data/rice.csv\")\n\n\nRows: 550 Columns: 4\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (1): Country\ndbl (3): Year, Yield, Production\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message."
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#plotting-the-slopegraph",
-    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html#plotting-the-slopegraph",
-    "title": "In-Class Ex 06",
-    "section": "Plotting the slopegraph",
-    "text": "Plotting the slopegraph\n\n\nCode\nrice %&gt;% \n  mutate(Year = factor(Year)) %&gt;%\n  filter(Year %in% c(1961, 1980)) %&gt;%\n  newggslopegraph(Year, Yield, Country,\n                Title = \"Rice Yield of Top 11 Asian Counties\",\n                SubTitle = \"1961-1980\",\n                Caption = \"Prepared by: Dr. Kam Tin Seong\")\n\n\n\nConverting 'Year' to an ordered factor"
   }
 ]

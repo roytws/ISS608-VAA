@@ -1,5 +1,5 @@
 ---
-title: "In-Class Ex 06"
+title: "Hands-on Exercise 6"
 author: "Teo Wee Siang Roy"
 date: "May 20, 2025"
 date-modified: "last-modified"
