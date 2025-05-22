@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Teo Wee Siang Roy">
+<meta name="dcterms.date" content="2025-05-21">
+
+<title>ISS608-VAA - Take-Home_Ex02</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="../../site_libs/vis-9.1.0/vis-network.min.css" rel="stylesheet">
+<script src="../../site_libs/vis-9.1.0/vis-network.min.js"></script>
+<script src="../../site_libs/visNetwork-binding-2.1.2/visNetwork.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">ISS608-VAA</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-hands-on-exercise" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Hands-on Exercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-hands-on-exercise">    
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html" rel="" target="">
+ <span class="dropdown-text">Hands-on Exercise 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html" rel="" target="">
+ <span class="dropdown-text">Hands-on Exercise 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html" rel="" target="">
+ <span class="dropdown-text">Hands-on Exercise 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html" rel="" target="">
+ <span class="dropdown-text">Hands-on Exercise 4</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html" rel="" target="">
+ <span class="dropdown-text">Hands-on Exercise 5</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html" rel="" target="">
+ <span class="dropdown-text">Hands-on Exercise 6</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex07/Hands-on_Ex07.html" rel="" target="">
+ <span class="dropdown-text">Hands-on Exercise 7</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html" rel="" target="">
+ <span class="dropdown-text">Hands-on Exercise 8</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09.html" rel="" target="">
+ <span class="dropdown-text">Hands-on Exercise 9</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex10/Hands-on_Ex10.html" rel="" target="">
+ <span class="dropdown-text">Hands-on Exercise 10</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-in-class-exercise" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">In Class Exercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-in-class-exercise">    
+        <li>
+    <a class="dropdown-item" href="../../In-Class_Ex/In-Class_Ex02/In-Class_Ex02.html" rel="" target="">
+ <span class="dropdown-text">In-Class Exercise 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-Class_Ex/In-Class_Ex05/In-Class_Ex05.html" rel="" target="">
+ <span class="dropdown-text">In-Class Exercise 5</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-take-home-exercise" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Take Home Exercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-take-home-exercise">    
+        <li>
+    <a class="dropdown-item" href="../../Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html" rel="" target="">
+ <span class="dropdown-text">Take-Home Exercise 1 part 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Take-Home_Ex/Take-Home_Ex01_2/Take-Home_Ex01_2.html" rel="" target="">
+ <span class="dropdown-text">Take-Home Exercise 1 part 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html" rel="" target="">
+ <span class="dropdown-text">Take-Home Exercise 2</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#mini-case-3" id="toc-mini-case-3" class="nav-link active" data-scroll-target="#mini-case-3">Mini-Case 3</a></li>
+  <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up">Set-up</a>
+  <ul class="collapse">
+  <li><a href="#import-library-package" id="toc-import-library-package" class="nav-link" data-scroll-target="#import-library-package">Import library package</a></li>
+  <li><a href="#import-data-and-extract-nodes-and-edges" id="toc-import-data-and-extract-nodes-and-edges" class="nav-link" data-scroll-target="#import-data-and-extract-nodes-and-edges">Import data and extract nodes and edges</a></li>
+  <li><a href="#parse-timestamp-and-extract-day" id="toc-parse-timestamp-and-extract-day" class="nav-link" data-scroll-target="#parse-timestamp-and-extract-day">Parse Timestamp and Extract Day</a></li>
+  <li><a href="#summarise-daily-communication-volume" id="toc-summarise-daily-communication-volume" class="nav-link" data-scroll-target="#summarise-daily-communication-volume">Summarise daily Communication Volume</a></li>
+  <li><a href="#visualise-the-temporal-pattern" id="toc-visualise-the-temporal-pattern" class="nav-link" data-scroll-target="#visualise-the-temporal-pattern">Visualise the Temporal Pattern</a></li>
+  </ul></li>
+  <li><a href="#question-2" id="toc-question-2" class="nav-link" data-scroll-target="#question-2">Question 2</a>
+  <ul class="collapse">
+  <li><a href="#filter-people-vessels-only" id="toc-filter-people-vessels-only" class="nav-link" data-scroll-target="#filter-people-vessels-only">Filter People + Vessels only</a></li>
+  <li><a href="#filter-edges-between-people-and-vessels-communication-events" id="toc-filter-edges-between-people-and-vessels-communication-events" class="nav-link" data-scroll-target="#filter-edges-between-people-and-vessels-communication-events">Filter Edges Between People and Vessels (Communication events)</a></li>
+  <li><a href="#build-and-cluster-graph" id="toc-build-and-cluster-graph" class="nav-link" data-scroll-target="#build-and-cluster-graph">Build and Cluster Graph</a></li>
+  <li><a href="#visualise-groups" id="toc-visualise-groups" class="nav-link" data-scroll-target="#visualise-groups">Visualise Groups</a></li>
+  <li><a href="#interactive-graph" id="toc-interactive-graph" class="nav-link" data-scroll-target="#interactive-graph">Interactive graph</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Take-Home_Ex02</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Teo Wee Siang Roy </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 21, 2025</p>
+    </div>
+  </div>
+  
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">May 23, 2025</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<section id="mini-case-3" class="level1">
+<h1>Mini-Case 3</h1>
+<p>Over the past decade, Oceanus has transitioned from a fishing-based economy to one increasingly reliant on ocean tourism, following crackdowns on illegal fishing. This shift has caused tensions, especially with recent high-profile events like pop star Sailor Shift’s planned music video shoot on the island.</p>
+<p>Journalist Clepper Jessen, formerly of FishEye and now with the Hacklee Herald, has been investigating these tensions. His latest focus is the sudden closure of Nemo Reef. Through intercepted communications and investigative analysis, Clepper uncovered a network of expedited approvals and covert arrangements implicating Oceanus officials, Sailor Shift’s team, powerful local families, and the conservation group The Green Guardians—suggesting a potential case of corruption and manipulation.</p>
+<p>Task: Create innovative visualizations and visual analytics tools to help Clepper expose the truth behind these events.</p>
+</section>
+<section id="set-up" class="level1">
+<h1>Set-up</h1>
+<section id="import-library-package" class="level2">
+<h2 class="anchored" data-anchor-id="import-library-package">Import library package</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, jsonlite, lubridate, ggraph, tidygraph, visNetwork)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="import-data-and-extract-nodes-and-edges" class="level2">
+<h2 class="anchored" data-anchor-id="import-data-and-extract-nodes-and-edges">Import data and extract nodes and edges</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load graph structure</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>graph_raw <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="st">"TH02/data/MC3_graph.json"</span>, <span class="at">flatten =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>nodes <span class="ot">&lt;-</span> graph_raw<span class="sc">$</span>nodes</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>edges <span class="ot">&lt;-</span> graph_raw<span class="sc">$</span>edges</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="parse-timestamp-and-extract-day" class="level2">
+<h2 class="anchored" data-anchor-id="parse-timestamp-and-extract-day">Parse Timestamp and Extract Day</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert timestamp to datetime and extract date</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>comm_events <span class="ot">&lt;-</span> nodes <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">"Event"</span>, sub_type <span class="sc">==</span> <span class="st">"Communication"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, timestamp)  <span class="co"># Make sure 'timestamp' is the actual column name</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Parse timestamp into datetime and extract the date</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>comm_events <span class="ot">&lt;-</span> comm_events <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">start_time =</span> <span class="fu">ymd_hms</span>(timestamp, <span class="at">quiet =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">day =</span> <span class="fu">as.Date</span>(start_time)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="summarise-daily-communication-volume" class="level2">
+<h2 class="anchored" data-anchor-id="summarise-daily-communication-volume">Summarise daily Communication Volume</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count number of communications per day</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>daily_comms <span class="ot">&lt;-</span> comm_events <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(day, <span class="at">name =</span> <span class="st">"num_comms"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="visualise-the-temporal-pattern" class="level2">
+<h2 class="anchored" data-anchor-id="visualise-the-temporal-pattern">Visualise the Temporal Pattern</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot as a time series</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(daily_comms, <span class="fu">aes</span>(<span class="at">x =</span> day, <span class="at">y =</span> num_comms)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Daily Communication Patterns (2-Week Period)"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Date"</span>, <span class="at">y =</span> <span class="st">"Number of Communications"</span>) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Take-Home_Ex02_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="question-2" class="level1">
+<h1>Question 2</h1>
+<section id="filter-people-vessels-only" class="level2">
+<h2 class="anchored" data-anchor-id="filter-people-vessels-only">Filter People + Vessels only</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter relevant entity nodes</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>entity_nodes <span class="ot">&lt;-</span> nodes <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">"Entity"</span>, sub_type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Person"</span>, <span class="st">"Vessel"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, name, sub_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="filter-edges-between-people-and-vessels-communication-events" class="level2">
+<h2 class="anchored" data-anchor-id="filter-edges-between-people-and-vessels-communication-events">Filter Edges Between People and Vessels (Communication events)</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>valid_ids <span class="ot">&lt;-</span> entity_nodes<span class="sc">$</span>id</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter communication events</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>comm_events <span class="ot">&lt;-</span> nodes <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">"Event"</span>, sub_type <span class="sc">==</span> <span class="st">"Communication"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">event_id =</span> id)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Get 'sent' and 'received' edges related to those comm events</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>sent_edges <span class="ot">&lt;-</span> edges <span class="sc">%&gt;%</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">"sent"</span>, target <span class="sc">%in%</span> comm_events<span class="sc">$</span>event_id) <span class="sc">%&gt;%</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">event_id =</span> target, <span class="at">entity_id =</span> source)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>received_edges <span class="ot">&lt;-</span> edges <span class="sc">%&gt;%</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">"received"</span>, source <span class="sc">%in%</span> comm_events<span class="sc">$</span>event_id) <span class="sc">%&gt;%</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">event_id =</span> source, <span class="at">entity_id =</span> target)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine both directions</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>entity_event_edges <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(sent_edges, received_edges)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Join to find co-communicating entities via the same event</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>entity_pairs <span class="ot">&lt;-</span> entity_event_edges <span class="sc">%&gt;%</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(entity_event_edges, <span class="at">by =</span> <span class="st">"event_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(entity_id.x <span class="sc">!=</span> entity_id.y) <span class="sc">%&gt;%</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(entity_id.x, entity_id.y) <span class="sc">%&gt;%</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">source =</span> entity_id.x, <span class="at">target =</span> entity_id.y) <span class="sc">%&gt;%</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(source <span class="sc">%in%</span> valid_ids <span class="sc">&amp;</span> target <span class="sc">%in%</span> valid_ids)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="build-and-cluster-graph" class="level2">
+<h2 class="anchored" data-anchor-id="build-and-cluster-graph">Build and Cluster Graph</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create tidygraph</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>graph_tbl <span class="ot">&lt;-</span> <span class="fu">tbl_graph</span>(<span class="at">nodes =</span> entity_nodes, <span class="at">edges =</span> entity_pairs, <span class="at">directed =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>graph_tbl <span class="ot">&lt;-</span> graph_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">as.factor</span>(<span class="fu">group_infomap</span>()))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="visualise-groups" class="level2">
+<h2 class="anchored" data-anchor-id="visualise-groups">Visualise Groups</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(graph_tbl, <span class="at">layout =</span> <span class="st">"fr"</span>) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> group, <span class="at">shape =</span> sub_type), <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), <span class="at">repel =</span> <span class="cn">TRUE</span>, <span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Grouped Network of People and Vessels"</span>) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_graph</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Take-Home_Ex02_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+</section>
+<section id="interactive-graph" class="level2">
+<h2 class="anchored" data-anchor-id="interactive-graph">Interactive graph</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>nodes_vis <span class="ot">&lt;-</span> graph_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> name,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">label =</span> name,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">group =</span> group,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">font =</span> <span class="st">"{size:30,color:'black',face:'bold'}"</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">shape =</span> <span class="fu">ifelse</span>(sub_type <span class="sc">==</span> <span class="st">"Person"</span>, <span class="st">"dot"</span>, <span class="st">"triangle"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, label, group, shape)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Prepare edge data frame</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>edges_vis <span class="ot">&lt;-</span> graph_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(edges) <span class="sc">%&gt;%</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(graph_tbl <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">from_id =</span> <span class="fu">row_number</span>()), </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"from"</span> <span class="ot">=</span> <span class="st">"from_id"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">from_name =</span> name) <span class="sc">%&gt;%</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(graph_tbl <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">to_id =</span> <span class="fu">row_number</span>()), </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"to"</span> <span class="ot">=</span> <span class="st">"to_id"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">to_name =</span> name) <span class="sc">%&gt;%</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">from =</span> from_name, <span class="at">to =</span> to_name)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Render interactive visNetwork</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="fu">visNetwork</span>(nodes_vis, edges_vis, <span class="at">width =</span> <span class="st">"1000px"</span>, <span class="at">height =</span> <span class="st">"800px"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visIgraphLayout</span>(<span class="at">layout =</span> <span class="st">"layout_with_fr"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visEdges</span>(<span class="at">color =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">"gray"</span>, <span class="at">highlight =</span> <span class="st">"red"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visOptions</span>(<span class="at">highlightNearest =</span> <span class="cn">TRUE</span>, <span class="at">nodesIdSelection =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visLegend</span>(<span class="at">useGroups =</span> <span class="cn">TRUE</span>, <span class="at">position =</span> <span class="st">"left"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="htmlwidget-24c6a21f4e5d84e68cc6" style="width:1000px;height:800px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-24c6a21f4e5d84e68cc6">{"x":{"nodes":{"id":["Sam","Kelly","Nadia Conti","Elise","Liam Thorne","Samantha Blake","Davis","Rodriguez","Sailor Shift","Clepper Jensen","Miranda Jordan","The Intern","The Lookout","The Accountant","Mrs. Money","The Middleman","Boss","Small Fry","Neptune","Marlin","Serenity","Mako","Reef Guardian","Horizon","Seawatch","EcoVigil","Sentinel","Osprey","Defender","Northern Light","Remora","Knowles","Mariner's Dream"],"label":["Sam","Kelly","Nadia Conti","Elise","Liam Thorne","Samantha Blake","Davis","Rodriguez","Sailor Shift","Clepper Jensen","Miranda Jordan","The Intern","The Lookout","The Accountant","Mrs. Money","The Middleman","Boss","Small Fry","Neptune","Marlin","Serenity","Mako","Reef Guardian","Horizon","Seawatch","EcoVigil","Sentinel","Osprey","Defender","Northern Light","Remora","Knowles","Mariner's Dream"],"group":["4","4","5","1","1","1","2","6","14","7","7","8","8","9","3","9","6","3","2","10","11","3","11","12","13","12","5","1","13","15","10","2","16"],"shape":["dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle"],"x":[0.3891124883726123,0.5979608173723532,-0.5985212271538991,-0.4546180707776366,-0.5369830710197178,-0.6142026694207545,-0.8238379069934796,-0.8996306137932929,0.08923595509064564,0.8182164613353278,0.9006798054134175,-0.230640847810614,0.05764085925613394,-1,-0.620238043159305,-0.7815290257409133,-0.7990733282100202,-0.8965404605432203,-0.5040251024760278,-0.5328023832484363,-0.3098261651728065,-0.4948612311118731,-0.1935766160877694,-0.05401710093699108,0.07457828115699794,-0.1833168419946709,-0.1906416033708545,-0.3850328316883611,-0.0900392095345679,1,-0.7230508333132908,-0.8202680276647354,0.2414203884176886],"y":[0.3836922709349826,0.5317557347143909,0.01609145509784149,0.09938223604141982,0.2902488879417662,-0.5450418248434139,-0.1091831126314388,0.05773956680741765,1,-0.5415199756844105,-0.3973965759404334,0.3697271006810172,0.1803155966791341,0.4373080733494681,0.1518041731305488,0.3934412125238242,0.176376715949438,-0.2492936357735708,-0.0775466303625838,-0.2535992253985581,-0.3058596312205457,-0.1761996857615286,-0.1140476065967174,-0.0233383117144299,-0.1659125391724227,0.1640505236282661,0.001798745233169363,-0.5491405337825781,-0.3119799151222029,0.1470482528022816,-0.09687760857727334,-0.3705967585465805,-1]},"edges":{"from":["Sam","Sam","Nadia Conti","Nadia Conti","Nadia Conti","Nadia Conti","Elise","Nadia Conti","Elise","Liam Thorne","Liam Thorne","Samantha Blake","Davis","Davis","Nadia Conti","Davis","Davis","Rodriguez","Davis","Rodriguez","Nadia Conti","Rodriguez","Clepper Jensen","Clepper Jensen","The Intern","The Intern","The Intern","Sam","The Lookout","The Lookout","The Lookout","The Accountant","The Accountant","Mrs. Money","Mrs. Money","The Intern","Mrs. Money","Mrs. Money","Mrs. Money","The Middleman","Mrs. Money","Liam Thorne","The Accountant","Mrs. Money","The Middleman","Boss","Small Fry","Small Fry","Davis","Neptune","Neptune","Neptune","Elise","Neptune","Nadia Conti","Davis","Marlin","Marlin","Marlin","Serenity","Serenity","Neptune","Serenity","Mako","Marlin","Mako","Mako","Mako","Davis","Boss","Samantha Blake","Neptune","Elise","Serenity","Reef Guardian","Mako","Marlin","Reef Guardian","Reef Guardian","Neptune","Reef Guardian","Reef Guardian","Horizon","Horizon","Mako","Horizon","Reef Guardian","Reef Guardian","Horizon","Reef Guardian","Liam Thorne","EcoVigil","Horizon","Mako","Reef Guardian","Nadia Conti","Seawatch","Mako","Reef Guardian","Seawatch","Mako","Rodriguez","Mako","Neptune","Davis","Nadia Conti","Mako","Davis","Sam","Marlin","Small Fry","Small Fry","Seawatch","The Lookout","Rodriguez","Davis","Mako","Elise","Mrs. Money","Elise","Mrs. Money","Liam Thorne","Nadia Conti","Nadia Conti","Mrs. Money","Rodriguez","Nadia Conti","The Lookout","Horizon","Nadia Conti","The Accountant","Liam Thorne","The Lookout","Nadia Conti","Davis","Nadia Conti","Davis","Seawatch","EcoVigil","Mako","Mako","Davis"],"to":["Kelly","Kelly","Liam Thorne","Neptune","Marlin","Elise","Liam Thorne","Liam Thorne","Liam Thorne","Boss","EcoVigil","Mako","Mako","Remora","Davis","Neptune","Boss","Boss","Rodriguez","Mrs. Money","Rodriguez","Remora","Miranda Jordan","Miranda Jordan","The Lookout","Mrs. Money","The Lookout","The Lookout","Sentinel","Horizon","Reef Guardian","Boss","The Middleman","Boss","The Middleman","Mrs. Money","Neptune","Mako","Remora","Boss","The Middleman","The Middleman","The Middleman","Boss","Boss","Mako","Mako","Remora","Small Fry","Mako","Serenity","Remora","Neptune","Reef Guardian","Neptune","Neptune","Mako","Remora","Reef Guardian","Mako","Reef Guardian","Serenity","Mako","Remora","Mako","Osprey","Reef Guardian","Sentinel","Mako","Mako","Mako","Mako","Mako","Reef Guardian","Defender","Reef Guardian","Reef Guardian","Horizon","Sentinel","Reef Guardian","EcoVigil","Seawatch","Sentinel","EcoVigil","Horizon","Seawatch","Horizon","Seawatch","EcoVigil","EcoVigil","EcoVigil","Sentinel","Sentinel","Sentinel","Sentinel","Sentinel","Sentinel","Osprey","Defender","Defender","Defender","Remora","Remora","Remora","Remora","Remora","Knowles","Knowles","The Lookout","Remora","Mako","Remora","Defender","Sentinel","Boss","Rodriguez","Horizon","Neptune","Neptune","Mako","Mako","The Middleman","Davis","Elise","Remora","Mrs. Money","Marlin","Horizon","Seawatch","Sentinel","Boss","Boss","Reef Guardian","Rodriguez","Small Fry","Remora","Boss","Sentinel","Sentinel","Knowles","Defender","Knowles"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"edges":{"smooth":false,"color":{"color":"gray","highlight":"red"}},"physics":{"stabilization":false}},"groups":["4","5","1","2","6","14","7","8","9","3","10","11","12","13","15","16"],"width":"1000px","height":"800px","idselection":{"enabled":true,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","igraphlayout":{"type":"square"},"highlight":{"enabled":true,"hoverNearest":false,"degree":1,"algorithm":"all","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":false,"fit":false,"resetHighlight":true,"clusterOptions":null,"keepCoord":true,"labelSuffix":"(cluster)"},"legend":{"width":0.2,"useGroups":true,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>nodes_vis <span class="ot">&lt;-</span> graph_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> name,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> name,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">"Type: "</span>, sub_type, <span class="st">"&lt;br&gt;Group: "</span>, group),</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> group,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="fu">ifelse</span>(sub_type <span class="sc">==</span> <span class="st">"Person"</span>, <span class="st">"dot"</span>, <span class="st">"triangle"</span>),</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">font =</span> <span class="st">"{size:30,color:'black',face:'bold'}"</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, label, title, group, shape, font)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare edges</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>edges_tbl <span class="ot">&lt;-</span> graph_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(edges) <span class="sc">%&gt;%</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>()</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>nodes_tbl <span class="ot">&lt;-</span> graph_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">node_index =</span> <span class="fu">row_number</span>())</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>edges_vis <span class="ot">&lt;-</span> edges_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(nodes_tbl, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"from"</span> <span class="ot">=</span> <span class="st">"node_index"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">from_id =</span> name) <span class="sc">%&gt;%</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(nodes_tbl, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"to"</span> <span class="ot">=</span> <span class="st">"node_index"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">to_id =</span> name) <span class="sc">%&gt;%</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">"From: "</span>, from_id, <span class="st">"&lt;br&gt;To: "</span>, to_id)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">from =</span> from_id, <span class="at">to =</span> to_id, title)</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Render visNetwork</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="fu">visNetwork</span>(nodes_vis, edges_vis, <span class="at">width =</span> <span class="st">"100%"</span>, <span class="at">height =</span> <span class="st">"850px"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visIgraphLayout</span>(<span class="at">layout =</span> <span class="st">"layout_with_fr"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visEdges</span>(<span class="at">color =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">"gray"</span>, <span class="at">highlight =</span> <span class="st">"red"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visOptions</span>(<span class="at">highlightNearest =</span> <span class="cn">TRUE</span>, <span class="at">nodesIdSelection =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visLegend</span>(<span class="at">useGroups =</span> <span class="cn">TRUE</span>, <span class="at">position =</span> <span class="st">"left"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="htmlwidget-fca94b54f09de65441cf" style="width:100%;height:850px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fca94b54f09de65441cf">{"x":{"nodes":{"id":["Sam","Kelly","Nadia Conti","Elise","Liam Thorne","Samantha Blake","Davis","Rodriguez","Sailor Shift","Clepper Jensen","Miranda Jordan","The Intern","The Lookout","The Accountant","Mrs. Money","The Middleman","Boss","Small Fry","Neptune","Marlin","Serenity","Mako","Reef Guardian","Horizon","Seawatch","EcoVigil","Sentinel","Osprey","Defender","Northern Light","Remora","Knowles","Mariner's Dream"],"label":["Sam","Kelly","Nadia Conti","Elise","Liam Thorne","Samantha Blake","Davis","Rodriguez","Sailor Shift","Clepper Jensen","Miranda Jordan","The Intern","The Lookout","The Accountant","Mrs. Money","The Middleman","Boss","Small Fry","Neptune","Marlin","Serenity","Mako","Reef Guardian","Horizon","Seawatch","EcoVigil","Sentinel","Osprey","Defender","Northern Light","Remora","Knowles","Mariner's Dream"],"title":["Type: Person<br>Group: 4","Type: Person<br>Group: 4","Type: Person<br>Group: 5","Type: Person<br>Group: 1","Type: Person<br>Group: 1","Type: Person<br>Group: 1","Type: Person<br>Group: 2","Type: Person<br>Group: 6","Type: Person<br>Group: 14","Type: Person<br>Group: 7","Type: Person<br>Group: 7","Type: Person<br>Group: 8","Type: Person<br>Group: 8","Type: Person<br>Group: 9","Type: Person<br>Group: 3","Type: Person<br>Group: 9","Type: Person<br>Group: 6","Type: Person<br>Group: 3","Type: Vessel<br>Group: 2","Type: Vessel<br>Group: 10","Type: Vessel<br>Group: 11","Type: Vessel<br>Group: 3","Type: Vessel<br>Group: 11","Type: Vessel<br>Group: 12","Type: Vessel<br>Group: 13","Type: Vessel<br>Group: 12","Type: Vessel<br>Group: 5","Type: Vessel<br>Group: 1","Type: Vessel<br>Group: 13","Type: Vessel<br>Group: 15","Type: Vessel<br>Group: 10","Type: Vessel<br>Group: 2","Type: Vessel<br>Group: 16"],"group":["4","4","5","1","1","1","2","6","14","7","7","8","8","9","3","9","6","3","2","10","11","3","11","12","13","12","5","1","13","15","10","2","16"],"shape":["dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle"],"font":["{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}","{size:30,color:'black',face:'bold'}"],"x":[-0.3097760743039011,-0.4468140623352417,0.4856231181268078,0.3789506910261737,0.5204028100789484,0.1089640068827675,0.6468559720737019,0.7668895769485955,-1,0.4158954222219788,0.2323478424153236,0.2563528538642801,-0.06693337256663523,1,0.5491464776363706,0.7839436489683647,0.7191398965770508,0.6717286801780287,0.3684757943055086,0.3463637819678953,0.122221126249201,0.3277898716073555,0.07210897713575393,-0.03359640587885626,-0.1895407858589682,0.1478305387729348,0.1026684380572458,0.3179630794106507,-0.08095352191062111,-0.9161605800319269,0.5622643839900556,0.5699259925171603,-0.8118264474944686],"y":[-0.3179825803184971,-0.5460506673193051,0.3471340004272156,0.2144652905686977,0.01633975761180162,0.9419114144556038,0.5533891271209475,0.3797501160081438,0.3381668535534819,-0.9842908147846591,-1,-0.1492383541983128,-0.001964254640054564,-0.01195761167362441,0.1968471939284158,-0.03080717636253805,0.2233498296160146,0.7330049589864771,0.4286833734730546,0.6420492858958533,0.6452232958775408,0.5475178988774421,0.4017490627019955,0.2637548680637956,0.3965036582343247,0.07517876754766362,0.2656418666069666,1,0.606178276370285,-0.2587391638732007,0.5050818627765614,0.8584042769121869,0.9690922452561306]},"edges":{"from":["Sam","Sam","Nadia Conti","Nadia Conti","Nadia Conti","Nadia Conti","Elise","Nadia Conti","Elise","Liam Thorne","Liam Thorne","Samantha Blake","Davis","Davis","Nadia Conti","Davis","Davis","Rodriguez","Davis","Rodriguez","Nadia Conti","Rodriguez","Clepper Jensen","Clepper Jensen","The Intern","The Intern","The Intern","Sam","The Lookout","The Lookout","The Lookout","The Accountant","The Accountant","Mrs. Money","Mrs. Money","The Intern","Mrs. Money","Mrs. Money","Mrs. Money","The Middleman","Mrs. Money","Liam Thorne","The Accountant","Mrs. Money","The Middleman","Boss","Small Fry","Small Fry","Davis","Neptune","Neptune","Neptune","Elise","Neptune","Nadia Conti","Davis","Marlin","Marlin","Marlin","Serenity","Serenity","Neptune","Serenity","Mako","Marlin","Mako","Mako","Mako","Davis","Boss","Samantha Blake","Neptune","Elise","Serenity","Reef Guardian","Mako","Marlin","Reef Guardian","Reef Guardian","Neptune","Reef Guardian","Reef Guardian","Horizon","Horizon","Mako","Horizon","Reef Guardian","Reef Guardian","Horizon","Reef Guardian","Liam Thorne","EcoVigil","Horizon","Mako","Reef Guardian","Nadia Conti","Seawatch","Mako","Reef Guardian","Seawatch","Mako","Rodriguez","Mako","Neptune","Davis","Nadia Conti","Mako","Davis","Sam","Marlin","Small Fry","Small Fry","Seawatch","The Lookout","Rodriguez","Davis","Mako","Elise","Mrs. Money","Elise","Mrs. Money","Liam Thorne","Nadia Conti","Nadia Conti","Mrs. Money","Rodriguez","Nadia Conti","The Lookout","Horizon","Nadia Conti","The Accountant","Liam Thorne","The Lookout","Nadia Conti","Davis","Nadia Conti","Davis","Seawatch","EcoVigil","Mako","Mako","Davis"],"to":["Kelly","Kelly","Liam Thorne","Neptune","Marlin","Elise","Liam Thorne","Liam Thorne","Liam Thorne","Boss","EcoVigil","Mako","Mako","Remora","Davis","Neptune","Boss","Boss","Rodriguez","Mrs. Money","Rodriguez","Remora","Miranda Jordan","Miranda Jordan","The Lookout","Mrs. Money","The Lookout","The Lookout","Sentinel","Horizon","Reef Guardian","Boss","The Middleman","Boss","The Middleman","Mrs. Money","Neptune","Mako","Remora","Boss","The Middleman","The Middleman","The Middleman","Boss","Boss","Mako","Mako","Remora","Small Fry","Mako","Serenity","Remora","Neptune","Reef Guardian","Neptune","Neptune","Mako","Remora","Reef Guardian","Mako","Reef Guardian","Serenity","Mako","Remora","Mako","Osprey","Reef Guardian","Sentinel","Mako","Mako","Mako","Mako","Mako","Reef Guardian","Defender","Reef Guardian","Reef Guardian","Horizon","Sentinel","Reef Guardian","EcoVigil","Seawatch","Sentinel","EcoVigil","Horizon","Seawatch","Horizon","Seawatch","EcoVigil","EcoVigil","EcoVigil","Sentinel","Sentinel","Sentinel","Sentinel","Sentinel","Sentinel","Osprey","Defender","Defender","Defender","Remora","Remora","Remora","Remora","Remora","Knowles","Knowles","The Lookout","Remora","Mako","Remora","Defender","Sentinel","Boss","Rodriguez","Horizon","Neptune","Neptune","Mako","Mako","The Middleman","Davis","Elise","Remora","Mrs. Money","Marlin","Horizon","Seawatch","Sentinel","Boss","Boss","Reef Guardian","Rodriguez","Small Fry","Remora","Boss","Sentinel","Sentinel","Knowles","Defender","Knowles"],"title":["From: Sam<br>To: Kelly","From: Sam<br>To: Kelly","From: Nadia Conti<br>To: Liam Thorne","From: Nadia Conti<br>To: Neptune","From: Nadia Conti<br>To: Marlin","From: Nadia Conti<br>To: Elise","From: Elise<br>To: Liam Thorne","From: Nadia Conti<br>To: Liam Thorne","From: Elise<br>To: Liam Thorne","From: Liam Thorne<br>To: Boss","From: Liam Thorne<br>To: EcoVigil","From: Samantha Blake<br>To: Mako","From: Davis<br>To: Mako","From: Davis<br>To: Remora","From: Nadia Conti<br>To: Davis","From: Davis<br>To: Neptune","From: Davis<br>To: Boss","From: Rodriguez<br>To: Boss","From: Davis<br>To: Rodriguez","From: Rodriguez<br>To: Mrs. Money","From: Nadia Conti<br>To: Rodriguez","From: Rodriguez<br>To: Remora","From: Clepper Jensen<br>To: Miranda Jordan","From: Clepper Jensen<br>To: Miranda Jordan","From: The Intern<br>To: The Lookout","From: The Intern<br>To: Mrs. Money","From: The Intern<br>To: The Lookout","From: Sam<br>To: The Lookout","From: The Lookout<br>To: Sentinel","From: The Lookout<br>To: Horizon","From: The Lookout<br>To: Reef Guardian","From: The Accountant<br>To: Boss","From: The Accountant<br>To: The Middleman","From: Mrs. Money<br>To: Boss","From: Mrs. Money<br>To: The Middleman","From: The Intern<br>To: Mrs. Money","From: Mrs. Money<br>To: Neptune","From: Mrs. Money<br>To: Mako","From: Mrs. Money<br>To: Remora","From: The Middleman<br>To: Boss","From: Mrs. Money<br>To: The Middleman","From: Liam Thorne<br>To: The Middleman","From: The Accountant<br>To: The Middleman","From: Mrs. Money<br>To: Boss","From: The Middleman<br>To: Boss","From: Boss<br>To: Mako","From: Small Fry<br>To: Mako","From: Small Fry<br>To: Remora","From: Davis<br>To: Small Fry","From: Neptune<br>To: Mako","From: Neptune<br>To: Serenity","From: Neptune<br>To: Remora","From: Elise<br>To: Neptune","From: Neptune<br>To: Reef Guardian","From: Nadia Conti<br>To: Neptune","From: Davis<br>To: Neptune","From: Marlin<br>To: Mako","From: Marlin<br>To: Remora","From: Marlin<br>To: Reef Guardian","From: Serenity<br>To: Mako","From: Serenity<br>To: Reef Guardian","From: Neptune<br>To: Serenity","From: Serenity<br>To: Mako","From: Mako<br>To: Remora","From: Marlin<br>To: Mako","From: Mako<br>To: Osprey","From: Mako<br>To: Reef Guardian","From: Mako<br>To: Sentinel","From: Davis<br>To: Mako","From: Boss<br>To: Mako","From: Samantha Blake<br>To: Mako","From: Neptune<br>To: Mako","From: Elise<br>To: Mako","From: Serenity<br>To: Reef Guardian","From: Reef Guardian<br>To: Defender","From: Mako<br>To: Reef Guardian","From: Marlin<br>To: Reef Guardian","From: Reef Guardian<br>To: Horizon","From: Reef Guardian<br>To: Sentinel","From: Neptune<br>To: Reef Guardian","From: Reef Guardian<br>To: EcoVigil","From: Reef Guardian<br>To: Seawatch","From: Horizon<br>To: Sentinel","From: Horizon<br>To: EcoVigil","From: Mako<br>To: Horizon","From: Horizon<br>To: Seawatch","From: Reef Guardian<br>To: Horizon","From: Reef Guardian<br>To: Seawatch","From: Horizon<br>To: EcoVigil","From: Reef Guardian<br>To: EcoVigil","From: Liam Thorne<br>To: EcoVigil","From: EcoVigil<br>To: Sentinel","From: Horizon<br>To: Sentinel","From: Mako<br>To: Sentinel","From: Reef Guardian<br>To: Sentinel","From: Nadia Conti<br>To: Sentinel","From: Seawatch<br>To: Sentinel","From: Mako<br>To: Osprey","From: Reef Guardian<br>To: Defender","From: Seawatch<br>To: Defender","From: Mako<br>To: Defender","From: Rodriguez<br>To: Remora","From: Mako<br>To: Remora","From: Neptune<br>To: Remora","From: Davis<br>To: Remora","From: Nadia Conti<br>To: Remora","From: Mako<br>To: Knowles","From: Davis<br>To: Knowles","From: Sam<br>To: The Lookout","From: Marlin<br>To: Remora","From: Small Fry<br>To: Mako","From: Small Fry<br>To: Remora","From: Seawatch<br>To: Defender","From: The Lookout<br>To: Sentinel","From: Rodriguez<br>To: Boss","From: Davis<br>To: Rodriguez","From: Mako<br>To: Horizon","From: Elise<br>To: Neptune","From: Mrs. Money<br>To: Neptune","From: Elise<br>To: Mako","From: Mrs. Money<br>To: Mako","From: Liam Thorne<br>To: The Middleman","From: Nadia Conti<br>To: Davis","From: Nadia Conti<br>To: Elise","From: Mrs. Money<br>To: Remora","From: Rodriguez<br>To: Mrs. Money","From: Nadia Conti<br>To: Marlin","From: The Lookout<br>To: Horizon","From: Horizon<br>To: Seawatch","From: Nadia Conti<br>To: Sentinel","From: The Accountant<br>To: Boss","From: Liam Thorne<br>To: Boss","From: The Lookout<br>To: Reef Guardian","From: Nadia Conti<br>To: Rodriguez","From: Davis<br>To: Small Fry","From: Nadia Conti<br>To: Remora","From: Davis<br>To: Boss","From: Seawatch<br>To: Sentinel","From: EcoVigil<br>To: Sentinel","From: Mako<br>To: Knowles","From: Mako<br>To: Defender","From: Davis<br>To: Knowles"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"edges":{"smooth":false,"color":{"color":"gray","highlight":"red"}},"physics":{"stabilization":false}},"groups":["4","5","1","2","6","14","7","8","9","3","10","11","12","13","15","16"],"width":"100%","height":"850px","idselection":{"enabled":true,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","igraphlayout":{"type":"square"},"highlight":{"enabled":true,"hoverNearest":false,"degree":1,"algorithm":"all","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":false,"fit":false,"resetHighlight":true,"clusterOptions":null,"keepCoord":true,"labelSuffix":"(cluster)"},"legend":{"width":0.2,"useGroups":true,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -705,5 +705,89 @@
     "title": "Take-Home_Ex01 part 2",
     "section": "🔧 Improvement Summary 2: What Was Further Improved",
     "text": "🔧 Improvement Summary 2: What Was Further Improved\n\n\nCode\ngender_summary_long &lt;- respop_cleaned %&gt;%\n  group_by(Region, Sex) %&gt;%\n  summarise(Total_Pop = sum(Pop), .groups = \"drop\") %&gt;%\n  group_by(Region) %&gt;%\n  mutate(\n    Region_Total = sum(Total_Pop),\n    Region_Percent = round((Total_Pop / Region_Total) * 100, 1),\n    Label = paste0(Region_Percent, \"%\\n(\", scales::comma(Total_Pop), \")\")\n  ) %&gt;%\n  ungroup() %&gt;%\n  mutate(\n    Region = fct_reorder(Region, Region_Total, .desc = TRUE),  # sort by Region_Total\n    Sex = factor(Sex, levels = c(\"Males\", \"Females\"))           # ensure stacking order\n  ) %&gt;%\n  arrange(Region, Sex)  # ensure correct stacking order\n\n# Plot\nggplot(gender_summary_long, aes(y = Region, x = Total_Pop, fill = Sex)) +\n  geom_col(position = \"stack\", width = 0.6) +\n  geom_text(\n    aes(label = Label),\n    position = position_stack(vjust = 0.5),\n    color = \"white\",\n    size = 3,\n    family = \"nunito\"\n  ) +\n  labs(\n    title = \"Total Male and Female Population by Region (2024)\",\n    subtitle = \"Labels show % within each region and absolute population\",\n    x = \"Total Population\",\n    y = \"Region\",\n    fill = \"Gender\"\n  ) +\n  scale_x_continuous(\n    labels = scales::label_comma(),\n    breaks = seq(0, 1000000, 100000)\n  ) +\n  scale_fill_manual(values = c(\"Females\" = \"#A93226\", \"Males\" = \"#2C3E50\")) +\n  theme_minimal(base_family = \"nunito\") +\n  theme(\n    axis.text.y = element_text(size = 10),\n    plot.title = element_text(hjust = 0.5, face = \"bold\", size = 15),\n    plot.subtitle = element_text(hjust = 0.5, size = 11)\n  )\n\n\n\n\n\nBuilding on the earlier stacked percentage chart, this updated visualisation improves the clarity, comparability, and contextual storytelling of the gender distribution across regions in 2024.\n\n1. Switched from Percentage to Actual Population on the X-Axis\n\nPrevious: X-axis showed gender percentage share, which helped with proportion comparison but hid the actual population scale.\nImproved: Uses raw population values on the x-axis (with comma formatting and 100k breaks), enabling clear comparison of both gender ratio and total population per region.\n\n\n\n2. Horizontal Layout Enhances Label Readability and Comparison\n\nPrevious: Vertical bars made category names harder to read, and labels could overlap in crowded segments.\nImproved: Horizontal stacked bars make region names easier to scan and reduce label collision, improving overall legibility and alignment with natural left-to-right reading flow.\n\n\n\n3. Regions Sorted by Total Population\n\nPrevious: Regions were presented in arbitrary or default order, which reduced analytical clarity.\nImproved: Regions are now sorted in descending order of total population, highlighting population scale differences and making the chart easier to interpret at a glance.\n\n\n\n4. Maintained Rich, Dual-Layer Labels\n\nEach bar segment still includes a concise label that combines the percentage share and absolute count (e.g., 50.5% (302,710)), enabling multi-level insight in a compact, readable form.\n\n\n\nImprovement outlines\nThese refinements not only retain the strengths of the previous version but enhance the visual’s ability to communicate both structure (proportions) and magnitude (totals) — an important principle covered in Lesson 2: Designing Graphs to Enlighten."
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html",
+    "href": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html",
+    "title": "Take-Home_Ex02",
+    "section": "",
+    "text": "Over the past decade, Oceanus has transitioned from a fishing-based economy to one increasingly reliant on ocean tourism, following crackdowns on illegal fishing. This shift has caused tensions, especially with recent high-profile events like pop star Sailor Shift’s planned music video shoot on the island.\nJournalist Clepper Jessen, formerly of FishEye and now with the Hacklee Herald, has been investigating these tensions. His latest focus is the sudden closure of Nemo Reef. Through intercepted communications and investigative analysis, Clepper uncovered a network of expedited approvals and covert arrangements implicating Oceanus officials, Sailor Shift’s team, powerful local families, and the conservation group The Green Guardians—suggesting a potential case of corruption and manipulation.\nTask: Create innovative visualizations and visual analytics tools to help Clepper expose the truth behind these events."
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#import-library-package",
+    "href": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#import-library-package",
+    "title": "Take-Home_Ex02",
+    "section": "Import library package",
+    "text": "Import library package\n\n\nCode\npacman::p_load(tidyverse, jsonlite, lubridate, ggraph, tidygraph, visNetwork)"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#import-data-and-extract-nodes-and-edges",
+    "href": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#import-data-and-extract-nodes-and-edges",
+    "title": "Take-Home_Ex02",
+    "section": "Import data and extract nodes and edges",
+    "text": "Import data and extract nodes and edges\n\n\nCode\n# Load graph structure\ngraph_raw &lt;- fromJSON(\"TH02/data/MC3_graph.json\", flatten = TRUE)\nnodes &lt;- graph_raw$nodes\nedges &lt;- graph_raw$edges"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#splitting-nodes-into-entities-and-events",
+    "href": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#splitting-nodes-into-entities-and-events",
+    "title": "Take-Home_Ex02",
+    "section": "",
+    "text": "The ‘nodes’ table contains a mix of entities (people, vessels, locations) and events (communications, monitorings, assessments).\nThis section filters them into two separate data frames:\n\n‘entity_nodes’: only nodes where type is “Entity”\n‘event_nodes’: only nodes where type is “Event”\n\n\n\nCode\nglimpseentity_nodes &lt;- nodes %&gt;% filter(type == \"Entity\")\nevent_nodes  &lt;- nodes %&gt;% filter(type == \"Event\")\n\n\n\n\nCode\nglimpse(edges)\n\n\nRows: 3,226\nColumns: 5\n$ id          &lt;chr&gt; \"2\", \"3\", \"5\", \"3013\", NA, NA, NA, \"8\", \"10\", NA, NA, \"14\"…\n$ is_inferred &lt;lgl&gt; TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, T…\n$ source      &lt;chr&gt; \"Sam\", \"Sam\", \"Sam\", \"Sam\", \"Sam\", \"Sam\", \"Sam\", \"Kelly\", …\n$ target      &lt;chr&gt; \"Relationship_Suspicious_217\", \"Event_Communication_370\", …\n$ type        &lt;chr&gt; NA, \"sent\", NA, NA, NA, NA, NA, \"sent\", \"sent\", NA, NA, NA…\n\n\n\n\nCode\nnodes %&gt;% count(type, sub_type)\n\n\n           type         sub_type   n\n1        Entity            Group   5\n2        Entity         Location  29\n3        Entity     Organization   5\n4        Entity           Person  18\n5        Entity           Vessel  15\n6         Event       Assessment  36\n7         Event      Collaborate  25\n8         Event    Communication 584\n9         Event        Criticize   1\n10        Event      Enforcement  21\n11        Event          Fishing   1\n12        Event     HarborReport   2\n13        Event       Monitoring  70\n14        Event     TourActivity  13\n15        Event  TransponderPing   3\n16        Event   VesselMovement  46\n17 Relationship AccessPermission  68\n18 Relationship       Colleagues  30\n19 Relationship      Coordinates  74\n20 Relationship          Friends   2\n21 Relationship     Jurisdiction  13\n22 Relationship         Operates  40\n23 Relationship          Reports  25\n24 Relationship       Suspicious  28\n25 Relationship       Unfriendly   5\n\n\n\n\nCode\nedges %&gt;% summarise(\n  total = n(),\n  na_source = sum(is.na(source)),\n  na_target = sum(is.na(target)),\n  all_na = sum(is.na(source) | is.na(target))\n)\n\n\n  total na_source na_target all_na\n1  3226         0         0      0"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#parse-timestamp-and-extract-day",
+    "href": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#parse-timestamp-and-extract-day",
+    "title": "Take-Home_Ex02",
+    "section": "Parse Timestamp and Extract Day",
+    "text": "Parse Timestamp and Extract Day\n\n\nCode\n# Convert timestamp to datetime and extract date\ncomm_events &lt;- nodes %&gt;%\n  filter(type == \"Event\", sub_type == \"Communication\") %&gt;%\n  select(id, timestamp)  # Make sure 'timestamp' is the actual column name\n\n# Step 2: Parse timestamp into datetime and extract the date\ncomm_events &lt;- comm_events %&gt;%\n  mutate(\n    start_time = ymd_hms(timestamp, quiet = TRUE),\n    day = as.Date(start_time)\n  )"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#summarise-daily-communication-volume",
+    "href": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#summarise-daily-communication-volume",
+    "title": "Take-Home_Ex02",
+    "section": "Summarise daily Communication Volume",
+    "text": "Summarise daily Communication Volume\n\n\nCode\n# Count number of communications per day\ndaily_comms &lt;- comm_events %&gt;%\n  count(day, name = \"num_comms\")"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#visualise-the-temporal-pattern",
+    "href": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#visualise-the-temporal-pattern",
+    "title": "Take-Home_Ex02",
+    "section": "Visualise the Temporal Pattern",
+    "text": "Visualise the Temporal Pattern\n\n\nCode\n# Plot as a time series\nggplot(daily_comms, aes(x = day, y = num_comms)) +\n  geom_line(color = \"steelblue\", linewidth = 1.2) +\n  geom_point(size = 2) +\n  labs(title = \"Daily Communication Patterns (2-Week Period)\",\n       x = \"Date\", y = \"Number of Communications\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#filter-people-vessels-only",
+    "href": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#filter-people-vessels-only",
+    "title": "Take-Home_Ex02",
+    "section": "Filter People + Vessels only",
+    "text": "Filter People + Vessels only\n\n\nCode\n# Filter relevant entity nodes\nentity_nodes &lt;- nodes %&gt;%\n  filter(type == \"Entity\", sub_type %in% c(\"Person\", \"Vessel\")) %&gt;%\n  select(id, name, sub_type)"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#filter-edges-between-people-and-vessels-communication-events",
+    "href": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#filter-edges-between-people-and-vessels-communication-events",
+    "title": "Take-Home_Ex02",
+    "section": "Filter Edges Between People and Vessels (Communication events)",
+    "text": "Filter Edges Between People and Vessels (Communication events)\n\n\nCode\nvalid_ids &lt;- entity_nodes$id\n# Filter communication events\ncomm_events &lt;- nodes %&gt;%\n  filter(type == \"Event\", sub_type == \"Communication\") %&gt;%\n  select(event_id = id)\n\n# Get 'sent' and 'received' edges related to those comm events\nsent_edges &lt;- edges %&gt;%\n  filter(type == \"sent\", target %in% comm_events$event_id) %&gt;%\n  select(event_id = target, entity_id = source)\n\nreceived_edges &lt;- edges %&gt;%\n  filter(type == \"received\", source %in% comm_events$event_id) %&gt;%\n  select(event_id = source, entity_id = target)\n\n# Combine both directions\nentity_event_edges &lt;- bind_rows(sent_edges, received_edges)\n\n# Join to find co-communicating entities via the same event\nentity_pairs &lt;- entity_event_edges %&gt;%\n  inner_join(entity_event_edges, by = \"event_id\") %&gt;%\n  filter(entity_id.x != entity_id.y) %&gt;%\n  distinct(entity_id.x, entity_id.y) %&gt;%\n  rename(source = entity_id.x, target = entity_id.y) %&gt;%\n  filter(source %in% valid_ids & target %in% valid_ids)"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#build-and-cluster-graph",
+    "href": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#build-and-cluster-graph",
+    "title": "Take-Home_Ex02",
+    "section": "Build and Cluster Graph",
+    "text": "Build and Cluster Graph\n\n\nCode\n# Create tidygraph\ngraph_tbl &lt;- tbl_graph(nodes = entity_nodes, edges = entity_pairs, directed = FALSE)\n\ngraph_tbl &lt;- graph_tbl %&gt;%\n  mutate(group = as.factor(group_infomap()))"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#visualise-groups",
+    "href": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#visualise-groups",
+    "title": "Take-Home_Ex02",
+    "section": "Visualise Groups",
+    "text": "Visualise Groups\n\n\nCode\nggraph(graph_tbl, layout = \"fr\") +\n  geom_edge_link(alpha = 0.2) +\n  geom_node_point(aes(color = group, shape = sub_type), size = 4) +\n  geom_node_text(aes(label = name), repel = TRUE, size = 2.5) +\n  labs(title = \"Grouped Network of People and Vessels\") +\n  theme_graph()"
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#interactive-graph",
+    "href": "Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html#interactive-graph",
+    "title": "Take-Home_Ex02",
+    "section": "Interactive graph",
+    "text": "Interactive graph\n\n\nCode\nnodes_vis &lt;- graph_tbl %&gt;%\n  as_tibble() %&gt;%\n  mutate(id = name,\n         label = name,\n         group = group,\n          font = \"{size:30,color:'black',face:'bold'}\",\n         shape = ifelse(sub_type == \"Person\", \"dot\", \"triangle\")) %&gt;%\n  select(id, label, group, shape)\n\n# Step 2: Prepare edge data frame\nedges_vis &lt;- graph_tbl %&gt;%\n  activate(edges) %&gt;%\n  as_tibble() %&gt;%\n  left_join(graph_tbl %&gt;% as_tibble() %&gt;% mutate(from_id = row_number()), \n            by = c(\"from\" = \"from_id\")) %&gt;%\n  rename(from_name = name) %&gt;%\n  left_join(graph_tbl %&gt;% as_tibble() %&gt;% mutate(to_id = row_number()), \n            by = c(\"to\" = \"to_id\")) %&gt;%\n  rename(to_name = name) %&gt;%\n  select(from = from_name, to = to_name)\n\n# Step 3: Render interactive visNetwork\nvisNetwork(nodes_vis, edges_vis, width = \"1000px\", height = \"800px\") %&gt;%\n  visIgraphLayout(layout = \"layout_with_fr\") %&gt;%\n  visEdges(color = list(color = \"gray\", highlight = \"red\")) %&gt;%\n  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %&gt;%\n  visLegend(useGroups = TRUE, position = \"left\")\n\n\n\n\n\n\n\n\nCode\nnodes_vis &lt;- graph_tbl %&gt;%\n  as_tibble() %&gt;%\n  mutate(\n    id = name,\n    label = name,\n    title = paste0(\"Type: \", sub_type, \"&lt;br&gt;Group: \", group),\n    group = group,\n    shape = ifelse(sub_type == \"Person\", \"dot\", \"triangle\"),\n    font = \"{size:30,color:'black',face:'bold'}\"\n  ) %&gt;%\n  select(id, label, title, group, shape, font)\n\n# Prepare edges\nedges_tbl &lt;- graph_tbl %&gt;%\n  activate(edges) %&gt;%\n  as_tibble()\n\nnodes_tbl &lt;- graph_tbl %&gt;%\n  activate(nodes) %&gt;%\n  as_tibble() %&gt;%\n  mutate(node_index = row_number())\n\nedges_vis &lt;- edges_tbl %&gt;%\n  left_join(nodes_tbl, by = c(\"from\" = \"node_index\")) %&gt;%\n  rename(from_id = name) %&gt;%\n  left_join(nodes_tbl, by = c(\"to\" = \"node_index\")) %&gt;%\n  rename(to_id = name) %&gt;%\n  mutate(title = paste0(\"From: \", from_id, \"&lt;br&gt;To: \", to_id)) %&gt;%\n  select(from = from_id, to = to_id, title)\n\n# Render visNetwork\nvisNetwork(nodes_vis, edges_vis, width = \"100%\", height = \"850px\") %&gt;%\n  visIgraphLayout(layout = \"layout_with_fr\") %&gt;%\n  visEdges(color = list(color = \"gray\", highlight = \"red\")) %&gt;%\n  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %&gt;%\n  visLegend(useGroups = TRUE, position = \"left\")"
   }
 ]

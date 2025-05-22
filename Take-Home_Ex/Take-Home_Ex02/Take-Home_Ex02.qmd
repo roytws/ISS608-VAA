@@ -1,0 +1,226 @@
+---
+title: "Take-Home_Ex02"
+author: "Teo Wee Siang Roy"
+date: "May 21, 2025"
+date-modified: "last-modified"
+format:
+  html:
+    toc: true
+    theme: default
+    code-fold: show
+editor: visual
+execute: 
+  eval: true
+  echo: true
+  warning: false
+freeze: true
+---
+
+# Mini-Case 3
+
+Over the past decade, Oceanus has transitioned from a fishing-based economy to one increasingly reliant on ocean tourism, following crackdowns on illegal fishing. This shift has caused tensions, especially with recent high-profile events like pop star Sailor Shift's planned music video shoot on the island.
+
+Journalist Clepper Jessen, formerly of FishEye and now with the Hacklee Herald, has been investigating these tensions. His latest focus is the sudden closure of Nemo Reef. Through intercepted communications and investigative analysis, Clepper uncovered a network of expedited approvals and covert arrangements implicating Oceanus officials, Sailor Shift's team, powerful local families, and the conservation group The Green Guardians---suggesting a potential case of corruption and manipulation.
+
+Task: Create innovative visualizations and visual analytics tools to help Clepper expose the truth behind these events.
+
+# Set-up
+
+## Import library package
+
+```{r}
+pacman::p_load(tidyverse, jsonlite, lubridate, ggraph, tidygraph, visNetwork)
+
+```
+
+## Import data and extract nodes and edges
+
+```{r}
+
+# Load graph structure
+graph_raw <- fromJSON("TH02/data/MC3_graph.json", flatten = TRUE)
+nodes <- graph_raw$nodes
+edges <- graph_raw$edges
+
+
+```
+
+## Parse Timestamp and Extract Day
+
+```{r}
+# Convert timestamp to datetime and extract date
+comm_events <- nodes %>%
+  filter(type == "Event", sub_type == "Communication") %>%
+  select(id, timestamp)  # Make sure 'timestamp' is the actual column name
+
+# Step 2: Parse timestamp into datetime and extract the date
+comm_events <- comm_events %>%
+  mutate(
+    start_time = ymd_hms(timestamp, quiet = TRUE),
+    day = as.Date(start_time)
+  )
+
+```
+
+## Summarise daily Communication Volume
+
+```{r}
+# Count number of communications per day
+daily_comms <- comm_events %>%
+  count(day, name = "num_comms")
+
+
+```
+
+## Visualise the Temporal Pattern
+
+```{r}
+# Plot as a time series
+ggplot(daily_comms, aes(x = day, y = num_comms)) +
+  geom_line(color = "steelblue", linewidth = 1.2) +
+  geom_point(size = 2) +
+  labs(title = "Daily Communication Patterns (2-Week Period)",
+       x = "Date", y = "Number of Communications") +
+  theme_minimal()
+
+```
+
+# Question 2
+
+## Filter People + Vessels only
+
+```{r}
+# Filter relevant entity nodes
+entity_nodes <- nodes %>%
+  filter(type == "Entity", sub_type %in% c("Person", "Vessel")) %>%
+  select(id, name, sub_type)
+
+```
+
+## Filter Edges Between People and Vessels (Communication events)
+
+```{r}
+valid_ids <- entity_nodes$id
+# Filter communication events
+comm_events <- nodes %>%
+  filter(type == "Event", sub_type == "Communication") %>%
+  select(event_id = id)
+
+# Get 'sent' and 'received' edges related to those comm events
+sent_edges <- edges %>%
+  filter(type == "sent", target %in% comm_events$event_id) %>%
+  select(event_id = target, entity_id = source)
+
+received_edges <- edges %>%
+  filter(type == "received", source %in% comm_events$event_id) %>%
+  select(event_id = source, entity_id = target)
+
+# Combine both directions
+entity_event_edges <- bind_rows(sent_edges, received_edges)
+
+# Join to find co-communicating entities via the same event
+entity_pairs <- entity_event_edges %>%
+  inner_join(entity_event_edges, by = "event_id") %>%
+  filter(entity_id.x != entity_id.y) %>%
+  distinct(entity_id.x, entity_id.y) %>%
+  rename(source = entity_id.x, target = entity_id.y) %>%
+  filter(source %in% valid_ids & target %in% valid_ids)
+```
+
+## Build and Cluster Graph
+
+```{r}
+
+
+# Create tidygraph
+graph_tbl <- tbl_graph(nodes = entity_nodes, edges = entity_pairs, directed = FALSE)
+
+graph_tbl <- graph_tbl %>%
+  mutate(group = as.factor(group_infomap()))
+```
+
+## Visualise Groups
+
+```{r,fig.width= 10,fig.height= 6}
+ggraph(graph_tbl, layout = "fr") +
+  geom_edge_link(alpha = 0.2) +
+  geom_node_point(aes(color = group, shape = sub_type), size = 4) +
+  geom_node_text(aes(label = name), repel = TRUE, size = 2.5) +
+  labs(title = "Grouped Network of People and Vessels") +
+  theme_graph()
+
+
+```
+
+## Interactive graph
+
+```{r}
+nodes_vis <- graph_tbl %>%
+  as_tibble() %>%
+  mutate(id = name,
+         label = name,
+         group = group,
+          font = "{size:30,color:'black',face:'bold'}",
+         shape = ifelse(sub_type == "Person", "dot", "triangle")) %>%
+  select(id, label, group, shape)
+
+# Step 2: Prepare edge data frame
+edges_vis <- graph_tbl %>%
+  activate(edges) %>%
+  as_tibble() %>%
+  left_join(graph_tbl %>% as_tibble() %>% mutate(from_id = row_number()), 
+            by = c("from" = "from_id")) %>%
+  rename(from_name = name) %>%
+  left_join(graph_tbl %>% as_tibble() %>% mutate(to_id = row_number()), 
+            by = c("to" = "to_id")) %>%
+  rename(to_name = name) %>%
+  select(from = from_name, to = to_name)
+
+# Step 3: Render interactive visNetwork
+visNetwork(nodes_vis, edges_vis, width = "1000px", height = "800px") %>%
+  visIgraphLayout(layout = "layout_with_fr") %>%
+  visEdges(color = list(color = "gray", highlight = "red")) %>%
+  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
+  visLegend(useGroups = TRUE, position = "left")
+
+```
+
+```{r}
+nodes_vis <- graph_tbl %>%
+  as_tibble() %>%
+  mutate(
+    id = name,
+    label = name,
+    title = paste0("Type: ", sub_type, "<br>Group: ", group),
+    group = group,
+    shape = ifelse(sub_type == "Person", "dot", "triangle"),
+    font = "{size:30,color:'black',face:'bold'}"
+  ) %>%
+  select(id, label, title, group, shape, font)
+
+# Prepare edges
+edges_tbl <- graph_tbl %>%
+  activate(edges) %>%
+  as_tibble()
+
+nodes_tbl <- graph_tbl %>%
+  activate(nodes) %>%
+  as_tibble() %>%
+  mutate(node_index = row_number())
+
+edges_vis <- edges_tbl %>%
+  left_join(nodes_tbl, by = c("from" = "node_index")) %>%
+  rename(from_id = name) %>%
+  left_join(nodes_tbl, by = c("to" = "node_index")) %>%
+  rename(to_id = name) %>%
+  mutate(title = paste0("From: ", from_id, "<br>To: ", to_id)) %>%
+  select(from = from_id, to = to_id, title)
+
+# Render visNetwork
+visNetwork(nodes_vis, edges_vis, width = "100%", height = "850px") %>%
+  visIgraphLayout(layout = "layout_with_fr") %>%
+  visEdges(color = list(color = "gray", highlight = "red")) %>%
+  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
+  visLegend(useGroups = TRUE, position = "left")
+
+```
