@@ -190,15 +190,19 @@ nodes_vis <- graph_tbl %>%
   as_tibble() %>%
   mutate(
     id = name,
-    label = name,
-    title = paste0("Type: ", sub_type, "<br>Group: ", group),
-    group = group,
+    label = name,  # this ensures the name appears directly on the graph
+    group = as.character(group),
     shape = ifelse(sub_type == "Person", "dot", "triangle"),
-    font = "{size:30,color:'black',face:'bold'}"
+    title = paste0(
+      "<div style='color:black;'>",
+      "<b>", name, "</b><br>",
+      "Type: ", sub_type, "<br>",
+      "Group: ", group,
+      "</div>"
+    )
   ) %>%
-  select(id, label, title, group, shape, font)
+  select(id, label, group, shape, title)  # font removed to use visNodes styling
 
-# Prepare edges
 edges_tbl <- graph_tbl %>%
   activate(edges) %>%
   as_tibble()
@@ -210,15 +214,21 @@ nodes_tbl <- graph_tbl %>%
 
 edges_vis <- edges_tbl %>%
   left_join(nodes_tbl, by = c("from" = "node_index")) %>%
-  rename(from_id = name) %>%
+  rename(from_name = name) %>%
   left_join(nodes_tbl, by = c("to" = "node_index")) %>%
-  rename(to_id = name) %>%
-  mutate(title = paste0("From: ", from_id, "<br>To: ", to_id)) %>%
-  select(from = from_id, to = to_id, title)
+  rename(to_name = name) %>%
+  mutate(
+    title = paste0(
+      "<div style='color:black;'>",
+      from_name, " ↔ ", to_name,
+      "</div>"
+    )
+  ) %>%
+  select(from = from_name, to = to_name, title)
 
-# Render visNetwork
-visNetwork(nodes_vis, edges_vis, width = "100%", height = "850px") %>%
+visNetwork(nodes_vis, edges_vis, width = "1000px", height = "800px") %>%
   visIgraphLayout(layout = "layout_with_fr") %>%
+  visNodes(font = list(size = 30, color = "black", face = "bold", align = "top")) %>%
   visEdges(color = list(color = "gray", highlight = "red")) %>%
   visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
   visLegend(useGroups = TRUE, position = "left")
