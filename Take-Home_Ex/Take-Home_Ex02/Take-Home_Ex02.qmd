@@ -97,28 +97,45 @@ entity_nodes <- nodes %>%
 
 ```
 
+## Assign groups based on name/subtype for better analytics
+
+```{r}
+entity_nodes <- entity_nodes %>%
+  mutate(
+    group = case_when(
+      name %in% c("Green Guardians", "Reef Guardian", "EcoVigil", "Sentinel") ~ "Environmentalism",
+      name %in% c("Sailor Shift", "Sailor Shifts Team") ~ "Sailor Shift",
+      name %in% c("Mariners Dream", "Marlin", "Recreational Fishing Boats") ~ "Fishing/Leisure",
+      name %in% c("Serenity", "Horizon", "Osprey", "Remora", "Neptune", "Mako") ~ "Tourism/Leisure",
+      TRUE ~ sub_type # fallback: Person or Vessel
+    )
+  )
+
+```
+
 ## Filter Edges Between People and Vessels (Communication events)
 
 ```{r}
+# Identify valid entity IDs
 valid_ids <- entity_nodes$id
-# Filter communication events
-comm_events <- nodes %>%
-  filter(type == "Event", sub_type == "Communication") %>%
-  select(event_id = id)
 
-# Get 'sent' and 'received' edges related to those comm events
+# Get communication events
+comm_event_ids <- nodes %>%
+  filter(type == "Event", sub_type == "Communication") %>%
+  pull(id)
+
+# Filter 'sent' and 'received' edges for communication events
 sent_edges <- edges %>%
-  filter(type == "sent", target %in% comm_events$event_id) %>%
+  filter(type == "sent", target %in% comm_event_ids) %>%
   select(event_id = target, entity_id = source)
 
 received_edges <- edges %>%
-  filter(type == "received", source %in% comm_events$event_id) %>%
+  filter(type == "received", source %in% comm_event_ids) %>%
   select(event_id = source, entity_id = target)
 
-# Combine both directions
+# Combine and create entity pairs
 entity_event_edges <- bind_rows(sent_edges, received_edges)
 
-# Join to find co-communicating entities via the same event
 entity_pairs <- entity_event_edges %>%
   inner_join(entity_event_edges, by = "event_id") %>%
   filter(entity_id.x != entity_id.y) %>%
@@ -130,13 +147,11 @@ entity_pairs <- entity_event_edges %>%
 ## Build and Cluster Graph
 
 ```{r}
-
-
-# Create tidygraph
 graph_tbl <- tbl_graph(nodes = entity_nodes, edges = entity_pairs, directed = FALSE)
 
+# Detect clusters (communities) for color grouping
 graph_tbl <- graph_tbl %>%
-  mutate(group = as.factor(group_infomap()))
+  mutate(cluster = as.factor(group_infomap()))
 ```
 
 ## Visualise Groups
@@ -146,66 +161,40 @@ ggraph(graph_tbl, layout = "fr") +
   geom_edge_link(alpha = 0.2) +
   geom_node_point(aes(color = group, shape = sub_type), size = 4) +
   geom_node_text(aes(label = name), repel = TRUE, size = 2.5) +
-  labs(title = "Grouped Network of People and Vessels") +
-  theme_graph()
+  labs(title = "Entity Communication Network: People and Vessels",
+       color = "Group", shape = "Type") +
+  theme_minimal()
 
 
 ```
 
-## Interactive graph
+# 2A Interactive graph
 
 ```{r}
-nodes_vis <- graph_tbl %>%
-  as_tibble() %>%
-  mutate(id = name,
-         label = name,
-         group = group,
-          font = "{size:30,color:'black',face:'bold'}",
-         shape = ifelse(sub_type == "Person", "dot", "triangle")) %>%
-  select(id, label, group, shape)
-
-# Step 2: Prepare edge data frame
-edges_vis <- graph_tbl %>%
-  activate(edges) %>%
-  as_tibble() %>%
-  left_join(graph_tbl %>% as_tibble() %>% mutate(from_id = row_number()), 
-            by = c("from" = "from_id")) %>%
-  rename(from_name = name) %>%
-  left_join(graph_tbl %>% as_tibble() %>% mutate(to_id = row_number()), 
-            by = c("to" = "to_id")) %>%
-  rename(to_name = name) %>%
-  select(from = from_name, to = to_name)
-
-# Step 3: Render interactive visNetwork
-visNetwork(nodes_vis, edges_vis, width = "1000px", height = "800px") %>%
-  visIgraphLayout(layout = "layout_with_fr") %>%
-  visEdges(color = list(color = "gray", highlight = "red")) %>%
-  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
-  visLegend(useGroups = TRUE, position = "left")
-
-```
-
-```{r}
+# ---- NODES PREPARATION ----
 nodes_vis <- graph_tbl %>%
   as_tibble() %>%
   mutate(
-    id = name,
-    label = name,  # this ensures the name appears directly on the graph
-    group = as.character(group),
+    id = id,
+    label = name,
+    group = group,
     shape = ifelse(sub_type == "Person", "dot", "triangle"),
     title = paste0(
       "<div style='color:black;'>",
       "<b>", name, "</b><br>",
       "Type: ", sub_type, "<br>",
-      "Group: ", group,
+      "Group: ", group, "<br>",
+      "Cluster: ", cluster,
       "</div>"
     )
   ) %>%
-  select(id, label, group, shape, title)  # font removed to use visNodes styling
+  select(id, label, group, shape, title)
 
+# ---- EDGES PREPARATION ----
 edges_tbl <- graph_tbl %>%
   activate(edges) %>%
-  as_tibble()
+  as_tibble() %>%
+  distinct(from, to, .keep_all = TRUE)
 
 nodes_tbl <- graph_tbl %>%
   activate(nodes) %>%
@@ -213,24 +202,86 @@ nodes_tbl <- graph_tbl %>%
   mutate(node_index = row_number())
 
 edges_vis <- edges_tbl %>%
-  left_join(nodes_tbl, by = c("from" = "node_index")) %>%
-  rename(from_name = name) %>%
-  left_join(nodes_tbl, by = c("to" = "node_index")) %>%
-  rename(to_name = name) %>%
-  mutate(
-    title = paste0(
-      "<div style='color:black;'>",
-      from_name, " ↔ ", to_name,
-      "</div>"
-    )
-  ) %>%
-  select(from = from_name, to = to_name, title)
+  left_join(nodes_tbl %>% select(node_index, id), by = c("from" = "node_index")) %>%
+  rename(from_id = id) %>%
+  left_join(nodes_tbl %>% select(node_index, id), by = c("to" = "node_index")) %>%
+  rename(to_id = id) %>%
+  select(from = from_id, to = to_id)
 
-visNetwork(nodes_vis, edges_vis, width = "1000px", height = "800px") %>%
+# ---- INTERACTIVE VISUALIZATION ----
+visNetwork(nodes_vis, edges_vis, width = "800px", height = "800px") %>%
   visIgraphLayout(layout = "layout_with_fr") %>%
-  visNodes(font = list(size = 30, color = "black", face = "bold", align = "top")) %>%
-  visEdges(color = list(color = "gray", highlight = "red")) %>%
-  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
-  visLegend(useGroups = TRUE, position = "left")
+  visNodes(
+    font = list(size = 24, color = "black", face = "bold"),
+    shadow = TRUE
+  ) %>%
+  visEdges(
+    arrows = "to",
+    color = list(color = "gray", highlight = "red"),
+    smooth = TRUE
+  ) %>%
+  visOptions(
+    highlightNearest = list(enabled = TRUE, degree = 1),
+    nodesIdSelection = TRUE  # This enables the dropdown
+  ) %>%
+  visLegend(
+    position = "left",
+    main = "Group Legend",
+    useGroups = TRUE,
+    ncol = 1,
+    stepX = 100,
+    stepY = 50
+  ) %>%
+  visGroups(groupname = "Environmentalism", color = "#4DAF4A") %>%
+  visGroups(groupname = "Sailor Shift", color = "#E41A1C") %>%
+  visGroups(groupname = "Fishing/Leisure", color = "#377EB8") %>%
+  visGroups(groupname = "Tourism/Leisure", color = "#FFD700") %>%
+  visGroups(groupname = "Officials", color = "#FF7F00") %>%
+  visGroups(groupname = "Industry", color = "#999999")
+
 
 ```
+
+Node Encoding:
+
+-   Shape: Distinguishes people (dots) from vessels (triangles)
+
+-   Color: Groups entities by affiliation/role
+
+-   Labels: Direct identification of entities
+
+Interactive Features: - Dropdown selection: Allows focused exploration of specific entities
+
+-   Hover tooltips: Provide detailed node information
+
+-   Highlighting: Shows connected neighbors when selecting nodes
+
+-   Legend: Clearly identifies group classifications
+
+# 2B Insights
+
+**How This Helps Clepper**
+
+-   **Identifying Key Players:**
+
+    The diagram visually highlights which people and vessels are most interconnected, helping to focus attention on the core of the network.
+
+-   **Spotting Isolated Entities:**
+
+    Outliers or isolated nodes (like "Sailor Shift" and "Mariner's Dream") may warrant further investigation to understand why they are not connected to the main group.
+
+-   **Understanding Group Structure:**
+
+    The use of color and shape makes it easy to distinguish between different types of entities and their likely group affiliations, revealing the structure of the broader community and its subgroups.
+
+**Central Cluster:** The central area of the diagram contains a dense cluster of people and vessels, suggesting frequent or multiple interactions among these entities. This could indicate a core group involved in related activities.
+
+**Group Separation:** Environmentalism vessels (green triangles) are grouped together and connected to several people, indicating that these vessels are involved with or communicate with multiple individuals.
+
+Tourism/Leisure vessels (yellow triangles) are also clustered, with some connections to people in the central group.
+
+Sailor Shift (red circle) is isolated, with no visible direct connections in this snapshot, suggesting either a lack of direct communication in this subset or that this node is involved in different parts of the network not shown here.
+
+**Peripheral People and Vessels:** Some individuals and vessels are not connected to the main cluster, indicating limited or no recent communication events with the central group.
+
+**In summary:** This network diagram provides a clear visual summary of the relationships and communication patterns between people and vessels in the Oceanus community. It shows which entities are most central, which groups are most tightly connected, and which individuals or vessels are on the periphery or isolated from the main activity. This can guide further investigation into group dynamics and potential areas of interest in the knowledge graph
