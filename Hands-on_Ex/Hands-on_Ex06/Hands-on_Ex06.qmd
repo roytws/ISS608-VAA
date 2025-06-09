@@ -32,6 +32,7 @@ attacks <- read_csv("chap06/data/eventlog.csv")
 ```
 
 ## Examine Data Structure
+
 ```{r}
 kable(head(attacks))
 
@@ -39,6 +40,7 @@ kable(head(attacks))
 ```
 
 # Data preparation
+
 ```{r}
 make_hr_wkday <- function(ts, sc, tz) {
   real_times <- ymd_hms(ts, 
@@ -70,15 +72,13 @@ attacks <- attacks %>%
       hour, levels = 0:23))
 ```
 
-
 ```{r}
 kable(head(attacks))
 
 ```
 
-
-
 # Building the Calendar Heatmap
+
 ```{r}
 grouped <- attacks %>% 
   count(wkday, hour) %>% 
@@ -108,6 +108,7 @@ theme(axis.ticks = element_blank(),
 # Building Multiple Calendar Heatmaps
 
 ## Plotting Multiple Calendar Heatmaps
+
 ```{r}
 attacks_by_country <- count(
   attacks, source_country) %>%
@@ -127,6 +128,7 @@ top4_attacks <- attacks %>%
 ```
 
 ## plot multiple calender heatmap
+
 ```{r}
 ggplot(top4_attacks, 
        aes(hour, 
@@ -177,6 +179,7 @@ Vietnam <- air %>%
 ```
 
 ## Computing year average arrivals by month
+
 ```{r}
 hline.data <- Vietnam %>% 
   group_by(month) %>%
@@ -186,6 +189,7 @@ hline.data <- Vietnam %>%
 ```
 
 ## Plotting the cycle plot
+
 ```{r,fig.width= 10}
 ggplot() + 
   geom_line(data=Vietnam,
@@ -205,7 +209,8 @@ ggplot() +
   ylab("No. of Visitors") +
   theme_tufte(base_family = "Helvetica")
 ```
-## to plot better and clearer 
+
+## to plot better and clearer
 
 ```{r,fig.width= 10,fig.height= 6}
 Vietnam$Date <- as.Date(paste(Vietnam$year, Vietnam$month, "01", sep = "-"), format = "%Y-%B-%d")
@@ -233,11 +238,13 @@ ggplot() +
 # Plotting Slopegraph
 
 ## Data Import
+
 ```{r}
 rice <- read_csv("chap06/data/rice.csv")
 ```
 
-##  Plotting the slopegraph
+## Plotting the slopegraph
+
 ```{r}
 rice %>% 
   mutate(Year = factor(Year)) %>%
@@ -247,20 +254,3 @@ rice %>%
                 SubTitle = "1961-1980",
                 Caption = "Prepared by: Dr. Kam Tin Seong")
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
