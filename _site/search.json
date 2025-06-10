@@ -942,6 +942,69 @@
     "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#side-by-side",
     "title": "Hands-on Exercise 8",
     "section": "Side by side",
-    "text": "Side by side\n\n\nCode\ntm_shape(sgpools_sf) + \n  tm_bubbles(fill = \"OUTLET TYPE\", \n             size = \"Gp1Gp2 Winnings\",\n             col = \"black\",\n             lwd = 1) + \n  tm_facets(by= \"OUTLET TYPE\",\n            nrow = 1,\n            sync = TRUE)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCode\ntmap_mode(\"plot\")\n\n\nℹ tmap mode set to \"plot\"."
+    "text": "Side by side\n\n\nCode\ntm_shape(sgpools_sf) + \n  tm_bubbles(fill = \"OUTLET TYPE\", \n             size = \"Gp1Gp2 Winnings\",\n             col = \"black\",\n             lwd = 1) + \n  tm_facets(by= \"OUTLET TYPE\",\n            nrow = 1,\n            sync = TRUE)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCode\ntmap_mode(\"plot\")\n\n\nℹ tmap mode set to \"plot\".\n\n\n#Import data\n\n\nCode\nNGA_wp &lt;- read_rds(\"chap08/data/rds/NGA_wp.rds\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#deriving-proportion-of-functional-water-points-and-non-functional-water-points",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#deriving-proportion-of-functional-water-points-and-non-functional-water-points",
+    "title": "Hands-on Exercise 8",
+    "section": "Deriving Proportion of Functional Water Points and Non-Functional Water Points",
+    "text": "Deriving Proportion of Functional Water Points and Non-Functional Water Points\n\n\nCode\nNGA_wp &lt;- NGA_wp %&gt;%\n  mutate(pct_functional = wp_functional/total_wp) %&gt;%\n  mutate(pct_nonfunctional = wp_nonfunctional/total_wp)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#plot-map-of-rate",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#plot-map-of-rate",
+    "title": "Hands-on Exercise 8",
+    "section": "plot map of rate",
+    "text": "plot map of rate\n\n\nCode\ntm_shape(NGA_wp) +\n  tm_polygons(\"pct_functional\",\n              fill.scale = tm_scale_intervals(\n                style = \"equal\",\n                n = 10,\n                values = \"brewer.blues\"),\n              fill.legend = tm_legend(\n                position = c(\"right\", \"bottom\"))) + \n  tm_borders(lwd = 0.1,\n             fill_alpha = 1) +\n  tm_title(\"Rate map of functional water point by LGAs\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#extreme-value-maps-percentile-map",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#extreme-value-maps-percentile-map",
+    "title": "Hands-on Exercise 8",
+    "section": "Extreme Value Maps (Percentile Map)",
+    "text": "Extreme Value Maps (Percentile Map)\n\n\nCode\nNGA_wp &lt;- NGA_wp %&gt;%\n  drop_na()\n\npercent &lt;- c(0,.01,.1,.5,.9,.99,1)\nvar &lt;- NGA_wp[\"pct_functional\"] %&gt;%\n  st_set_geometry(NULL)\nquantile(var[,1], percent)\n\n\n       0%        1%       10%       50%       90%       99%      100% \n0.0000000 0.0000000 0.2169811 0.4791667 0.8611111 1.0000000 1.0000000"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#creating-the-get.var-function",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#creating-the-get.var-function",
+    "title": "Hands-on Exercise 8",
+    "section": "Creating the get.var function",
+    "text": "Creating the get.var function\n\n\nCode\nget.var &lt;- function(vname,df) {\n  v &lt;- df[vname] %&gt;% \n    st_set_geometry(NULL)\n  v &lt;- unname(v[,1])\n  return(v)\n}"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#a-percentile-mapping-function",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#a-percentile-mapping-function",
+    "title": "Hands-on Exercise 8",
+    "section": "A percentile mapping function",
+    "text": "A percentile mapping function\n\n\nCode\npercentmap &lt;- function(vnam, df, legtitle=NA, mtitle=\"Percentile Map\"){\n  percent &lt;- c(0,.01,.1,.5,.9,.99,1)\n  var &lt;- get.var(vnam, df)\n  bperc &lt;- quantile(var, percent)\n  tm_shape(df) +\n  tm_polygons() +\n  tm_shape(df) +\n     tm_polygons(vnam,\n             title=legtitle,\n             breaks=bperc,\n             palette=\"Blues\",\n          labels=c(\"&lt; 1%\", \"1% - 10%\", \"10% - 50%\", \"50% - 90%\", \"90% - 99%\", \"&gt; 99%\"))  +\n  tm_borders() +\n  tm_layout(main.title = mtitle, \n            title.position = c(\"right\",\"bottom\"))\n}"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#test-drive-the-percentile-mapping-function",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#test-drive-the-percentile-mapping-function",
+    "title": "Hands-on Exercise 8",
+    "section": "Test drive the percentile mapping function",
+    "text": "Test drive the percentile mapping function\n\n\nCode\npercentmap(\"total_wp\", NGA_wp)\n\n\n\n\n\n── tmap v3 code detected ───────────────────────────────────────────────────────\n\n\n[v3-&gt;v4] `tm_tm_polygons()`: migrate the argument(s) related to the scale of\nthe visual variable `fill` namely 'breaks', 'palette' (rename to 'values'),\n'labels' to fill.scale = tm_scale(&lt;HERE&gt;).\n[v3-&gt;v4] `tm_polygons()`: migrate the argument(s) related to the legend of the\nvisual variable `fill` namely 'title' to 'fill.legend = tm_legend(&lt;HERE&gt;)'\n[v3-&gt;v4] `tm_layout()`: use `tm_title()` instead of `tm_layout(title = )`\n[v3-&gt;v4] `tm_layout()`: use `tm_title()` instead of `tm_layout(main.title = )`\n[cols4all] color palettes: use palettes from the R package cols4all. Run\n`cols4all::c4a_gui()` to explore them. The old palette name \"Blues\" is named\n\"brewer.blues\"\nMultiple palettes called \"blues\" found: \"brewer.blues\", \"matplotlib.blues\". The first one, \"brewer.blues\", is returned."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#box-map",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#box-map",
+    "title": "Hands-on Exercise 8",
+    "section": "Box Map",
+    "text": "Box Map\n\n\nCode\nggplot(data = NGA_wp,\n       aes(x = \"\",\n           y = wp_nonfunctional)) +\n  geom_boxplot()"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#creating-the-boxbreaks-function",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#creating-the-boxbreaks-function",
+    "title": "Hands-on Exercise 8",
+    "section": "Creating the boxbreaks function",
+    "text": "Creating the boxbreaks function\n\n\nCode\nboxbreaks &lt;- function(v,mult=1.5) {\n  qv &lt;- unname(quantile(v))\n  iqr &lt;- qv[4] - qv[2]\n  upfence &lt;- qv[4] + mult * iqr\n  lofence &lt;- qv[2] - mult * iqr\n  # initialize break points vector\n  bb &lt;- vector(mode=\"numeric\",length=7)\n  # logic for lower and upper fences\n  if (lofence &lt; qv[1]) {  # no lower outliers\n    bb[1] &lt;- lofence\n    bb[2] &lt;- floor(qv[1])\n  } else {\n    bb[2] &lt;- lofence\n    bb[1] &lt;- qv[1]\n  }\n  if (upfence &gt; qv[5]) { # no upper outliers\n    bb[7] &lt;- upfence\n    bb[6] &lt;- ceiling(qv[5])\n  } else {\n    bb[6] &lt;- upfence\n    bb[7] &lt;- qv[5]\n  }\n  bb[3:5] &lt;- qv[2:4]\n  return(bb)\n}\n\n\n\nCreating the get.var function\n\n\nCode\nget.var &lt;- function(vname,df) {\n  v &lt;- df[vname] %&gt;% st_set_geometry(NULL)\n  v &lt;- unname(v[,1])\n  return(v)\n}\n\n\n\n\nTest drive the newly created function\n\n\nCode\nvar &lt;- get.var(\"wp_nonfunctional\", NGA_wp) \nboxbreaks(var)\n\n\n[1] -56.5   0.0  14.0  34.0  61.0 131.5 278.0"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#boxmap-function",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html#boxmap-function",
+    "title": "Hands-on Exercise 8",
+    "section": "Boxmap function",
+    "text": "Boxmap function\n\n\nCode\nboxmap &lt;- function(vnam, df, \n                   legtitle=NA,\n                   mtitle=\"Box Map\",\n                   position = \"right\",\n                   mult=1.5){\n  var &lt;- get.var(vnam,df)\n  bb &lt;- boxbreaks(var)\n  tm_shape(df) +\n    tm_polygons() +\n  tm_shape(df) +\n     tm_fill(vnam,title=legtitle,\n             breaks=bb,\n             palette=\"Blues\",\n          labels = c(\"lower outlier\", \n                     \"&lt; 25%\", \n                     \"25% - 50%\", \n                     \"50% - 75%\",\n                     \"&gt; 75%\", \n                     \"upper outlier\"))  +\n  tm_borders() +\n  tm_layout(main.title = mtitle, \n            title.position = c(\"left\",\n                               \"top\"))\n}\n\ntmap_mode(\"plot\")\n\n\nℹ tmap mode set to \"plot\".\n\n\nCode\nboxmap(\"wp_nonfunctional\", NGA_wp)\n\n\n\n── tmap v3 code detected ───────────────────────────────────────────────────────\n[v3-&gt;v4] `tm_tm_fill()`: migrate the argument(s) related to the scale of the\nvisual variable `fill` namely 'breaks', 'palette' (rename to 'values'),\n'labels' to fill.scale = tm_scale(&lt;HERE&gt;).[v3-&gt;v4] `tm_fill()`: migrate the argument(s) related to the legend of the\nvisual variable `fill` namely 'title' to 'fill.legend = tm_legend(&lt;HERE&gt;)'[v3-&gt;v4] `tm_layout()`: use `tm_title()` instead of `tm_layout(title = )`[v3-&gt;v4] `tm_layout()`: use `tm_title()` instead of `tm_layout(main.title = )`[cols4all] color palettes: use palettes from the R package cols4all. Run\n`cols4all::c4a_gui()` to explore them. The old palette name \"Blues\" is named\n\"brewer.blues\"Multiple palettes called \"blues\" found: \"brewer.blues\", \"matplotlib.blues\". The first one, \"brewer.blues\", is returned."
   }
 ]
