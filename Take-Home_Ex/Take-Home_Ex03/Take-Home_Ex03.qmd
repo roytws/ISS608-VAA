@@ -25,7 +25,7 @@ Replicate Take home 2 with teammates's package
 ## Import library package
 
 ```{r}
-pacman::p_load(tidyverse, jsonlite, lubridate, ggraph, tidygraph, visNetwork)
+pacman::p_load(tidyverse, jsonlite, lubridate, ggraph, tidygraph, visNetwork, igraph, patchwork)
 
 ```
 
@@ -294,3 +294,101 @@ visNetwork(nodes_vis, edges_vis, width = "100%", height = "800px") %>%
 
 ```
 
+# Cluster Analysis 
+```{r}
+# ---- CLUSTER ANALYSIS (FIXED) ----
+graph_igraph <- as.igraph(graph_tbl)
+
+# Check graph connectivity and get component info
+components <- components(graph_igraph)
+largest_comp <- which.max(components$csize)
+node_indices <- which(components$membership == largest_comp)
+
+# Compute clusters
+cluster_infomap <- cluster_infomap(graph_igraph)
+cluster_louvain <- cluster_louvain(graph_igraph)
+cluster_walktrap <- cluster_walktrap(graph_igraph, steps = 10)
+cluster_edge_betweenness <- cluster_edge_betweenness(graph_igraph, directed = FALSE)
+
+# Spinglass only on largest component
+graph_connected <- induced_subgraph(graph_igraph, node_indices)
+cluster_spinglass <- cluster_spinglass(graph_connected)
+
+# Create aligned cluster vectors
+spinglass_vec <- rep(NA, vcount(graph_igraph))
+spinglass_vec[node_indices] <- membership(cluster_spinglass)
+
+# Add cluster memberships to nodes
+entity_nodes <- entity_nodes %>%
+  mutate(
+    infomap_cluster = as.factor(membership(cluster_infomap)),
+    louvain_cluster = as.factor(membership(cluster_louvain)),
+    walktrap_cluster = as.factor(membership(cluster_walktrap)),
+    edge_betweenness_cluster = as.factor(membership(cluster_edge_betweenness)),
+    spinglass_cluster = as.factor(spinglass_vec)
+  )
+
+
+# ---- VISUALIZE CLUSTERS (example: Infomap) ----
+graph_tbl_clustered <- graph_tbl %>%
+  left_join(entity_nodes %>% select(id, infomap_cluster), by = "id")
+
+ggraph(graph_tbl_clustered, layout = "fr") +
+  geom_edge_link(alpha = 0.1, color = "gray") +
+  geom_node_point(aes(color = infomap_cluster, shape = sub_type), size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE, size = 3) +
+  labs(title = "Infomap Clustering", color = "Cluster") +
+  theme_minimal()
+
+# ---- CLUSTER METRICS TABLE ----
+cluster_metrics <- tibble(
+  Algorithm = c("Infomap", "Louvain", "Walktrap", "Edge Betweenness", "Spinglass"),
+  Clusters = c(length(unique(membership(cluster_infomap))),
+               length(unique(membership(cluster_louvain))),
+               length(unique(membership(cluster_walktrap))),
+               length(unique(membership(cluster_edge_betweenness))),
+               length(unique(membership(cluster_spinglass)))),
+  Modularity = c(modularity(cluster_infomap),
+                 modularity(cluster_louvain),
+                 modularity(cluster_walktrap),
+                 modularity(cluster_edge_betweenness),
+                 modularity(cluster_spinglass))
+)
+
+print(cluster_metrics)
+```
+
+
+# Algorithm Bar charts
+```{r,fig.width= 6,fig.height= 6}
+# Create metrics comparison plots
+cluster_metrics <- tibble(
+  Algorithm = c("Infomap", "Louvain", "Walktrap", "Edge Betweenness", "Spinglass"),
+  Clusters = c(13, 7, 7, 10, 5),
+  Modularity = c(0.1472922, 0.3585598, 0.3040071, 0.3416981, 0.2318878)
+)
+
+# Clusters comparison
+p1 <- ggplot(cluster_metrics, aes(x = reorder(Algorithm, Clusters), y = Clusters, fill = Algorithm)) +
+  geom_col(alpha = 0.8) +
+  geom_text(aes(label = Clusters), vjust = -0.5, size = 4, fontface = "bold") +
+  labs(title = "Number of Clusters by Algorithm", 
+       x = "Algorithm", y = "Number of Clusters") +
+  theme_minimal() +
+  theme(legend.position = "none", axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_brewer(palette = "Set2")
+
+# Modularity comparison
+p2 <- ggplot(cluster_metrics, aes(x = reorder(Algorithm, -Modularity), y = Modularity, fill = Algorithm)) +
+  geom_col(alpha = 0.8) +
+  geom_text(aes(label = round(Modularity, 3)), vjust = -0.5, size = 4, fontface = "bold") +
+  labs(title = "Modularity Score by Algorithm", 
+       x = "Algorithm", y = "Modularity Score") +
+  theme_minimal() +
+  theme(legend.position = "none", axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_brewer(palette = "Set2")
+
+# Combined plot
+p1 + p2 + plot_layout(ncol = 2)
+
+```
