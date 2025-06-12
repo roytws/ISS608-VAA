@@ -8,6 +8,7 @@ format:
     toc: true
     theme: default
     code-fold: show
+
 editor: visual
 execute: 
   eval: true
@@ -19,7 +20,8 @@ freeze: true
 
 # Take-Home 3
 
-Replicate Take home 2 with teammates's package 
+Replicate Take home 2 with teammates's package and Data Cleaning/Wrangling. 
+
 # Set-up
 
 ## Import library package
@@ -92,59 +94,15 @@ mc3_edges_final <- mc3_edges_indexed %>%
   select(from = from_new, to = to_new, is_inferred, type)
 
 ```
-## Parse Timestamp and Extract Day
 
+##  Entity Network Construction
 ```{r}
-# Convert timestamp to datetime and extract date
-comm_events <- mc3_nodes_final %>%
-  filter(type == "Event", sub_type == "Communication") %>%
-  select(id, timestamp)
-
-# Step 2: Parse timestamp into datetime and extract the date
-comm_events <- comm_events %>%
-  mutate(
-    start_time = ymd_hms(timestamp, quiet = TRUE),
-    day = as.Date(start_time)
-  )
-```
-
-## Summarise daily Communication Volume
-
-```{r}
-# Count number of communications per day
-daily_comms <- comm_events %>%
-  count(day, name = "num_comms")
-
-```
-
-## Visualise the Temporal Pattern
-
-```{r}
-# Plot as a time series
-ggplot(daily_comms, aes(x = day, y = num_comms)) +
-  geom_line(color = "steelblue", linewidth = 1.2) +
-  geom_point(size = 2) +
-  labs(title = "Daily Communication Patterns (2-Week Period)",
-       x = "Date", y = "Number of Communications") +
-  theme_minimal()
-
-```
-
-# Question 2
-
-## Filter People + Vessels only
-
-```{r}
-# Filter relevant entity nodes
+# Filter People and Vessels
 entity_nodes <- mc3_nodes_final %>%
   filter(type == "Entity", sub_type %in% c("Person", "Vessel")) %>%
   select(id, name, sub_type)
 
-```
-
-## Assign groups based on name/subtype for better analytics
-
-```{r}
+# Assign groups
 entity_nodes <- entity_nodes %>%
   mutate(
     group = case_when(
@@ -152,21 +110,17 @@ entity_nodes <- entity_nodes %>%
       name %in% c("Sailor Shift", "Sailor Shifts Team") ~ "Sailor Shift",
       name %in% c("Mariners Dream", "Marlin", "Recreational Fishing Boats") ~ "Fishing/Leisure",
       name %in% c("Serenity", "Horizon", "Osprey", "Remora", "Neptune", "Mako") ~ "Tourism/Leisure",
+      name %in% c("Boss", "Mrs. Money", "The Middleman") ~ "Suspicious",
       TRUE ~ sub_type
     )
   )
-```
 
-## Filter Edges Between People and Vessels (Communication events)
-
-```{r}
+# Build communication pairs
 valid_ids <- entity_nodes$id
-
 comm_event_ids <- mc3_nodes_final %>%
   filter(type == "Event", sub_type == "Communication") %>%
   pull(id)
 
-# Use the cleaned edge indices and map back to node IDs
 edge_lookup <- tibble(
   index = mc3_nodes_final$new_index,
   id = mc3_nodes_final$id
@@ -194,54 +148,90 @@ entity_pairs <- entity_event_edges %>%
   distinct(entity_id.x, entity_id.y) %>%
   rename(source = entity_id.x, target = entity_id.y) %>%
   filter(source %in% valid_ids & target %in% valid_ids)
-```
 
-## Build and Cluster Graph
-
-```{r}
+# Build tidygraph
 graph_tbl <- tbl_graph(nodes = entity_nodes, edges = entity_pairs, directed = FALSE)
 
-graph_tbl <- graph_tbl %>%
-  mutate(cluster = as.factor(group_infomap()))
 ```
 
-## Visualise Groups
+# Cluster Analysis
+```{r}
+# Convert to igraph
+graph_igraph <- as.igraph(graph_tbl)
 
-```{r,fig.width= 10,fig.height= 6}
-ggraph(graph_tbl, layout = "fr") +
-  geom_edge_link(alpha = 0.2) +
-  geom_node_point(aes(color = group, shape = sub_type), size = 4) +
-  geom_node_text(aes(label = name), repel = TRUE, size = 2.5) +
-  labs(title = "Entity Communication Network: People and Vessels",
-       color = "Group", shape = "Type") +
-  theme_minimal()
+# Run clustering algorithms
+cluster_infomap <- cluster_infomap(graph_igraph)
+cluster_louvain <- cluster_louvain(graph_igraph)
+cluster_walktrap <- cluster_walktrap(graph_igraph, steps = 10)
+cluster_edge_betweenness <- cluster_edge_betweenness(graph_igraph, directed = FALSE)
 
+# Handle spinglass for disconnected components
+if (!is_connected(graph_igraph)) {
+  comp_info <- components(graph_igraph)
+  largest_comp <- which.max(comp_info$csize)
+  node_indices <- which(comp_info$membership == largest_comp)
+  graph_connected <- induced_subgraph(graph_igraph, node_indices)
+  cluster_spinglass <- cluster_spinglass(graph_connected)
+  
+  spinglass_vec <- rep(NA, vcount(graph_igraph))
+  spinglass_vec[node_indices] <- membership(cluster_spinglass)
+} else {
+  cluster_spinglass <- cluster_spinglass(graph_igraph)
+  spinglass_vec <- membership(cluster_spinglass)
+}
+
+# Add cluster assignments to entity_nodes
+entity_nodes <- entity_nodes %>%
+  mutate(
+    infomap_cluster = as.factor(membership(cluster_infomap)),
+    louvain_cluster = as.factor(membership(cluster_louvain)),
+    walktrap_cluster = as.factor(membership(cluster_walktrap)),
+    edge_betweenness_cluster = as.factor(membership(cluster_edge_betweenness)),
+    spinglass_cluster = as.factor(spinglass_vec)
+  )
 
 ```
-
-# 2A Interactive graph
 
 ```{r}
-# ---- NODES PREPARATION ----
-nodes_vis <- graph_tbl %>%
-  activate(nodes) %>% 
-  as_tibble() %>%
-  mutate(
-    id = as.character(id),  # Ensure character type
-    label = name,
-    group = group,
-    shape = ifelse(sub_type == "Person", "dot", "triangle"),
-    title = paste0(
-      "<div style='color:white;'>",  # Changed text color to white
-      "<b>", name, "</b><br>",
-      "Type: ", sub_type, "<br>",
-      "Group: ", group,
-      "</div>"
-    )
-  ) %>%
-  select(id, label, group, shape, title)
+# Create performance metrics
+cluster_metrics <- tibble(
+  Algorithm = c("Infomap", "Louvain", "Walktrap", "Edge Betweenness", "Spinglass"),
+  Clusters = c(
+    length(unique(membership(cluster_infomap))),
+    length(unique(membership(cluster_louvain))),
+    length(unique(membership(cluster_walktrap))),
+    length(unique(membership(cluster_edge_betweenness))),
+    length(unique(membership(cluster_spinglass)))
+  ),
+  Modularity = c(
+    modularity(cluster_infomap),
+    modularity(cluster_louvain),
+    modularity(cluster_walktrap),
+    modularity(cluster_edge_betweenness),
+    modularity(cluster_spinglass)
+  )
+)
 
-# ---- EDGES PREPARATION ----
+# Split algorithms by performance
+high_modularity <- cluster_metrics %>%
+  filter(Modularity >= 0.3) %>%
+  arrange(desc(Modularity))
+
+low_modularity <- cluster_metrics %>%
+  filter(Modularity < 0.3) %>%
+  arrange(desc(Modularity))
+
+print("High Performance Algorithms (Modularity >= 0.3):")
+print(high_modularity)
+
+print("Low Performance Algorithms (Modularity < 0.3):")
+print(low_modularity)
+
+```
+
+## Prepare Visualisation data
+```{r}
+# Create edges for visualization
 node_id_map <- graph_tbl %>% 
   activate(nodes) %>% 
   as_tibble() %>% 
@@ -257,121 +247,95 @@ edges_vis <- graph_tbl %>%
   rename(to_id = id) %>%
   select(from = from_id, to = to_id)
 
-# ---- INTERACTIVE VISUALIZATION ----
-visNetwork(nodes_vis, edges_vis, width = "100%", height = "800px") %>%
+```
+
+## Interactive Network Visualisation
+```{r}
+# Create nodes for Louvain (Best Algorithm) - ASCENDING ORDER
+nodes_vis_louvain <- entity_nodes %>%
+  mutate(
+    id = as.character(id),
+    label = name,
+    group = factor(louvain_cluster, levels = sort(as.numeric(unique(louvain_cluster)))),
+    shape = ifelse(sub_type == "Person", "dot", "triangle"),
+    title = paste0(
+      "<div style='color:white;'>",
+      "<b>", name, "</b><br>",
+      "Type: ", sub_type, "<br>",
+      "Louvain Cluster: ", louvain_cluster,
+      "</div>"
+    )
+  ) %>%
+  select(id, label, group, shape, title)
+
+# Create nodes for Infomap (Comparison) - ASCENDING ORDER
+nodes_vis_infomap <- entity_nodes %>%
+  mutate(
+    id = as.character(id),
+    label = name,
+    group = factor(infomap_cluster, levels = sort(as.numeric(unique(infomap_cluster)))), 
+    shape = ifelse(sub_type == "Person", "dot", "triangle"),
+    title = paste0(
+      "<div style='color:white;'>",
+      "<b>", name, "</b><br>",
+      "Type: ", sub_type, "<br>",
+      "Infomap Cluster: ", infomap_cluster,
+      "</div>"
+    )
+  ) %>%
+  select(id, label, group, shape, title)
+print("🥇 Louvain Clustering - Best Performance (Modularity: 0.359)")
+```
+
+
+```{r}
+# Louvain Interactive Network - ORDERED DROPDOWN
+
+vis_louvain <- visNetwork(nodes_vis_louvain, edges_vis, width = "100%", height = "600px") %>%
   visIgraphLayout(layout = "layout_with_fr") %>%
-  visNodes(
-    font = list(size = 18, color = "black"),
-    shadow = list(enabled = TRUE, size = 10)
-  ) %>%
-  visEdges(
-    color = list(color = "rgba(100,100,100,0.5)", highlight = "red"),
-    smooth = FALSE
-  ) %>%
+  visNodes(font = list(size = 16)) %>%
+  visEdges(color = list(color = "rgba(150,150,150,0.3)")) %>%
   visInteraction(
-    tooltipStyle = 'position: fixed; visibility: hidden; padding: 8px;
-                   font-family: verdana; font-size:14px; color: white;
-                   background-color: black; border-radius: 5px;
-                   border: 1px solid #444; box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
-                   max-width: 300px; word-break: break-word;'
+    tooltipStyle = 'background-color: black; color: white; border-radius: 5px; padding: 8px;'
   ) %>%
   visOptions(
-    highlightNearest = list(enabled = TRUE, degree = 1),
-    nodesIdSelection = TRUE,
-    selectedBy = "group"
+    highlightNearest = TRUE, 
+    selectedBy = list(variable = "group", main = "Select Cluster:", sort = TRUE)
   ) %>%
-  visLegend(
-    position = "right",
-    main = "Group Legend",
-    useGroups = TRUE
-  ) %>%
-  visGroups(groupname = "Environmentalism", color = "#4DAF4A") %>%
-  visGroups(groupname = "Sailor Shift", color = "#E41A1C") %>%
-  visGroups(groupname = "Fishing/Leisure", color = "#377EB8") %>%
-  visGroups(groupname = "Tourism/Leisure", color = "#FFD700") %>%
-  visGroups(groupname = "Vessel", color = "#A65628") %>% 
-  visGroups(groupname = "Person", color = "#984EA3")
+  visLegend(position = "right", main = "Louvain Clusters (Optimal)")
 
+vis_louvain
 ```
 
-# Cluster Analysis 
 ```{r}
-# ---- CLUSTER ANALYSIS (FIXED) ----
-graph_igraph <- as.igraph(graph_tbl)
+# Infomap Interactive Network - ORDERED DROPDOWN
+print("📊 Infomap Clustering - High Granularity (13 clusters)")
+vis_infomap <- visNetwork(nodes_vis_infomap, edges_vis, width = "100%", height = "600px") %>%
+  visIgraphLayout(layout = "layout_with_fr") %>%
+  visNodes(font = list(size = 16)) %>%
+  visEdges(color = list(color = "rgba(150,150,150,0.3)")) %>%
+  visInteraction(
+    tooltipStyle = 'background-color: black; color: white; border-radius: 5px; padding: 8px;'
+  ) %>%
+  visOptions(
+    highlightNearest = TRUE, 
+    selectedBy = list(variable = "group", main = "Select Cluster:", sort = TRUE) 
+  ) %>%
+  visLegend(position = "right", main = "Infomap Clusters")
 
-# Check graph connectivity and get component info
-components <- components(graph_igraph)
-largest_comp <- which.max(components$csize)
-node_indices <- which(components$membership == largest_comp)
-
-# Compute clusters
-cluster_infomap <- cluster_infomap(graph_igraph)
-cluster_louvain <- cluster_louvain(graph_igraph)
-cluster_walktrap <- cluster_walktrap(graph_igraph, steps = 10)
-cluster_edge_betweenness <- cluster_edge_betweenness(graph_igraph, directed = FALSE)
-
-# Spinglass only on largest component
-graph_connected <- induced_subgraph(graph_igraph, node_indices)
-cluster_spinglass <- cluster_spinglass(graph_connected)
-
-# Create aligned cluster vectors
-spinglass_vec <- rep(NA, vcount(graph_igraph))
-spinglass_vec[node_indices] <- membership(cluster_spinglass)
-
-# Add cluster memberships to nodes
-entity_nodes <- entity_nodes %>%
-  mutate(
-    infomap_cluster = as.factor(membership(cluster_infomap)),
-    louvain_cluster = as.factor(membership(cluster_louvain)),
-    walktrap_cluster = as.factor(membership(cluster_walktrap)),
-    edge_betweenness_cluster = as.factor(membership(cluster_edge_betweenness)),
-    spinglass_cluster = as.factor(spinglass_vec)
-  )
+vis_infomap
 
 
-# ---- VISUALIZE CLUSTERS (example: Infomap) ----
-graph_tbl_clustered <- graph_tbl %>%
-  left_join(entity_nodes %>% select(id, infomap_cluster), by = "id")
-
-ggraph(graph_tbl_clustered, layout = "fr") +
-  geom_edge_link(alpha = 0.1, color = "gray") +
-  geom_node_point(aes(color = infomap_cluster, shape = sub_type), size = 5) +
-  geom_node_text(aes(label = name), repel = TRUE, size = 3) +
-  labs(title = "Infomap Clustering", color = "Cluster") +
-  theme_minimal()
-
-# ---- CLUSTER METRICS TABLE ----
-cluster_metrics <- tibble(
-  Algorithm = c("Infomap", "Louvain", "Walktrap", "Edge Betweenness", "Spinglass"),
-  Clusters = c(length(unique(membership(cluster_infomap))),
-               length(unique(membership(cluster_louvain))),
-               length(unique(membership(cluster_walktrap))),
-               length(unique(membership(cluster_edge_betweenness))),
-               length(unique(membership(cluster_spinglass)))),
-  Modularity = c(modularity(cluster_infomap),
-                 modularity(cluster_louvain),
-                 modularity(cluster_walktrap),
-                 modularity(cluster_edge_betweenness),
-                 modularity(cluster_spinglass))
-)
-
-print(cluster_metrics)
 ```
 
 
-# Algorithm Bar charts
-```{r,fig.width= 6,fig.height= 6}
-# Create metrics comparison plots
-cluster_metrics <- tibble(
-  Algorithm = c("Infomap", "Louvain", "Walktrap", "Edge Betweenness", "Spinglass"),
-  Clusters = c(13, 7, 7, 10, 5),
-  Modularity = c(0.1472922, 0.3585598, 0.3040071, 0.3416981, 0.2318878)
-)
+## Algorithm Comparison visualisation
 
+```{r, lenght = 10, width = 8}
 # Clusters comparison
 p1 <- ggplot(cluster_metrics, aes(x = reorder(Algorithm, Clusters), y = Clusters, fill = Algorithm)) +
   geom_col(alpha = 0.8) +
-  geom_text(aes(label = Clusters), vjust = -0.5, size = 4, fontface = "bold") +
+  geom_text(aes(label = Clusters), vjust = -0.5, size = 3, fontface = "bold") +
   labs(title = "Number of Clusters by Algorithm", 
        x = "Algorithm", y = "Number of Clusters") +
   theme_minimal() +
@@ -381,7 +345,7 @@ p1 <- ggplot(cluster_metrics, aes(x = reorder(Algorithm, Clusters), y = Clusters
 # Modularity comparison
 p2 <- ggplot(cluster_metrics, aes(x = reorder(Algorithm, -Modularity), y = Modularity, fill = Algorithm)) +
   geom_col(alpha = 0.8) +
-  geom_text(aes(label = round(Modularity, 3)), vjust = -0.5, size = 4, fontface = "bold") +
+  geom_text(aes(label = round(Modularity, 3)), vjust = -0.5, size = 3, fontface = "bold") +
   labs(title = "Modularity Score by Algorithm", 
        x = "Algorithm", y = "Modularity Score") +
   theme_minimal() +
@@ -389,6 +353,43 @@ p2 <- ggplot(cluster_metrics, aes(x = reorder(Algorithm, -Modularity), y = Modul
   scale_fill_brewer(palette = "Set2")
 
 # Combined plot
-p1 + p2 + plot_layout(ncol = 2)
+print("📈 Algorithm Performance Comparison")
+print(p1 + p2 + plot_layout(ncol = 2))
 
 ```
+
+## interative performance 
+```{r}
+# Create interactive performance table
+cluster_comparison <- function() {
+  performance_table <- cluster_metrics %>%
+    arrange(desc(Modularity)) %>%
+    mutate(
+      Rank = row_number(),
+      Modularity_Score = round(Modularity, 3),
+      Efficiency = case_when(
+        Modularity > 0.35 ~ "Excellent",
+        Modularity > 0.25 ~ "Good", 
+        TRUE ~ "Fair"
+      )
+    )
+  
+  DT::datatable(performance_table, 
+                options = list(pageLength = 10, dom = 't'),
+                caption = "🏆 Algorithm Performance Comparison") %>%
+    DT::formatStyle("Efficiency",
+      backgroundColor = DT::styleEqual(
+        c("Excellent", "Good", "Fair"),
+        c("#d4edda", "#fff3cd", "#f8d7da")
+      ))
+}
+
+print("📋 Interactive Performance Analysis")
+cluster_comparison()
+
+```
+
+
+
+
+
