@@ -17,10 +17,10 @@ execute:
 freeze: true
 ---
 
+# Take-Home Exercise 3
 
-# Take-Home 3
-
-Replicate Take home 2 with teammates's package and Data Cleaning/Wrangling. 
+Replicate Take home 2 with teammates's package and Data Cleaning/Wrangling.\
+Cluster Analysis will be the Main part of Take Home Exercise 3
 
 # Set-up
 
@@ -47,7 +47,9 @@ mc3_edges <- as_tibble(MC3$edges)
 ```{r}
 glimpse(MC3)
 ```
-## Clean and Wrangling nodes 
+
+## Clean and Wrangling nodes
+
 ```{r}
 mc3_nodes_cleaned <- mc3_nodes %>%
   mutate(id = as.character(id)) %>%
@@ -95,7 +97,8 @@ mc3_edges_final <- mc3_edges_indexed %>%
 
 ```
 
-##  Entity Network Construction
+## Entity Network Construction
+
 ```{r}
 # Filter People and Vessels
 entity_nodes <- mc3_nodes_final %>%
@@ -154,7 +157,8 @@ graph_tbl <- tbl_graph(nodes = entity_nodes, edges = entity_pairs, directed = FA
 
 ```
 
-# Cluster Analysis
+# **Cluster Analysis**
+
 ```{r}
 # Convert to igraph
 graph_igraph <- as.igraph(graph_tbl)
@@ -230,6 +234,7 @@ print(low_modularity)
 ```
 
 ## Prepare Visualisation data
+
 ```{r}
 # Create edges for visualization
 node_id_map <- graph_tbl %>% 
@@ -249,7 +254,6 @@ edges_vis <- graph_tbl %>%
 
 ```
 
-## Interactive Network Visualisation
 ```{r}
 # Create nodes for Louvain (Best Algorithm) - ASCENDING ORDER
 nodes_vis_louvain <- entity_nodes %>%
@@ -287,6 +291,13 @@ nodes_vis_infomap <- entity_nodes %>%
 print("🥇 Louvain Clustering - Best Performance (Modularity: 0.359)")
 ```
 
+## Interactive Network Visualisation (Louvain vs Infomap)
+
+-   **Louvain Algorithm:** Optimizes **modularity** using a greedy, hierarchical approach. Excellent for finding well-defined, balanced communities with clear boundaries.
+
+-   **Infomap Algorithm:** Uses **information theory** and random walks to minimize description length of information flow. Better at detecting overlapping communities and information pathways.
+
+## 
 
 ```{r}
 # Louvain Interactive Network - ORDERED DROPDOWN
@@ -328,7 +339,6 @@ vis_infomap
 
 ```
 
-
 ## Algorithm Comparison visualisation
 
 ```{r, lenght = 10, width = 8}
@@ -356,9 +366,19 @@ p2 <- ggplot(cluster_metrics, aes(x = reorder(Algorithm, -Modularity), y = Modul
 print("📈 Algorithm Performance Comparison")
 print(p1 + p2 + plot_layout(ncol = 2))
 
+
 ```
 
-## interative performance 
+**Nemo Reef maritime investigation**:
+
+-   **Louvain's 7 clusters** clearly separate legitimate operations (conservation, tourism) from suspicious activities (Boss-Mrs. Money network)
+
+-   **Infomap's 15 clusters** might over-fragment, making it harder to identify major threat networks
+
+-   **Comparison validates** that Louvain's groupings represent genuine operational boundaries, not algorithmic artifacts
+
+## Interative performance
+
 ```{r}
 # Create interactive performance table
 cluster_comparison <- function() {
@@ -389,7 +409,69 @@ cluster_comparison()
 
 ```
 
+**Performance Metrics:**
 
+-   **Clusters:** Number of communities identified by each algorithm
 
+-   **Modularity:** Quality score measuring how well the algorithm separates communities (higher = better)
 
+-   **Rank:** Performance ranking based on modularity scores
 
+-   **Efficiency:** Categorical assessment of algorithm effectiveness
+
+## **Algorithm Rankings & Interpretation**
+
+**🥇 1st Place: Louvain Algorithm**
+
+-   **7 clusters, 0.359 modularity, "Excellent"**
+
+-   **Optimal balance** between granularity and meaningful groupings
+
+-   Clearly separates major stakeholder groups: conservation vessels, suspicious operations, tourism operators, city officials
+
+-   **Best choice** for maritime security analysis
+
+**🥈 2nd Place: Edge Betweenness**
+
+-   **10 clusters, 0.342 modularity, "Good"**
+
+-   Identifies bridge connections between groups effectively
+
+-   More fragmented than Louvain but still valuable for understanding network bottlenecks
+
+**🥉 3rd Place: Walktrap**
+
+-   **7 clusters, 0.304 modularity, "Good"**
+
+-   Same cluster count as Louvain but lower quality boundaries
+
+-   Good for validating Louvain results through algorithmic consistency
+
+**4th Place: Spinglass**
+
+-   **4 clusters, 0.262 modularity, "Good"**
+
+-   Broad groupings but may miss important sub-communities
+
+-   Limited by network's disconnected components
+
+**5th Place: Infomap**
+
+-   **15 clusters, 0.149 modularity, "Fair"**
+
+-   Over-fragmentation creates too many small groups
+
+-   Difficult to interpret for practical maritime security purposes
+
+## **Key Insights**
+
+**Why Louvain Wins:**
+
+-   **Highest modularity (0.359)** indicates strongest community structure detection
+
+-   **Optimal 7 clusters** provide clear, actionable groupings for investigation
+
+-   **Excellent efficiency** for identifying suspicious vs. legitimate operations
+
+**Decision Support**
+This comparison scientifically validates that Louvain clustering provides the most actionable intelligence for maritime authorities investigating potential illegal activities around Nemo Reef while maintaining clear separation between legitimate conservation efforts and suspicious operations.
