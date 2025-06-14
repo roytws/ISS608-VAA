@@ -1,0 +1,57 @@
+---
+title: "Take-Home Exercise 3 Story Board "
+author: "Teo Wee Siang Roy & Chua Han Jie"
+date: "June 14, 2025"
+date-modified: "last-modified"
+format:
+  html:
+    toc: true
+    theme: default
+    code-fold: show
+
+editor: visual
+execute: 
+  eval: true
+  echo: true
+  warning: false
+freeze: true
+---
+
+# Story Board
+
+# EDA
+
+
+
+# Communication by time
+
+
+
+
+
+
+
+# Cluster
+
+Visualization reveals the complex web of relationships in the Oceanus maritime environment around Nemo Reef. This network map serves as a digital detective board, showing how 33 key entities---both people and vessels---communicate and interact in this sensitive marine area.
+
+### The Communication Patterns:
+
+Central Hub Activity: Kelly and Sam emerge as information brokers, maintaining connections across multiple groups---potentially serving as intermediaries between legitimate and suspicious operations.
+
+Isolated Operations: Some entities like Northern Light and Mariner's Dream operate with limited connections, suggesting either independent operations or intentional isolation.
+
+Bridge Connections: Certain individuals like Nadia Conti and Liam Thorne serve as critical bridges between official channels and operational networks.
+
+### Summary
+
+\
+The Entity Communication Network reveals that **Nemo Reef operations exist within a complex ecosystem** where environmental protection, legitimate tourism, and potentially suspicious activities intersect. The visualization provides maritime authorities with a **strategic overview** to prioritize investigations, enhance monitoring of key relationships, and protect both marine conservation efforts and legitimate maritime commerce while identifying threats to the reef's ecological integrity.
+
+**The story this network tells:** While legitimate conservation and tourism operations maintain their protective roles around Nemo Reef, a concerning undercurrent of potentially coordinated suspicious activities requires immediate investigative attention to preserve both maritime security and environmental protection in these critical waters.
+
+\
+
+## Cluster Analysis
+
+The dashboard presents a comparative analysis of different clustering algorithms applied to the Oceanus maritime network, aiming to uncover meaningful communities among people and vessels involved around Nemo Reef.

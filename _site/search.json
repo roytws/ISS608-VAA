@@ -1076,5 +1076,12 @@
     "title": "Take-Home_EX03",
     "section": "Key Insights",
     "text": "Key Insights\nWhy Louvain Wins:\n\nHighest modularity (0.359) indicates strongest community structure detection\nOptimal 7 clusters provide clear, actionable groupings for investigation\nExcellent efficiency for identifying suspicious vs. legitimate operations\n\nDecision Support This comparison scientifically validates that Louvain clustering provides the most actionable intelligence for maritime authorities investigating potential illegal activities around Nemo Reef while maintaining clear separation between legitimate conservation efforts and suspicious operations."
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex03_prototype/Take-Home_Ex03_prototype.html#cluster-analysis",
+    "href": "Take-Home_Ex/Take-Home_Ex03_prototype/Take-Home_Ex03_prototype.html#cluster-analysis",
+    "title": "Take-Home Exercise 3 Story Board",
+    "section": "Cluster Analysis",
+    "text": "Cluster Analysis\nThe dashboard presents a comparative analysis of different clustering algorithms applied to the Oceanus maritime network, aiming to uncover meaningful communities among people and vessels involved around Nemo Reef."
   }
 ]
