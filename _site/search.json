@@ -1082,6 +1082,27 @@
     "href": "Take-Home_Ex/Take-Home_Ex03_prototype/Take-Home_Ex03_prototype.html#cluster-analysis",
     "title": "Take-Home Exercise 3 Story Board",
     "section": "Cluster Analysis",
-    "text": "Cluster Analysis\nThe dashboard presents a comparative analysis of different clustering algorithms applied to the Oceanus maritime network, aiming to uncover meaningful communities among people and vessels involved around Nemo Reef."
+    "text": "Cluster Analysis\nThe dashboard presents a comparative analysis of different clustering algorithms applied to the Oceanus maritime network, aiming to uncover meaningful communities among people and vessels involved around Nemo Reef.\n\n\nSummary\n\nThe Entity Communication Network reveals that Nemo Reef operations exist within a complex ecosystem where environmental protection, legitimate tourism, and potentially suspicious activities intersect. The visualization provides maritime authorities with a strategic overview to prioritize investigations, enhance monitoring of key relationships, and protect both marine conservation efforts and legitimate maritime commerce while identifying threats to the reef’s ecological integrity.\nThe story this network tells: While legitimate conservation and tourism operations maintain their protective roles around Nemo Reef, a concerning undercurrent of potentially coordinated suspicious activities requires immediate investigative attention to preserve both maritime security and environmental protection in these critical waters."
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex03_prototype/Take-Home_Ex03_prototype.html#deep-dive-the-messages-tab",
+    "href": "Take-Home_Ex/Take-Home_Ex03_prototype/Take-Home_Ex03_prototype.html#deep-dive-the-messages-tab",
+    "title": "Take-Home Exercise 3 Story Board",
+    "section": "Deep Dive: The Messages Tab",
+    "text": "Deep Dive: The Messages Tab\nOnce a suspicious period is identified through the above visualizations, the messages taballows for targeted review of the actual message content exchanged during that window. This enables:\n\nDirect examination of the nature and context of communications, confirming whether the content aligns with legitimate business or hints at illicit coordination.\nIdentification of code words, unusual instructions, or references to sensitive operations.\nVerification of relationships and roles among key entities, as messages often reveal hierarchy, influence, and intent.\n\nBy correlating message content with network structure and temporal anomalies, analysts can move from pattern detection to concrete evidence gathering, supporting investigations into illegal or unethical activities."
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex03_prototype/Take-Home_Ex03_prototype.html#the-role-of-the-communication-network-graph",
+    "href": "Take-Home_Ex/Take-Home_Ex03_prototype/Take-Home_Ex03_prototype.html#the-role-of-the-communication-network-graph",
+    "title": "Take-Home Exercise 3 Story Board",
+    "section": "The Role of the Communication Network Graph",
+    "text": "The Role of the Communication Network Graph\n\nThe communication network graph provides a structural snapshot of the network at any selected date and time. By filtering the network to a specific window (identified as suspicious via the temporal charts), analysts can:\n\nVisualize which entities are most active or central during periods of interest.\nIdentify clusters, bridges, or unusually dense connections that may indicate coordinated groups or key facilitators.\nAssess The scale and reach of the network at critical moments, helping to distinguish between routine communication and orchestrated events.\n\nThis graph is essential for understanding not just when, but who is involved in suspicious activity, and how information or influence flows between individuals and organizations."
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex03_prototype/Take-Home_Ex03_prototype.html#summary",
+    "href": "Take-Home_Ex/Take-Home_Ex03_prototype/Take-Home_Ex03_prototype.html#summary",
+    "title": "Take-Home Exercise 3 Story Board",
+    "section": "Summary",
+    "text": "Summary\nThis integrated visual analytics workflow enables rapid detection of suspicious communication patterns, structural analysis of the network during critical periods, and in-depth review of message content. It streamlines the process of moving from anomaly detection to actionable intelligence, making it significantly easier to identify and confirm illegal activities and the roles of key entities involved."
   }
 ]

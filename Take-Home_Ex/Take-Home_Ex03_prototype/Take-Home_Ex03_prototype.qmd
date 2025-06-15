@@ -1,6 +1,6 @@
 ---
 title: "Take-Home Exercise 3 Story Board "
-author: "Teo Wee Siang Roy & Chua Han Jie"
+author: "Teo Wee Siang Roy & Chan Han Jie"
 date: "June 14, 2025"
 date-modified: "last-modified"
 format:
@@ -19,17 +19,64 @@ freeze: true
 
 # Story Board
 
-# EDA
+# Identifying Suspicious Communication Patterns Using Visual Analytics
 
+The combination of the daily communication volume bar chart, hourly communication volume bar chart, and the hourly heat map provides a powerful means to detect temporal anomalies and shifts in communication behavior:
 
+![](TH03_proto/data/1.png)
 
-# Communication by time
+-   **Daily Communication Volume Bar Chart:**\
+    This chart displays the number of communications per day, overlaid with a red dashed trend line. It allows analysts to quickly spot days with unusually high or low activity, as well as to observe overall trends---such as gradual increases or decreases in daily volume. A sudden spike or drop may indicate an event or coordinated action that warrants further attention.
 
+![](TH03_proto/data/2.png)
 
+-   **Hourly Communication Volume Bar Chart:**\
+    By aggregating the number of communications by hour across the dataset and plotting a trend line, this chart reveals the typical daily rhythm of communications. Significant deviations from the expected hourly pattern---such as an unusual surge in late-night or early-morning activity---can be a red flag for covert or out-of-pattern behavior.
 
+![](TH03_proto/data/3.png)
 
+-   **Hourly Communication Heat Map:**\
+    The heat map visualizes the intensity of communications for each hour of each day, making it easy to spot recurring peaks, lulls, or abrupt changes. Consistent high activity during certain hours (e.g., 8--11 AM) may be normal, but a shift in these patterns---such as a new peak at an odd hour or an isolated day with unusual activity---can signal suspicious coordination or attempts to evade detection.
 
+Together, these temporal visualizations enable analysts to:
 
+-   Detect when communication patterns deviate from the established norm.
+
+-   Pinpoint specific dates and hours where suspicious activity is concentrated.
+
+-   Observe whether suspicious patterns are isolated incidents or part of a broader trend.
+
+![](TH03_proto/data/4.png)
+
+## Deep Dive: The Messages Tab
+
+Once a suspicious period is identified through the above visualizations, the **messages tab**allows for targeted review of the actual message content exchanged during that window. This enables:
+
+-   Direct examination of the nature and context of communications, confirming whether the content aligns with legitimate business or hints at illicit coordination.
+
+-   Identification of code words, unusual instructions, or references to sensitive operations.
+
+-   Verification of relationships and roles among key entities, as messages often reveal hierarchy, influence, and intent.
+
+By correlating message content with network structure and temporal anomalies, analysts can move from pattern detection to concrete evidence gathering, supporting investigations into illegal or unethical activities.
+
+## The Role of the Communication Network Graph
+
+![](TH03_proto/data/5.png)
+
+The **communication network graph** provides a structural snapshot of the network at any selected date and time. By filtering the network to a specific window (identified as suspicious via the temporal charts), analysts can:
+
+-   Visualize which entities are most active or central during periods of interest.
+
+-   Identify clusters, bridges, or unusually dense connections that may indicate coordinated groups or key facilitators.
+
+-   Assess The scale and reach of the network at critical moments, helping to distinguish between routine communication and orchestrated events.
+
+This graph is essential for understanding not just when, but **who** is involved in suspicious activity, and how information or influence flows between individuals and organizations.
+
+## Summary
+
+This integrated visual analytics workflow enables rapid detection of suspicious communication patterns, structural analysis of the network during critical periods, and in-depth review of message content. It streamlines the process of moving from anomaly detection to actionable intelligence, making it significantly easier to identify and confirm illegal activities and the roles of key entities involved.
 
 # Cluster
 
@@ -37,11 +84,19 @@ Visualization reveals the complex web of relationships in the Oceanus maritime e
 
 ### The Communication Patterns:
 
+![](TH03_proto/data/6.png)
+
 Central Hub Activity: Kelly and Sam emerge as information brokers, maintaining connections across multiple groups---potentially serving as intermediaries between legitimate and suspicious operations.
 
 Isolated Operations: Some entities like Northern Light and Mariner's Dream operate with limited connections, suggesting either independent operations or intentional isolation.
 
 Bridge Connections: Certain individuals like Nadia Conti and Liam Thorne serve as critical bridges between official channels and operational networks.
+
+## Cluster Analysis
+
+The dashboard presents a comparative analysis of different clustering algorithms applied to the Oceanus maritime network, aiming to uncover meaningful communities among people and vessels involved around Nemo Reef.
+
+![](TH03_proto/data/7.png)
 
 ### Summary
 
@@ -52,6 +107,4 @@ The Entity Communication Network reveals that **Nemo Reef operations exist withi
 
 \
 
-## Cluster Analysis
-
-The dashboard presents a comparative analysis of different clustering algorithms applied to the Oceanus maritime network, aiming to uncover meaningful communities among people and vessels involved around Nemo Reef.
+## 
