@@ -19,6 +19,10 @@ freeze: true
 
 # Story Board
 
+The aim of our Shiny application is to identify suspicious communication patterns.
+
+The combination of the daily communication volume bar chart, hourly communication volume bar chart, and the hourly heat map is one way to detect temporal anomalies and shifts in communication behaviour.
+
 # Identifying Suspicious Communication Patterns Using Visual Analytics
 
 The combination of the daily communication volume bar chart, hourly communication volume bar chart, and the hourly heat map provides a powerful means to detect temporal anomalies and shifts in communication behavior:
@@ -26,17 +30,17 @@ The combination of the daily communication volume bar chart, hourly communicatio
 ![](TH03_proto/data/1.png)
 
 -   **Daily Communication Volume Bar Chart:**\
-    This chart displays the number of communications per day, overlaid with a red dashed trend line. It allows analysts to quickly spot days with unusually high or low activity, as well as to observe overall trends---such as gradual increases or decreases in daily volume. A sudden spike or drop may indicate an event or coordinated action that warrants further attention.
+    This chart displays the number of communications per day, overlaid with a red dashed trend line. It allows analysts to quickly spot days with unusually high or low activity, as well as to observe overall trends such as gradual increases or decreases in daily volume. A sudden spike or drop may indicate an event or coordinated action that warrants further attention.
 
 ![](TH03_proto/data/2.png)
 
 -   **Hourly Communication Volume Bar Chart:**\
-    By aggregating the number of communications by hour across the dataset and plotting a trend line, this chart reveals the typical daily rhythm of communications. Significant deviations from the expected hourly pattern---such as an unusual surge in late-night or early-morning activity---can be a red flag for covert or out-of-pattern behavior.
+    By aggregating the number of communications by hour across the dataset and plotting a trend line, this chart reveals the typical daily rhythm of communications. Significant deviations from the expected hourly pattern, such as an unusual surge in late-night or early-morning activity, can be a red flag for out-of-pattern behaviour.
 
 ![](TH03_proto/data/3.png)
 
 -   **Hourly Communication Heat Map:**\
-    The heat map visualizes the intensity of communications for each hour of each day, making it easy to spot recurring peaks, lulls, or abrupt changes. Consistent high activity during certain hours (e.g., 8--11 AM) may be normal, but a shift in these patterns---such as a new peak at an odd hour or an isolated day with unusual activity---can signal suspicious coordination or attempts to evade detection.
+    The heat map visualises the intensity of communications for each hour of each day, making it easy to spot recurring peaks or abrupt changes. Consistent high activity during certain hours may be normal, but a shift in these patterns, such as a new peak at an odd hour or an isolated day with unusual activity, can signal suspicious coordination or attempts to evade detection.
 
 Together, these temporal visualizations enable analysts to:
 
@@ -46,11 +50,27 @@ Together, these temporal visualizations enable analysts to:
 
 -   Observe whether suspicious patterns are isolated incidents or part of a broader trend.
 
+## The Role of the Communication Network Graph
+
+![](TH03_proto/data/5.png)
+
+The communication network graph provides a structural snapshot of the network at any selected date and time. By filtering the network to a specific window (identified as suspicious via the temporal charts), analysts can:
+
+-   Visualise which entities are most active or central during periods of interest.
+
+-   Identify clusters, bridges, or unusually dense connections that may indicate coordinated groups or key facilitators.
+
+-   Assess the scale and reach of the network at critical moments, helping to distinguish between routine communication and orchestrated events.
+
+This graph is essential for understanding not just when, but who is involved in suspicious activity, and how information or influence flows between individuals and organisations.
+
+A slicer has been incorporated on the left side of the dashboard, allowing users to filter all visualisations by date and time. This interactive control enables analysts to dynamically adjust the temporal scope of the data displayed, making it easier to focus on specific periods of interest and observe how communication patterns and network structures change over time
+
 ![](TH03_proto/data/4.png)
 
 ## Deep Dive: The Messages Tab
 
-Once a suspicious period is identified through the above visualizations, the **messages tab**allows for targeted review of the actual message content exchanged during that window. This enables:
+Once a suspicious period is identified through the above visualisations, the messages tab allows for targeted review of the actual message content exchanged during that window. This enables:
 
 -   Direct examination of the nature and context of communications, confirming whether the content aligns with legitimate business or hints at illicit coordination.
 
@@ -59,20 +79,6 @@ Once a suspicious period is identified through the above visualizations, the **
 -   Verification of relationships and roles among key entities, as messages often reveal hierarchy, influence, and intent.
 
 By correlating message content with network structure and temporal anomalies, analysts can move from pattern detection to concrete evidence gathering, supporting investigations into illegal or unethical activities.
-
-## The Role of the Communication Network Graph
-
-![](TH03_proto/data/5.png)
-
-The **communication network graph** provides a structural snapshot of the network at any selected date and time. By filtering the network to a specific window (identified as suspicious via the temporal charts), analysts can:
-
--   Visualize which entities are most active or central during periods of interest.
-
--   Identify clusters, bridges, or unusually dense connections that may indicate coordinated groups or key facilitators.
-
--   Assess The scale and reach of the network at critical moments, helping to distinguish between routine communication and orchestrated events.
-
-This graph is essential for understanding not just when, but **who** is involved in suspicious activity, and how information or influence flows between individuals and organizations.
 
 ## Summary
 

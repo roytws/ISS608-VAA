@@ -200,8 +200,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#story-board" id="toc-story-board" class="nav-link active" data-scroll-target="#story-board">Story Board</a></li>
   <li><a href="#identifying-suspicious-communication-patterns-using-visual-analytics" id="toc-identifying-suspicious-communication-patterns-using-visual-analytics" class="nav-link" data-scroll-target="#identifying-suspicious-communication-patterns-using-visual-analytics">Identifying Suspicious Communication Patterns Using Visual Analytics</a>
   <ul class="collapse">
-  <li><a href="#deep-dive-the-messages-tab" id="toc-deep-dive-the-messages-tab" class="nav-link" data-scroll-target="#deep-dive-the-messages-tab">Deep Dive: The Messages Tab</a></li>
   <li><a href="#the-role-of-the-communication-network-graph" id="toc-the-role-of-the-communication-network-graph" class="nav-link" data-scroll-target="#the-role-of-the-communication-network-graph">The Role of the Communication Network Graph</a></li>
+  <li><a href="#deep-dive-the-messages-tab" id="toc-deep-dive-the-messages-tab" class="nav-link" data-scroll-target="#deep-dive-the-messages-tab">Deep Dive: The Messages Tab</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul></li>
   <li><a href="#cluster" id="toc-cluster" class="nav-link" data-scroll-target="#cluster">Cluster</a>
@@ -256,6 +256,8 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="story-board" class="level1">
 <h1>Story Board</h1>
+<p>The aim of our Shiny application is to identify suspicious communication patterns.</p>
+<p>The combination of the daily communication volume bar chart, hourly communication volume bar chart, and the hourly heat map is one way to detect temporal anomalies and shifts in communication behaviour.</p>
 </section>
 <section id="identifying-suspicious-communication-patterns-using-visual-analytics" class="level1">
 <h1>Identifying Suspicious Communication Patterns Using Visual Analytics</h1>
@@ -263,17 +265,17 @@ ul.task-list li input[type="checkbox"] {
 <p><img src="TH03_proto/data/1.png" class="img-fluid"></p>
 <ul>
 <li><strong>Daily Communication Volume Bar Chart:</strong><br>
-This chart displays the number of communications per day, overlaid with a red dashed trend line. It allows analysts to quickly spot days with unusually high or low activity, as well as to observe overall trends—such as gradual increases or decreases in daily volume. A sudden spike or drop may indicate an event or coordinated action that warrants further attention.</li>
+This chart displays the number of communications per day, overlaid with a red dashed trend line. It allows analysts to quickly spot days with unusually high or low activity, as well as to observe overall trends such as gradual increases or decreases in daily volume. A sudden spike or drop may indicate an event or coordinated action that warrants further attention.</li>
 </ul>
 <p><img src="TH03_proto/data/2.png" class="img-fluid"></p>
 <ul>
 <li><strong>Hourly Communication Volume Bar Chart:</strong><br>
-By aggregating the number of communications by hour across the dataset and plotting a trend line, this chart reveals the typical daily rhythm of communications. Significant deviations from the expected hourly pattern—such as an unusual surge in late-night or early-morning activity—can be a red flag for covert or out-of-pattern behavior.</li>
+By aggregating the number of communications by hour across the dataset and plotting a trend line, this chart reveals the typical daily rhythm of communications. Significant deviations from the expected hourly pattern, such as an unusual surge in late-night or early-morning activity, can be a red flag for out-of-pattern behaviour.</li>
 </ul>
 <p><img src="TH03_proto/data/3.png" class="img-fluid"></p>
 <ul>
 <li><strong>Hourly Communication Heat Map:</strong><br>
-The heat map visualizes the intensity of communications for each hour of each day, making it easy to spot recurring peaks, lulls, or abrupt changes. Consistent high activity during certain hours (e.g., 8–11 AM) may be normal, but a shift in these patterns—such as a new peak at an odd hour or an isolated day with unusual activity—can signal suspicious coordination or attempts to evade detection.</li>
+The heat map visualises the intensity of communications for each hour of each day, making it easy to spot recurring peaks or abrupt changes. Consistent high activity during certain hours may be normal, but a shift in these patterns, such as a new peak at an odd hour or an isolated day with unusual activity, can signal suspicious coordination or attempts to evade detection.</li>
 </ul>
 <p>Together, these temporal visualizations enable analysts to:</p>
 <ul>
@@ -281,27 +283,28 @@ The heat map visualizes the intensity of communications for each hour of each da
 <li><p>Pinpoint specific dates and hours where suspicious activity is concentrated.</p></li>
 <li><p>Observe whether suspicious patterns are isolated incidents or part of a broader trend.</p></li>
 </ul>
+<section id="the-role-of-the-communication-network-graph" class="level2">
+<h2 class="anchored" data-anchor-id="the-role-of-the-communication-network-graph">The Role of the Communication Network Graph</h2>
+<p><img src="TH03_proto/data/5.png" class="img-fluid"></p>
+<p>The communication network graph provides a structural snapshot of the network at any selected date and time. By filtering the network to a specific window (identified as suspicious via the temporal charts), analysts can:</p>
+<ul>
+<li><p>Visualise which entities are most active or central during periods of interest.</p></li>
+<li><p>Identify clusters, bridges, or unusually dense connections that may indicate coordinated groups or key facilitators.</p></li>
+<li><p>Assess the scale and reach of the network at critical moments, helping to distinguish between routine communication and orchestrated events.</p></li>
+</ul>
+<p>This graph is essential for understanding not just when, but who is involved in suspicious activity, and how information or influence flows between individuals and organisations.</p>
+<p>A slicer has been incorporated on the left side of the dashboard, allowing users to filter all visualisations by date and time. This interactive control enables analysts to dynamically adjust the temporal scope of the data displayed, making it easier to focus on specific periods of interest and observe how communication patterns and network structures change over time</p>
 <p><img src="TH03_proto/data/4.png" class="img-fluid"></p>
+</section>
 <section id="deep-dive-the-messages-tab" class="level2">
 <h2 class="anchored" data-anchor-id="deep-dive-the-messages-tab">Deep Dive: The Messages Tab</h2>
-<p>Once a suspicious period is identified through the above visualizations, the&nbsp;<strong>messages tab</strong>allows for targeted review of the actual message content exchanged during that window. This enables:</p>
+<p>Once a suspicious period is identified through the above visualisations, the messages tab allows for targeted review of the actual message content exchanged during that window. This enables:</p>
 <ul>
 <li><p>Direct examination of the nature and context of communications, confirming whether the content aligns with legitimate business or hints at illicit coordination.</p></li>
 <li><p>Identification of code words, unusual instructions, or references to sensitive operations.</p></li>
 <li><p>Verification of relationships and roles among key entities, as messages often reveal hierarchy, influence, and intent.</p></li>
 </ul>
 <p>By correlating message content with network structure and temporal anomalies, analysts can move from pattern detection to concrete evidence gathering, supporting investigations into illegal or unethical activities.</p>
-</section>
-<section id="the-role-of-the-communication-network-graph" class="level2">
-<h2 class="anchored" data-anchor-id="the-role-of-the-communication-network-graph">The Role of the Communication Network Graph</h2>
-<p><img src="TH03_proto/data/5.png" class="img-fluid"></p>
-<p>The&nbsp;<strong>communication network graph</strong>&nbsp;provides a structural snapshot of the network at any selected date and time. By filtering the network to a specific window (identified as suspicious via the temporal charts), analysts can:</p>
-<ul>
-<li><p>Visualize which entities are most active or central during periods of interest.</p></li>
-<li><p>Identify clusters, bridges, or unusually dense connections that may indicate coordinated groups or key facilitators.</p></li>
-<li><p>Assess The scale and reach of the network at critical moments, helping to distinguish between routine communication and orchestrated events.</p></li>
-</ul>
-<p>This graph is essential for understanding not just when, but&nbsp;<strong>who</strong>&nbsp;is involved in suspicious activity, and how information or influence flows between individuals and organizations.</p>
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>

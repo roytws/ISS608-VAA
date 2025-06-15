@@ -1089,14 +1089,14 @@
     "href": "Take-Home_Ex/Take-Home_Ex03_prototype/Take-Home_Ex03_prototype.html#deep-dive-the-messages-tab",
     "title": "Take-Home Exercise 3 Story Board",
     "section": "Deep Dive: The Messages Tab",
-    "text": "Deep Dive: The Messages Tab\nOnce a suspicious period is identified through the above visualizations, the messages taballows for targeted review of the actual message content exchanged during that window. This enables:\n\nDirect examination of the nature and context of communications, confirming whether the content aligns with legitimate business or hints at illicit coordination.\nIdentification of code words, unusual instructions, or references to sensitive operations.\nVerification of relationships and roles among key entities, as messages often reveal hierarchy, influence, and intent.\n\nBy correlating message content with network structure and temporal anomalies, analysts can move from pattern detection to concrete evidence gathering, supporting investigations into illegal or unethical activities."
+    "text": "Deep Dive: The Messages Tab\nOnce a suspicious period is identified through the above visualisations, the messages tab allows for targeted review of the actual message content exchanged during that window. This enables:\n\nDirect examination of the nature and context of communications, confirming whether the content aligns with legitimate business or hints at illicit coordination.\nIdentification of code words, unusual instructions, or references to sensitive operations.\nVerification of relationships and roles among key entities, as messages often reveal hierarchy, influence, and intent.\n\nBy correlating message content with network structure and temporal anomalies, analysts can move from pattern detection to concrete evidence gathering, supporting investigations into illegal or unethical activities."
   },
   {
     "objectID": "Take-Home_Ex/Take-Home_Ex03_prototype/Take-Home_Ex03_prototype.html#the-role-of-the-communication-network-graph",
     "href": "Take-Home_Ex/Take-Home_Ex03_prototype/Take-Home_Ex03_prototype.html#the-role-of-the-communication-network-graph",
     "title": "Take-Home Exercise 3 Story Board",
     "section": "The Role of the Communication Network Graph",
-    "text": "The Role of the Communication Network Graph\n\nThe communication network graph provides a structural snapshot of the network at any selected date and time. By filtering the network to a specific window (identified as suspicious via the temporal charts), analysts can:\n\nVisualize which entities are most active or central during periods of interest.\nIdentify clusters, bridges, or unusually dense connections that may indicate coordinated groups or key facilitators.\nAssess The scale and reach of the network at critical moments, helping to distinguish between routine communication and orchestrated events.\n\nThis graph is essential for understanding not just when, but who is involved in suspicious activity, and how information or influence flows between individuals and organizations."
+    "text": "The Role of the Communication Network Graph\n\nThe communication network graph provides a structural snapshot of the network at any selected date and time. By filtering the network to a specific window (identified as suspicious via the temporal charts), analysts can:\n\nVisualise which entities are most active or central during periods of interest.\nIdentify clusters, bridges, or unusually dense connections that may indicate coordinated groups or key facilitators.\nAssess the scale and reach of the network at critical moments, helping to distinguish between routine communication and orchestrated events.\n\nThis graph is essential for understanding not just when, but who is involved in suspicious activity, and how information or influence flows between individuals and organisations.\nA slicer has been incorporated on the left side of the dashboard, allowing users to filter all visualisations by date and time. This interactive control enables analysts to dynamically adjust the temporal scope of the data displayed, making it easier to focus on specific periods of interest and observe how communication patterns and network structures change over time"
   },
   {
     "objectID": "Take-Home_Ex/Take-Home_Ex03_prototype/Take-Home_Ex03_prototype.html#summary",
@@ -1104,5 +1104,12 @@
     "title": "Take-Home Exercise 3 Story Board",
     "section": "Summary",
     "text": "Summary\nThis integrated visual analytics workflow enables rapid detection of suspicious communication patterns, structural analysis of the network during critical periods, and in-depth review of message content. It streamlines the process of moving from anomaly detection to actionable intelligence, making it significantly easier to identify and confirm illegal activities and the roles of key entities involved."
+  },
+  {
+    "objectID": "Take-Home_Ex/Take-Home_Ex03_prototype/Take-Home_Ex03_prototype.html",
+    "href": "Take-Home_Ex/Take-Home_Ex03_prototype/Take-Home_Ex03_prototype.html",
+    "title": "Take-Home Exercise 3 Story Board",
+    "section": "",
+    "text": "The aim of our Shiny application is to identify suspicious communication patterns.\nThe combination of the daily communication volume bar chart, hourly communication volume bar chart, and the hourly heat map is one way to detect temporal anomalies and shifts in communication behaviour."
   }
 ]
